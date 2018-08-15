@@ -73,23 +73,18 @@ namespace OpenCVTestLoadImage {
       // 이미지 처리
       private void ProcessImage(Mat matSrc) {
          var oldTime = DateTime.Now;
+         
+         var matGray = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         DrawMat(matGray, this.pbxSrc);
+         DrawHistogram(matGray, this.chtSrc);
 
-         DrawMat(matSrc, this.pbxSrc);
-         var histR = GetHistogram(matSrc, 2);
-         var histG = GetHistogram(matSrc, 1);
-         var histB = GetHistogram(matSrc, 0);
-         DrawHistogram(histR, this.chtSrc.Series[0], "R", Color.Red  );
-         DrawHistogram(histG, this.chtSrc.Series[1], "G", Color.Green);
-         DrawHistogram(histB, this.chtSrc.Series[2], "B", Color.Blue );
-         using (var matGray = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY)) {
-            DrawMat(matGray, this.pbxDst);
-            var histo = GetHistogram(matGray, 0);
-            float acc = 0;
-            var histoAccum = histo.Select(val => acc += val).ToArray();
-            DrawHistogram(histo, this.chtDst.Series[0], "gray", Color.Black);
-            DrawHistogram(histoAccum, this.chtDst.Series[1], "Accum", Color.Red, AxisType.Secondary);
-         }
+         var matDst = matGray.EqualizeHist();
+         DrawMat(matDst, this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
 
+         matGray.Dispose();
+         matDst.Dispose();
+         
          this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
       }
 
@@ -102,6 +97,24 @@ namespace OpenCVTestLoadImage {
             series.Points.AddXY(i, histo[i]);
          }
          series.Enabled = true;
+      }
+
+      public static void DrawHistogram(Mat mat, Chart cht) {
+         var matType = mat.Type();
+         if (matType == MatType.CV_8UC1) {
+            var histo = GetHistogram(mat, 0);
+            float acc = 0;
+            var histoAccum = histo.Select(val => acc += val).ToArray();
+            DrawHistogram(histo, cht.Series[0], "gray", Color.Black);
+            DrawHistogram(histoAccum, cht.Series[1], "Accum", Color.Red, AxisType.Secondary);
+         } else if (matType == MatType.CV_8UC3) {
+            var histR = GetHistogram(mat, 2);
+            var histG = GetHistogram(mat, 1);
+            var histB = GetHistogram(mat, 0);
+            DrawHistogram(histR, cht.Series[0], "R", Color.Red  );
+            DrawHistogram(histG, cht.Series[1], "G", Color.Green);
+            DrawHistogram(histB, cht.Series[2], "B", Color.Blue );
+         }
       }
 
       public static float[] GetHistogram(Mat matSrc, int channel) {

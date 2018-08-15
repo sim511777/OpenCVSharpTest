@@ -3,4 +3,4 @@ ok - 클립보드 복사
 - 이미지 확대/축소/Fit 기능
 - HSV 변환 후 histo equalization
 - Contrast expansion
-- histogram COlor 일때와 Gray 일때, HSV일때 알아서 다르게 표시, GetHistogram 함수는 Mat을 파라미터로 받도록 수정, Series도 자동으로 할것
+- histogram Color 일때와 Gray 일때, HSV일때 알아서 다르게 표시, GetHistogram 함수는 Mat을 파라미터로 받도록 수정, Series도 자동으로 할것
