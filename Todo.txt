@@ -1,0 +1,4 @@
+ok 1. 클립보드 복사
+1. 웹캠 라이브 타이머 -> 쓰레드
+2. HSV 변환 후 histo equalization
+3. Contrast expansion

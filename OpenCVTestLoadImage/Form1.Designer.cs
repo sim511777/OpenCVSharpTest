@@ -45,24 +45,18 @@
          this.pbxDst = new System.Windows.Forms.PictureBox();
          this.pbxSrc = new System.Windows.Forms.PictureBox();
          this.chtSrc = new System.Windows.Forms.DataVisualization.Charting.Chart();
-         this.cbxThrType = new System.Windows.Forms.ComboBox();
-         this.numThr = new System.Windows.Forms.NumericUpDown();
-         this.numThrMax = new System.Windows.Forms.NumericUpDown();
+         this.btnClipboard = new System.Windows.Forms.Button();
          this.panel1.SuspendLayout();
          this.tableLayoutPanel1.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.chtSrc)).BeginInit();
-         ((System.ComponentModel.ISupportInitialize)(this.numThr)).BeginInit();
-         ((System.ComponentModel.ISupportInitialize)(this.numThrMax)).BeginInit();
          this.SuspendLayout();
          // 
          // panel1
          // 
-         this.panel1.Controls.Add(this.numThrMax);
-         this.panel1.Controls.Add(this.numThr);
-         this.panel1.Controls.Add(this.cbxThrType);
          this.panel1.Controls.Add(this.btnLive);
+         this.panel1.Controls.Add(this.btnClipboard);
          this.panel1.Controls.Add(this.btnLoad);
          this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
          this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -72,7 +66,7 @@
          // 
          // btnLive
          // 
-         this.btnLive.Location = new System.Drawing.Point(12, 41);
+         this.btnLive.Location = new System.Drawing.Point(12, 70);
          this.btnLive.Name = "btnLive";
          this.btnLive.Size = new System.Drawing.Size(75, 23);
          this.btnLive.TabIndex = 0;
@@ -82,7 +76,7 @@
          // 
          // btnLoad
          // 
-         this.btnLoad.Location = new System.Drawing.Point(12, 12);
+         this.btnLoad.Location = new System.Drawing.Point(12, 41);
          this.btnLoad.Name = "btnLoad";
          this.btnLoad.Size = new System.Drawing.Size(75, 23);
          this.btnLoad.TabIndex = 0;
@@ -223,48 +217,15 @@
          this.chtSrc.TabIndex = 2;
          this.chtSrc.Text = "chart1";
          // 
-         // cbxThrType
+         // btnClipboard
          // 
-         this.cbxThrType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-         this.cbxThrType.FormattingEnabled = true;
-         this.cbxThrType.Location = new System.Drawing.Point(12, 70);
-         this.cbxThrType.Name = "cbxThrType";
-         this.cbxThrType.Size = new System.Drawing.Size(121, 20);
-         this.cbxThrType.TabIndex = 1;
-         // 
-         // numThr
-         // 
-         this.numThr.Location = new System.Drawing.Point(12, 96);
-         this.numThr.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-         this.numThr.Name = "numThr";
-         this.numThr.Size = new System.Drawing.Size(120, 21);
-         this.numThr.TabIndex = 2;
-         this.numThr.Value = new decimal(new int[] {
-            128,
-            0,
-            0,
-            0});
-         // 
-         // numThrMax
-         // 
-         this.numThrMax.Location = new System.Drawing.Point(12, 123);
-         this.numThrMax.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-         this.numThrMax.Name = "numThrMax";
-         this.numThrMax.Size = new System.Drawing.Size(120, 21);
-         this.numThrMax.TabIndex = 2;
-         this.numThrMax.Value = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
+         this.btnClipboard.Location = new System.Drawing.Point(12, 12);
+         this.btnClipboard.Name = "btnClipboard";
+         this.btnClipboard.Size = new System.Drawing.Size(75, 23);
+         this.btnClipboard.TabIndex = 0;
+         this.btnClipboard.Text = "Clipboard";
+         this.btnClipboard.UseVisualStyleBackColor = true;
+         this.btnClipboard.Click += new System.EventHandler(this.btnClipboard_Click);
          // 
          // Form1
          // 
@@ -280,8 +241,6 @@
          ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.chtSrc)).EndInit();
-         ((System.ComponentModel.ISupportInitialize)(this.numThr)).EndInit();
-         ((System.ComponentModel.ISupportInitialize)(this.numThrMax)).EndInit();
          this.ResumeLayout(false);
 
       }
@@ -296,9 +255,7 @@
       private System.Windows.Forms.PictureBox pbxDst;
       private System.Windows.Forms.PictureBox pbxSrc;
       private System.Windows.Forms.DataVisualization.Charting.Chart chtSrc;
-      private System.Windows.Forms.ComboBox cbxThrType;
-      private System.Windows.Forms.NumericUpDown numThrMax;
-      private System.Windows.Forms.NumericUpDown numThr;
+      private System.Windows.Forms.Button btnClipboard;
    }
 }
 

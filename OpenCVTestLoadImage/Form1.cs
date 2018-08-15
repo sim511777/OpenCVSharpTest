@@ -16,8 +16,6 @@ namespace OpenCVTestLoadImage {
    public partial class Form1 : Form {
       public Form1() {
          InitializeComponent();
-         this.cbxThrType.Items.AddRange(Enum.GetValues(typeof(ThresholdTypes)).Cast<object>().ToArray());
-         this.cbxThrType.SelectedIndex = 0;
       }
 
       VideoCapture cap;
@@ -31,14 +29,28 @@ namespace OpenCVTestLoadImage {
          matSrc.Dispose();
       }
 
+      private void btnClipboard_Click(object sender, EventArgs e) {
+         Image img = Clipboard.GetImage();
+         if (img == null)
+            return;
+
+         Bitmap bmp = new Bitmap(img);
+         var matSrc = bmp.ToMat();
+         this.ProcessImage(matSrc);
+         matSrc.Dispose();
+         bmp.Dispose();
+      }
+
       private void btnLive_Click(object sender, EventArgs e) {
          if (this.cap == null) {
             this.cap = new VideoCapture(0);
             this.timer1.Enabled = true;
+            this.btnLive.Text = "Live Stop";
          } else {
             this.cap.Dispose();
             this.cap = null;
             this.timer1.Enabled = false;
+            this.btnLive.Text = "Live";
          }
       }
 
