@@ -38,6 +38,7 @@
          System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
          this.panel1 = new System.Windows.Forms.Panel();
          this.btnLive = new System.Windows.Forms.Button();
+         this.btnClipboard = new System.Windows.Forms.Button();
          this.btnLoad = new System.Windows.Forms.Button();
          this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
          this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -45,7 +46,6 @@
          this.pbxDst = new System.Windows.Forms.PictureBox();
          this.pbxSrc = new System.Windows.Forms.PictureBox();
          this.chtSrc = new System.Windows.Forms.DataVisualization.Charting.Chart();
-         this.btnClipboard = new System.Windows.Forms.Button();
          this.panel1.SuspendLayout();
          this.tableLayoutPanel1.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).BeginInit();
@@ -74,6 +74,16 @@
          this.btnLive.UseVisualStyleBackColor = true;
          this.btnLive.Click += new System.EventHandler(this.btnLive_Click);
          // 
+         // btnClipboard
+         // 
+         this.btnClipboard.Location = new System.Drawing.Point(12, 12);
+         this.btnClipboard.Name = "btnClipboard";
+         this.btnClipboard.Size = new System.Drawing.Size(75, 23);
+         this.btnClipboard.TabIndex = 0;
+         this.btnClipboard.Text = "Clipboard";
+         this.btnClipboard.UseVisualStyleBackColor = true;
+         this.btnClipboard.Click += new System.EventHandler(this.btnClipboard_Click);
+         // 
          // btnLoad
          // 
          this.btnLoad.Location = new System.Drawing.Point(12, 41);
@@ -87,6 +97,7 @@
          // dlgOpen
          // 
          this.dlgOpen.FileName = "openFileDialog1";
+         this.dlgOpen.Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG";
          // 
          // timer1
          // 
@@ -216,16 +227,6 @@
          this.chtSrc.Size = new System.Drawing.Size(304, 213);
          this.chtSrc.TabIndex = 2;
          this.chtSrc.Text = "chart1";
-         // 
-         // btnClipboard
-         // 
-         this.btnClipboard.Location = new System.Drawing.Point(12, 12);
-         this.btnClipboard.Name = "btnClipboard";
-         this.btnClipboard.Size = new System.Drawing.Size(75, 23);
-         this.btnClipboard.TabIndex = 0;
-         this.btnClipboard.Text = "Clipboard";
-         this.btnClipboard.UseVisualStyleBackColor = true;
-         this.btnClipboard.Click += new System.EventHandler(this.btnClipboard_Click);
          // 
          // Form1
          // 

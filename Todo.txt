@@ -1,4 +1,6 @@
-ok 1. 클립보드 복사
-1. 웹캠 라이브 타이머 -> 쓰레드
-2. HSV 변환 후 histo equalization
-3. Contrast expansion
+ok - 클립보드 복사
+- 웹캠 라이브 타이머 -> 쓰레드
+- 이미지 확대/축소/Fit 기능
+- HSV 변환 후 histo equalization
+- Contrast expansion
+- histogram COlor 일때와 Gray 일때, HSV일때 알아서 다르게 표시, GetHistogram 함수는 Mat을 파라미터로 받도록 수정, Series도 자동으로 할것
