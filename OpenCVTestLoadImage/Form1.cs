@@ -75,22 +75,34 @@ namespace OpenCVTestLoadImage {
          var oldTime = DateTime.Now;
 
          DrawMat(matSrc, this.pbxSrc);
-         var histR = GetHistogram(matSrc, 2);
-         var histG = GetHistogram(matSrc, 1);
-         var histB = GetHistogram(matSrc, 0);
-         DrawHistogram(histR, this.chtSrc.Series[0], "R", Color.Red  );
-         DrawHistogram(histG, this.chtSrc.Series[1], "G", Color.Green);
-         DrawHistogram(histB, this.chtSrc.Series[2], "B", Color.Blue );
-         using (var matGray = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY)) {
-            DrawMat(matGray, this.pbxDst);
-            var histo = GetHistogram(matGray, 0);
+         DrawHistogram(matSrc, this.chtSrc);
+
+         var matGray = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).EqualizeHist();
+         
+         DrawMat(matGray, this.pbxDst);
+         DrawHistogram(matGray, this.chtDst);
+
+         matGray.Dispose();
+         
+         this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
+      }
+      
+      public static void DrawHistogram(Mat mat, Chart cht) {
+         MatType matType = mat.Type();
+         if (matType == MatType.CV_8UC1) {
+            var histo = GetHistogram(mat, 0);
             float acc = 0;
             var histoAccum = histo.Select(val => acc += val).ToArray();
-            DrawHistogram(histo, this.chtDst.Series[0], "gray", Color.Black);
-            DrawHistogram(histoAccum, this.chtDst.Series[1], "Accum", Color.Red, AxisType.Secondary);
+            DrawHistogram(histo, cht.Series[0], "gray", Color.Black);
+            DrawHistogram(histoAccum, cht.Series[1], "Accum", Color.Red, AxisType.Secondary);
+         } else if (matType == MatType.CV_8UC3) {
+            var histR = GetHistogram(mat, 2);
+            var histG = GetHistogram(mat, 1);
+            var histB = GetHistogram(mat, 0);
+            DrawHistogram(histR, cht.Series[0], "R", Color.Red);
+            DrawHistogram(histG, cht.Series[1], "G", Color.Green);
+            DrawHistogram(histB, cht.Series[2], "B", Color.Blue);
          }
-
-         this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
       }
 
       public static void DrawHistogram(float[] histo, Series series, string name, Color color, AxisType yAxisTYpe = AxisType.Primary) {
