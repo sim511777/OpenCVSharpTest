@@ -20,25 +20,41 @@ namespace OpenCVTestLoadImage {
 
       VideoCapture cap;
 
-      private void btnLoad_Click(object sender, EventArgs e) {
-         if (this.dlgOpen.ShowDialog() != DialogResult.OK)
-            return;
-
-         var matSrc = new Mat(this.dlgOpen.FileName);
-         this.ProcessImage(matSrc);
-         matSrc.Dispose();
-      }
-
       private void btnClipboard_Click(object sender, EventArgs e) {
          Image img = Clipboard.GetImage();
          if (img == null)
             return;
 
+         var oldTime = DateTime.Now;
          Bitmap bmp = new Bitmap(img);
          var matSrc = bmp.ToMat();
+         bmp.Dispose();
+         this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
+
          this.ProcessImage(matSrc);
          matSrc.Dispose();
-         bmp.Dispose();
+      }
+
+      private void timer1_Tick(object sender, EventArgs e) {
+         var oldTime = DateTime.Now;
+         var matSrc = new Mat();
+         this.cap.Read(matSrc);
+         this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
+
+         this.ProcessImage(matSrc);
+         matSrc.Dispose();
+      }
+
+      private void btnLoad_Click(object sender, EventArgs e) {
+         if (this.dlgOpen.ShowDialog() != DialogResult.OK)
+            return;
+
+         var oldTime = DateTime.Now;
+         var matSrc = new Mat(this.dlgOpen.FileName);
+         this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
+
+         this.ProcessImage(matSrc);
+         matSrc.Dispose();
       }
 
       private void btnLive_Click(object sender, EventArgs e) {
@@ -54,15 +70,10 @@ namespace OpenCVTestLoadImage {
          }
       }
 
-      private void timer1_Tick(object sender, EventArgs e) {
-         var matSrc = new Mat();
-         this.cap.Read(matSrc);
-         this.ProcessImage(matSrc);
-         matSrc.Dispose();
-      }
-
       // 이미지 처리
       private void ProcessImage(Mat matSrc) {
+         var oldTime = DateTime.Now;
+
          DrawMat(matSrc, this.pbxSrc);
          var histR = GetHistogram(matSrc, 2);
          var histG = GetHistogram(matSrc, 1);
@@ -75,9 +86,11 @@ namespace OpenCVTestLoadImage {
             var histo = GetHistogram(matGray, 0);
             float acc = 0;
             var histoAccum = histo.Select(val => acc += val).ToArray();
-            DrawHistogram(histo, this.chtDst.Series[0], "GRAY", Color.Black);
+            DrawHistogram(histo, this.chtDst.Series[0], "gray", Color.Black);
             DrawHistogram(histoAccum, this.chtDst.Series[1], "Accum", Color.Red, AxisType.Secondary);
          }
+
+         this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
       }
 
       public static void DrawHistogram(float[] histo, Series series, string name, Color color, AxisType yAxisTYpe = AxisType.Primary) {
