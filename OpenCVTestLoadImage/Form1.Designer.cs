@@ -24,6 +24,18 @@
       /// </summary>
       private void InitializeComponent() {
          this.components = new System.ComponentModel.Container();
+         System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+         System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+         System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
+         System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
+         System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
+         System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
+         System.Windows.Forms.DataVisualization.Charting.Series series15 = new System.Windows.Forms.DataVisualization.Charting.Series();
+         System.Windows.Forms.DataVisualization.Charting.Series series16 = new System.Windows.Forms.DataVisualization.Charting.Series();
+         System.Windows.Forms.DataVisualization.Charting.Series series17 = new System.Windows.Forms.DataVisualization.Charting.Series();
+         System.Windows.Forms.DataVisualization.Charting.Series series18 = new System.Windows.Forms.DataVisualization.Charting.Series();
+         System.Windows.Forms.DataVisualization.Charting.Series series19 = new System.Windows.Forms.DataVisualization.Charting.Series();
+         System.Windows.Forms.DataVisualization.Charting.Series series20 = new System.Windows.Forms.DataVisualization.Charting.Series();
          System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
          System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
          System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
@@ -46,11 +58,14 @@
          this.pbxDst = new System.Windows.Forms.PictureBox();
          this.pbxSrc = new System.Windows.Forms.PictureBox();
          this.chtSrc = new System.Windows.Forms.DataVisualization.Charting.Chart();
+         this.chtDst = new System.Windows.Forms.DataVisualization.Charting.Chart();
+         this.statusStrip1 = new System.Windows.Forms.StatusStrip();
          this.panel1.SuspendLayout();
          this.tableLayoutPanel1.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.chtSrc)).BeginInit();
+         ((System.ComponentModel.ISupportInitialize)(this.chtDst)).BeginInit();
          this.SuspendLayout();
          // 
          // panel1
@@ -61,7 +76,7 @@
          this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
          this.panel1.Location = new System.Drawing.Point(0, 0);
          this.panel1.Name = "panel1";
-         this.panel1.Size = new System.Drawing.Size(145, 437);
+         this.panel1.Size = new System.Drawing.Size(145, 415);
          this.panel1.TabIndex = 1;
          // 
          // btnLive
@@ -109,6 +124,7 @@
          this.tableLayoutPanel1.ColumnCount = 2;
          this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
          this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+         this.tableLayoutPanel1.Controls.Add(this.chtDst, 0, 1);
          this.tableLayoutPanel1.Controls.Add(this.pbxDst, 1, 0);
          this.tableLayoutPanel1.Controls.Add(this.pbxSrc, 0, 0);
          this.tableLayoutPanel1.Controls.Add(this.chtSrc, 0, 1);
@@ -118,7 +134,8 @@
          this.tableLayoutPanel1.RowCount = 2;
          this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
          this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-         this.tableLayoutPanel1.Size = new System.Drawing.Size(620, 437);
+         this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+         this.tableLayoutPanel1.Size = new System.Drawing.Size(620, 415);
          this.tableLayoutPanel1.TabIndex = 2;
          // 
          // pbxDst
@@ -126,7 +143,7 @@
          this.pbxDst.Dock = System.Windows.Forms.DockStyle.Fill;
          this.pbxDst.Location = new System.Drawing.Point(313, 3);
          this.pbxDst.Name = "pbxDst";
-         this.pbxDst.Size = new System.Drawing.Size(304, 212);
+         this.pbxDst.Size = new System.Drawing.Size(304, 201);
          this.pbxDst.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
          this.pbxDst.TabIndex = 1;
          this.pbxDst.TabStop = false;
@@ -136,12 +153,99 @@
          this.pbxSrc.Dock = System.Windows.Forms.DockStyle.Fill;
          this.pbxSrc.Location = new System.Drawing.Point(3, 3);
          this.pbxSrc.Name = "pbxSrc";
-         this.pbxSrc.Size = new System.Drawing.Size(304, 212);
+         this.pbxSrc.Size = new System.Drawing.Size(304, 201);
          this.pbxSrc.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
          this.pbxSrc.TabIndex = 0;
          this.pbxSrc.TabStop = false;
          // 
          // chtSrc
+         // 
+         chartArea2.AxisX.LabelStyle.Interval = 20D;
+         chartArea2.AxisX.LabelStyle.IntervalOffset = 1D;
+         chartArea2.AxisX.MajorGrid.Enabled = false;
+         chartArea2.AxisX.MajorTickMark.Interval = 20D;
+         chartArea2.AxisX.MajorTickMark.IntervalOffset = 1D;
+         chartArea2.AxisX2.LabelStyle.Enabled = false;
+         chartArea2.AxisX2.MajorGrid.Enabled = false;
+         chartArea2.AxisX2.MajorTickMark.Enabled = false;
+         chartArea2.AxisY.LabelStyle.Enabled = false;
+         chartArea2.AxisY.MajorGrid.Enabled = false;
+         chartArea2.AxisY.MajorTickMark.Enabled = false;
+         chartArea2.AxisY2.LabelStyle.Enabled = false;
+         chartArea2.AxisY2.MajorGrid.Enabled = false;
+         chartArea2.AxisY2.MajorTickMark.Enabled = false;
+         chartArea2.Name = "ChartArea1";
+         this.chtSrc.ChartAreas.Add(chartArea2);
+         this.chtSrc.Dock = System.Windows.Forms.DockStyle.Fill;
+         legend2.Name = "Legend1";
+         this.chtSrc.Legends.Add(legend2);
+         this.chtSrc.Location = new System.Drawing.Point(3, 210);
+         this.chtSrc.Name = "chtSrc";
+         series11.ChartArea = "ChartArea1";
+         series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+         series11.Enabled = false;
+         series11.Legend = "Legend1";
+         series11.Name = "Series1";
+         series12.ChartArea = "ChartArea1";
+         series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+         series12.Enabled = false;
+         series12.Legend = "Legend1";
+         series12.Name = "Series2";
+         series13.ChartArea = "ChartArea1";
+         series13.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+         series13.Enabled = false;
+         series13.Legend = "Legend1";
+         series13.Name = "Series3";
+         series14.ChartArea = "ChartArea1";
+         series14.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+         series14.Enabled = false;
+         series14.Legend = "Legend1";
+         series14.Name = "Series4";
+         series15.ChartArea = "ChartArea1";
+         series15.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+         series15.Enabled = false;
+         series15.Legend = "Legend1";
+         series15.Name = "Series5";
+         series16.ChartArea = "ChartArea1";
+         series16.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+         series16.Enabled = false;
+         series16.Legend = "Legend1";
+         series16.Name = "Series6";
+         series17.ChartArea = "ChartArea1";
+         series17.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+         series17.Enabled = false;
+         series17.Legend = "Legend1";
+         series17.Name = "Series7";
+         series18.ChartArea = "ChartArea1";
+         series18.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+         series18.Enabled = false;
+         series18.Legend = "Legend1";
+         series18.Name = "Series8";
+         series19.ChartArea = "ChartArea1";
+         series19.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+         series19.Enabled = false;
+         series19.Legend = "Legend1";
+         series19.Name = "Series9";
+         series20.ChartArea = "ChartArea1";
+         series20.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+         series20.Enabled = false;
+         series20.Legend = "Legend1";
+         series20.Name = "Series10";
+         this.chtSrc.Series.Add(series11);
+         this.chtSrc.Series.Add(series12);
+         this.chtSrc.Series.Add(series13);
+         this.chtSrc.Series.Add(series14);
+         this.chtSrc.Series.Add(series15);
+         this.chtSrc.Series.Add(series16);
+         this.chtSrc.Series.Add(series17);
+         this.chtSrc.Series.Add(series18);
+         this.chtSrc.Series.Add(series19);
+         this.chtSrc.Series.Add(series20);
+         this.chtSrc.Size = new System.Drawing.Size(304, 202);
+         this.chtSrc.TabIndex = 2;
+         this.chtSrc.Text = "chart1";
+         // 
+         // chtDst
          // 
          chartArea1.AxisX.LabelStyle.Interval = 20D;
          chartArea1.AxisX.LabelStyle.IntervalOffset = 1D;
@@ -158,12 +262,12 @@
          chartArea1.AxisY2.MajorGrid.Enabled = false;
          chartArea1.AxisY2.MajorTickMark.Enabled = false;
          chartArea1.Name = "ChartArea1";
-         this.chtSrc.ChartAreas.Add(chartArea1);
-         this.chtSrc.Dock = System.Windows.Forms.DockStyle.Fill;
+         this.chtDst.ChartAreas.Add(chartArea1);
+         this.chtDst.Dock = System.Windows.Forms.DockStyle.Fill;
          legend1.Name = "Legend1";
-         this.chtSrc.Legends.Add(legend1);
-         this.chtSrc.Location = new System.Drawing.Point(3, 221);
-         this.chtSrc.Name = "chtSrc";
+         this.chtDst.Legends.Add(legend1);
+         this.chtDst.Location = new System.Drawing.Point(313, 210);
+         this.chtDst.Name = "chtDst";
          series1.ChartArea = "ChartArea1";
          series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
          series1.Enabled = false;
@@ -214,19 +318,27 @@
          series10.Enabled = false;
          series10.Legend = "Legend1";
          series10.Name = "Series10";
-         this.chtSrc.Series.Add(series1);
-         this.chtSrc.Series.Add(series2);
-         this.chtSrc.Series.Add(series3);
-         this.chtSrc.Series.Add(series4);
-         this.chtSrc.Series.Add(series5);
-         this.chtSrc.Series.Add(series6);
-         this.chtSrc.Series.Add(series7);
-         this.chtSrc.Series.Add(series8);
-         this.chtSrc.Series.Add(series9);
-         this.chtSrc.Series.Add(series10);
-         this.chtSrc.Size = new System.Drawing.Size(304, 213);
-         this.chtSrc.TabIndex = 2;
-         this.chtSrc.Text = "chart1";
+         this.chtDst.Series.Add(series1);
+         this.chtDst.Series.Add(series2);
+         this.chtDst.Series.Add(series3);
+         this.chtDst.Series.Add(series4);
+         this.chtDst.Series.Add(series5);
+         this.chtDst.Series.Add(series6);
+         this.chtDst.Series.Add(series7);
+         this.chtDst.Series.Add(series8);
+         this.chtDst.Series.Add(series9);
+         this.chtDst.Series.Add(series10);
+         this.chtDst.Size = new System.Drawing.Size(304, 202);
+         this.chtDst.TabIndex = 3;
+         this.chtDst.Text = "chart1";
+         // 
+         // statusStrip1
+         // 
+         this.statusStrip1.Location = new System.Drawing.Point(0, 415);
+         this.statusStrip1.Name = "statusStrip1";
+         this.statusStrip1.Size = new System.Drawing.Size(765, 22);
+         this.statusStrip1.TabIndex = 3;
+         this.statusStrip1.Text = "statusStrip1";
          // 
          // Form1
          // 
@@ -235,6 +347,7 @@
          this.ClientSize = new System.Drawing.Size(765, 437);
          this.Controls.Add(this.tableLayoutPanel1);
          this.Controls.Add(this.panel1);
+         this.Controls.Add(this.statusStrip1);
          this.Name = "Form1";
          this.Text = "Form1";
          this.panel1.ResumeLayout(false);
@@ -242,7 +355,9 @@
          ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.chtSrc)).EndInit();
+         ((System.ComponentModel.ISupportInitialize)(this.chtDst)).EndInit();
          this.ResumeLayout(false);
+         this.PerformLayout();
 
       }
 
@@ -257,6 +372,8 @@
       private System.Windows.Forms.PictureBox pbxSrc;
       private System.Windows.Forms.DataVisualization.Charting.Chart chtSrc;
       private System.Windows.Forms.Button btnClipboard;
+      private System.Windows.Forms.DataVisualization.Charting.Chart chtDst;
+      private System.Windows.Forms.StatusStrip statusStrip1;
    }
 }
 

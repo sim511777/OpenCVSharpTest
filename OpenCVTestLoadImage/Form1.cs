@@ -70,17 +70,21 @@ namespace OpenCVTestLoadImage {
          DrawHistogram(histR, this.chtSrc.Series[0], "R", Color.Red  );
          DrawHistogram(histG, this.chtSrc.Series[1], "G", Color.Green);
          DrawHistogram(histB, this.chtSrc.Series[2], "B", Color.Blue );
-         //using (var matGray = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY)) {
-         //   DrawMat(matGray, this.pbxSrc);
-         //   var histo = GetHistogram(matGray, 0);
-         //   DrawHistogram(histo, this.chtSrc.Series[0], "src");
-         //}
+         using (var matGray = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY)) {
+            DrawMat(matGray, this.pbxDst);
+            var histo = GetHistogram(matGray, 0);
+            float acc = 0;
+            var histoAccum = histo.Select(val => acc += val).ToArray();
+            DrawHistogram(histo, this.chtDst.Series[0], "GRAY", Color.Black);
+            DrawHistogram(histoAccum, this.chtDst.Series[1], "Accum", Color.Red, AxisType.Secondary);
+         }
       }
 
-      public static void DrawHistogram(float[] histo, Series series, string name, Color color) {
+      public static void DrawHistogram(float[] histo, Series series, string name, Color color, AxisType yAxisTYpe = AxisType.Primary) {
          series.Name = name;
          series.Color = color;
          series.Points.Clear();
+         series.YAxisType = yAxisTYpe;
          for (int i = 0; i < histo.Length; i++) {
             series.Points.AddXY(i, histo[i]);
          }
