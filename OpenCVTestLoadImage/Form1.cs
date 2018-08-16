@@ -77,7 +77,7 @@ namespace OpenCVTestLoadImage {
          DrawMat(matSrc, this.pbxSrc);
          DrawHistogram(matSrc, this.chtSrc);
 
-         var matGray = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).EqualizeHist();
+         var matGray = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
          
          DrawMat(matGray, this.pbxDst);
          DrawHistogram(matGray, this.chtDst);
