@@ -77,13 +77,13 @@ namespace OpenCVTestLoadImage {
          DrawMat(matSrc, this.pbxSrc);
          DrawHistogram(matSrc, this.chtSrc);
 
-         var matGray = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(50, 200);
          
-         DrawMat(matGray, this.pbxDst);
-         DrawHistogram(matGray, this.chtDst);
+         DrawMat(matDst, this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
 
-         matGray.Dispose();
-         
+         matDst.Dispose();
+
          this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
       }
       
