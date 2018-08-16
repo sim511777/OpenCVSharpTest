@@ -56,7 +56,7 @@ namespace OpenCVTestLoadImage {
          this.ProcessImage(matSrc);
          matSrc.Dispose();
       }
-
+      
       private void btnLive_Click(object sender, EventArgs e) {
          if (this.cap == null) {
             this.cap = new VideoCapture(0);
@@ -73,19 +73,36 @@ namespace OpenCVTestLoadImage {
       // 이미지 처리
       private void ProcessImage(Mat matSrc) {
          var oldTime = DateTime.Now;
-         
-         var matGray = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-         DrawMat(matGray, this.pbxSrc);
-         DrawHistogram(matGray, this.chtSrc);
 
-         var matDst = matGray.EqualizeHist();
-         DrawMat(matDst, this.pbxDst);
-         DrawHistogram(matDst, this.chtDst);
+         DrawMat(matSrc, this.pbxSrc);
+         DrawHistogram(matSrc, this.chtSrc);
+
+         var matGray = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).EqualizeHist();
+         
+         DrawMat(matGray, this.pbxDst);
+         DrawHistogram(matGray, this.chtDst);
 
          matGray.Dispose();
-         matDst.Dispose();
          
          this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
+      }
+      
+      public static void DrawHistogram(Mat mat, Chart cht) {
+         MatType matType = mat.Type();
+         if (matType == MatType.CV_8UC1) {
+            var histo = GetHistogram(mat, 0);
+            float acc = 0;
+            var histoAccum = histo.Select(val => acc += val).ToArray();
+            DrawHistogram(histo, cht.Series[0], "gray", Color.Black);
+            DrawHistogram(histoAccum, cht.Series[1], "Accum", Color.Red, AxisType.Secondary);
+         } else if (matType == MatType.CV_8UC3) {
+            var histR = GetHistogram(mat, 2);
+            var histG = GetHistogram(mat, 1);
+            var histB = GetHistogram(mat, 0);
+            DrawHistogram(histR, cht.Series[0], "R", Color.Red);
+            DrawHistogram(histG, cht.Series[1], "G", Color.Green);
+            DrawHistogram(histB, cht.Series[2], "B", Color.Blue);
+         }
       }
 
       public static void DrawHistogram(float[] histo, Series series, string name, Color color, AxisType yAxisTYpe = AxisType.Primary) {
@@ -97,24 +114,6 @@ namespace OpenCVTestLoadImage {
             series.Points.AddXY(i, histo[i]);
          }
          series.Enabled = true;
-      }
-
-      public static void DrawHistogram(Mat mat, Chart cht) {
-         var matType = mat.Type();
-         if (matType == MatType.CV_8UC1) {
-            var histo = GetHistogram(mat, 0);
-            float acc = 0;
-            var histoAccum = histo.Select(val => acc += val).ToArray();
-            DrawHistogram(histo, cht.Series[0], "gray", Color.Black);
-            DrawHistogram(histoAccum, cht.Series[1], "Accum", Color.Red, AxisType.Secondary);
-         } else if (matType == MatType.CV_8UC3) {
-            var histR = GetHistogram(mat, 2);
-            var histG = GetHistogram(mat, 1);
-            var histB = GetHistogram(mat, 0);
-            DrawHistogram(histR, cht.Series[0], "R", Color.Red  );
-            DrawHistogram(histG, cht.Series[1], "G", Color.Green);
-            DrawHistogram(histB, cht.Series[2], "B", Color.Blue );
-         }
       }
 
       public static float[] GetHistogram(Mat matSrc, int channel) {
