@@ -70,23 +70,6 @@ namespace OpenCVTestLoadImage {
          }
       }
 
-      // 이미지 처리
-      private void ProcessImage(Mat matSrc) {
-         var oldTime = DateTime.Now;
-
-         DrawMat(matSrc, this.pbxSrc);
-         DrawHistogram(matSrc, this.chtSrc);
-
-         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(50, 200);
-         
-         DrawMat(matDst, this.pbxDst);
-         DrawHistogram(matDst, this.chtDst);
-
-         matDst.Dispose();
-
-         this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
-      }
-      
       public static void DrawHistogram(Mat mat, Chart cht) {
          MatType matType = mat.Type();
          if (matType == MatType.CV_8UC1) {
@@ -139,6 +122,34 @@ namespace OpenCVTestLoadImage {
          pbx.Image = bmpSrc;
          if (bmpOld != null)
             bmpOld.Dispose();
+      }
+
+      // 이미지 처리
+      private void ProcessImage(Mat matSrc) {
+         var oldTime = DateTime.Now;
+
+         DrawMat(matSrc, this.pbxSrc);
+         DrawHistogram(matSrc, this.chtSrc);
+
+         // 1. GrayScale 
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+
+         // 2. Threshhold (absolute)
+         //matDst = matDst.Threshold(128, 255, ThresholdTypes.Binary);
+
+         // 3. Histogram Equalize
+         //matDst = matDst.EqualizeHist();
+
+         // 4. Edge (Canny)
+         //matDst = matDst.Canny(5, 200);
+
+         
+         DrawMat(matDst, this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+
+         matDst.Dispose();
+
+         this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
       }
    }
 }
