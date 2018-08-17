@@ -135,13 +135,13 @@ namespace OpenCVTestLoadImage {
          var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
 
          // 2. Threshhold (absolute)
-         //matDst = matDst.Threshold(128, 255, ThresholdTypes.Binary);
+         //matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Binary);
 
          // 3. Histogram Equalize
-         //matDst = matDst.EqualizeHist();
+         //matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).EqualizeHist();
 
          // 4. Edge (Canny)
-         //matDst = matDst.Canny(5, 200);
+         //matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(5, 200);
 
          
          DrawMat(matDst, this.pbxDst);
