@@ -132,16 +132,16 @@ namespace OpenCVTestLoadImage {
          DrawHistogram(matSrc, this.chtSrc);
 
          // 1. GrayScale 
-         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
 
-         // 2. Threshhold (absolute)
-         //matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Binary);
+         // 2. Histogram Equalize
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).EqualizeHist();
 
-         // 3. Histogram Equalize
-         //matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).EqualizeHist();
+         // 3. Threshhold (absolute)
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Binary);
 
          // 4. Edge (Canny)
-         //matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(5, 200);
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(5, 200);
 
          
          DrawMat(matDst, this.pbxDst);
