@@ -62,6 +62,7 @@
          this.statusStrip1 = new System.Windows.Forms.StatusStrip();
          this.lblGrabTime = new System.Windows.Forms.ToolStripStatusLabel();
          this.lblProcessingTime = new System.Windows.Forms.ToolStripStatusLabel();
+         this.btnLenna = new System.Windows.Forms.Button();
          this.panel1.SuspendLayout();
          this.tableLayoutPanel1.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)(this.chtDst)).BeginInit();
@@ -74,6 +75,7 @@
          // panel1
          // 
          this.panel1.Controls.Add(this.btnLive);
+         this.panel1.Controls.Add(this.btnLenna);
          this.panel1.Controls.Add(this.btnClipboard);
          this.panel1.Controls.Add(this.btnLoad);
          this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
@@ -84,7 +86,7 @@
          // 
          // btnLive
          // 
-         this.btnLive.Location = new System.Drawing.Point(12, 70);
+         this.btnLive.Location = new System.Drawing.Point(12, 99);
          this.btnLive.Name = "btnLive";
          this.btnLive.Size = new System.Drawing.Size(75, 23);
          this.btnLive.TabIndex = 0;
@@ -94,7 +96,7 @@
          // 
          // btnClipboard
          // 
-         this.btnClipboard.Location = new System.Drawing.Point(12, 12);
+         this.btnClipboard.Location = new System.Drawing.Point(12, 41);
          this.btnClipboard.Name = "btnClipboard";
          this.btnClipboard.Size = new System.Drawing.Size(75, 23);
          this.btnClipboard.TabIndex = 0;
@@ -104,7 +106,7 @@
          // 
          // btnLoad
          // 
-         this.btnLoad.Location = new System.Drawing.Point(12, 41);
+         this.btnLoad.Location = new System.Drawing.Point(12, 70);
          this.btnLoad.Name = "btnLoad";
          this.btnLoad.Size = new System.Drawing.Size(75, 23);
          this.btnLoad.TabIndex = 0;
@@ -362,7 +364,17 @@
          this.lblProcessingTime.Text = "proc time:";
          this.lblProcessingTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
          // 
-         // Form1
+         // btnLenna
+         // 
+         this.btnLenna.Location = new System.Drawing.Point(12, 12);
+         this.btnLenna.Name = "btnLenna";
+         this.btnLenna.Size = new System.Drawing.Size(75, 23);
+         this.btnLenna.TabIndex = 0;
+         this.btnLenna.Text = "Lenna";
+         this.btnLenna.UseVisualStyleBackColor = true;
+         this.btnLenna.Click += new System.EventHandler(this.btnLenna_Click);
+         // 
+         // FormMain
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -370,7 +382,7 @@
          this.Controls.Add(this.tableLayoutPanel1);
          this.Controls.Add(this.panel1);
          this.Controls.Add(this.statusStrip1);
-         this.Name = "Form1";
+         this.Name = "FormMain";
          this.Text = "Form1";
          this.panel1.ResumeLayout(false);
          this.tableLayoutPanel1.ResumeLayout(false);
@@ -400,6 +412,7 @@
       private System.Windows.Forms.StatusStrip statusStrip1;
       private System.Windows.Forms.ToolStripStatusLabel lblProcessingTime;
       private System.Windows.Forms.ToolStripStatusLabel lblGrabTime;
+      private System.Windows.Forms.Button btnLenna;
    }
 }
 

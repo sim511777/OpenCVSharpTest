@@ -11,6 +11,7 @@ using OpenCvSharp.Extensions;
 using System.Runtime.InteropServices;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Drawing;
+using OpenCVTestLoadImage.Properties;
 
 namespace OpenCVTestLoadImage {
    public partial class FormMain : Form {
@@ -18,7 +19,14 @@ namespace OpenCVTestLoadImage {
          InitializeComponent();
       }
 
-      VideoCapture cap;
+      private void btnLenna_Click(object sender, EventArgs e) {
+         var oldTime = DateTime.Now;
+         var matSrc = Resources.Lenna.ToMat();
+         this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
+
+         this.ProcessImage(matSrc);
+         matSrc.Dispose();
+      }
 
       private void btnClipboard_Click(object sender, EventArgs e) {
          Image img = Clipboard.GetImage();
@@ -29,16 +37,6 @@ namespace OpenCVTestLoadImage {
          Bitmap bmp = new Bitmap(img);
          var matSrc = bmp.ToMat();
          bmp.Dispose();
-         this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
-
-         this.ProcessImage(matSrc);
-         matSrc.Dispose();
-      }
-
-      private void timer1_Tick(object sender, EventArgs e) {
-         var oldTime = DateTime.Now;
-         var matSrc = new Mat();
-         this.cap.Read(matSrc);
          this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
          this.ProcessImage(matSrc);
@@ -57,6 +55,8 @@ namespace OpenCVTestLoadImage {
          matSrc.Dispose();
       }
       
+      private VideoCapture cap;
+
       private void btnLive_Click(object sender, EventArgs e) {
          if (this.cap == null) {
             this.cap = new VideoCapture(0);
@@ -68,6 +68,16 @@ namespace OpenCVTestLoadImage {
             this.timer1.Enabled = false;
             this.btnLive.Text = "Live";
          }
+      }
+
+      private void timer1_Tick(object sender, EventArgs e) {
+         var oldTime = DateTime.Now;
+         var matSrc = new Mat();
+         this.cap.Read(matSrc);
+         this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
+
+         this.ProcessImage(matSrc);
+         matSrc.Dispose();
       }
 
       public static void DrawHistogram(Mat mat, Chart cht) {
@@ -135,13 +145,13 @@ namespace OpenCVTestLoadImage {
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
 
          // 2. Histogram Equalize
-         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).EqualizeHist();
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).EqualizeHist();
 
          // 3. Threshhold (absolute)
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Binary);
 
          // 4. Edge (Canny)
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(5, 200);
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(5, 200);
 
          
          DrawMat(matDst, this.pbxDst);
