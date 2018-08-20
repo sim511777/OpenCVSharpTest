@@ -78,7 +78,7 @@ namespace OpenCVTestLoadImage {
             var histoAccum = histo.Select(val => acc += val).ToArray();
             DrawHistogram(histo, cht.Series[0], "gray", Color.Black);
             DrawHistogram(histoAccum, cht.Series[1], "Accum", Color.Red, AxisType.Secondary);
-         } else if (matType == MatType.CV_8UC3) {
+         } else if (matType == MatType.CV_8UC3 || matType == MatType.CV_8UC4) {
             var histR = GetHistogram(mat, 2);
             var histG = GetHistogram(mat, 1);
             var histB = GetHistogram(mat, 0);
