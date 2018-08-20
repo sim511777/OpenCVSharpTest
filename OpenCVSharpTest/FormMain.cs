@@ -20,6 +20,10 @@ namespace OpenCVTestLoadImage {
       }
 
       private void btnLenna_Click(object sender, EventArgs e) {
+         if (this.cap != null) {
+            this.StopLive();
+         }
+
          var oldTime = DateTime.Now;
          var matSrc = Resources.Lenna.ToMat();
          this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
@@ -32,6 +36,10 @@ namespace OpenCVTestLoadImage {
          Image img = Clipboard.GetImage();
          if (img == null)
             return;
+
+         if (this.cap != null) {
+            this.StopLive();
+         }
 
          var oldTime = DateTime.Now;
          Bitmap bmp = new Bitmap(img);
@@ -47,6 +55,11 @@ namespace OpenCVTestLoadImage {
          if (this.dlgOpen.ShowDialog() != DialogResult.OK)
             return;
 
+
+         if (this.cap != null) {
+            this.StopLive();
+         }
+
          var oldTime = DateTime.Now;
          var matSrc = new Mat(this.dlgOpen.FileName);
          this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
@@ -59,15 +72,23 @@ namespace OpenCVTestLoadImage {
 
       private void btnLive_Click(object sender, EventArgs e) {
          if (this.cap == null) {
+            this.StartLive();
+         } else {
+            this.StopLive();
+         }
+      }
+
+      private void StartLive() {
             this.cap = new VideoCapture(0);
             this.timer1.Enabled = true;
             this.btnLive.Text = "Live Stop";
-         } else {
+      }
+
+      private void StopLive() {
             this.cap.Dispose();
             this.cap = null;
             this.timer1.Enabled = false;
             this.btnLive.Text = "Live";
-         }
       }
 
       private void timer1_Tick(object sender, EventArgs e) {
@@ -86,7 +107,7 @@ namespace OpenCVTestLoadImage {
             var histo = GetHistogram(mat, 0);
             float acc = 0;
             var histoAccum = histo.Select(val => acc += val).ToArray();
-            DrawHistogram(histo, cht.Series[0], "gray", Color.Black);
+            DrawHistogram(histo, cht.Series[0], "Gray", Color.Black);
             DrawHistogram(histoAccum, cht.Series[1], "Accum", Color.Red, AxisType.Secondary);
          } else if (matType == MatType.CV_8UC3 || matType == MatType.CV_8UC4) {
             var histR = GetHistogram(mat, 2);
