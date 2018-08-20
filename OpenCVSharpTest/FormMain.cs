@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using OpenCvSharp;
-using OpenCvSharp.Extensions;
 using System.Runtime.InteropServices;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Drawing;
 using OpenCVTestLoadImage.Properties;
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using OpenCvSharp.Blob;
 
 namespace OpenCVTestLoadImage {
    public partial class FormMain : Form {
@@ -172,12 +173,25 @@ namespace OpenCVTestLoadImage {
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Binary);
 
          // 4. Edge (Canny)
-         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(5, 200);
-
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(5, 200);
          
-         DrawMat(matDst, this.pbxDst);
+         // 5. Blur (Gaussian)
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).GaussianBlur(new OpenCvSharp.Size(5,5), 5);
+
+         // 6. Erode
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu).Erode(new Mat(), iterations:2);
+
+         // 7. Blob
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+         var blobs = new CvBlobs();
+         blobs.Label(matDst);
+         var matDsp = new Mat(matSrc.Rows, matSrc.Cols, MatType.CV_8UC3);
+         blobs.RenderBlobs(matDsp, matDsp);
+         
+         DrawMat(matDsp, this.pbxDst);
          DrawHistogram(matDst, this.chtDst);
 
+         matDsp.Dispose();
          matDst.Dispose();
 
          this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
