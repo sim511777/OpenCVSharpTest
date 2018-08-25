@@ -165,33 +165,75 @@ namespace OpenCVTestLoadImage {
 
          // 1. GrayScale 
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
+
 
          // 2. Histogram Equalize
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).EqualizeHist();
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
 
          // 3. Threshhold (absolute)
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Binary);
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
 
          // 4. Edge (Canny)
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(5, 200);
-         
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
+
          // 5. Blur (Gaussian)
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).GaussianBlur(new OpenCvSharp.Size(5,5), 5);
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).GaussianBlur(new OpenCvSharp.Size(5, 5), 5);
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
 
          // 6. Erode
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu).Erode(new Mat(), iterations:2);
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
 
          // 7. Blob
-         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
-         var blobs = new CvBlobs();
-         blobs.Label(matDst);
-         var matDsp = new Mat(matSrc.Rows, matSrc.Cols, MatType.CV_8UC3);
-         blobs.RenderBlobs(matDsp, matDsp);
-         
-         DrawMat(matDsp, this.pbxDst);
-         DrawHistogram(matDst, this.chtDst);
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+         //var blobs = new CvBlobs();
+         //blobs.Label(matDst);
+         //var matDsp = new Mat(matSrc.Rows, matSrc.Cols, MatType.CV_8UC3);
+         //blobs.RenderBlobs(matDsp, matDsp);
 
-         matDsp.Dispose();
+         //DrawMat(matDsp, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+
+         //matDsp.Dispose();
+         //matDst.Dispose();
+
+         // 8. 명암/밝기 변환
+         // BGR to HSV변환
+         matSrc = matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
+         // 채널 분리
+         var hsvChannels = matSrc.Split();
+         // 변환
+         double x1 = 60;
+         double y1 = 0;
+         double x2 = 255;
+         double y2 = 255;
+         double scale = (y2-y1)/(x2-x1);
+         double offset = (x2*y1-x1*y2)/(x2-x1);
+         hsvChannels[2].ConvertTo(hsvChannels[2], MatType.CV_8UC1, scale, offset);
+         // 채널 병합
+         var matDst = new Mat();
+         Cv2.Merge(hsvChannels, matDst);
+         // HSV to BGR변환
+         matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
+
+         DrawMat(matDst, this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
          matDst.Dispose();
 
          this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
