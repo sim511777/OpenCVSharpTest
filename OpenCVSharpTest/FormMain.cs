@@ -56,7 +56,6 @@ namespace OpenCVTestLoadImage {
          if (this.dlgOpen.ShowDialog() != DialogResult.OK)
             return;
 
-
          if (this.cap != null) {
             this.StopLive();
          }
@@ -244,7 +243,7 @@ namespace OpenCVTestLoadImage {
          //matDst.Dispose();
 
 
-         // 9. 픽셀 버퍼 제어 RGB
+         // 9. 픽셀 버퍼 제어 RGB by 
          //var matDst = new Mat(matSrc.Rows, matSrc.Cols, MatType.CV_8UC3);
          //for (int row=0; row<matDst.Rows; row++) {
          //   for (int col=0; col<matDst.Cols; col++) {
@@ -262,28 +261,11 @@ namespace OpenCVTestLoadImage {
 
 
          // 10. 픽셀 버퍼 제어 Gray by API
-         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-         for (int row = 0; row < matDst.Rows; row++) {
-            for (int col = 0; col < matDst.Cols; col++) {
-               byte color = matDst.Get<byte>(row, col);
-               color = (byte)(~color);
-               matDst.Set(row, col, color);
-            }
-         }
-
-         DrawMat(matDst, this.pbxDst);
-         DrawHistogram(matDst, this.chtDst);
-         matDst.Dispose();
-
-
-         // 11. 픽셀 버퍼 제어 Gray by IntPtr
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
          //for (int row = 0; row < matDst.Rows; row++) {
-         //   IntPtr pp = matDst.Data + (int)matDst.Step();
-         //   for (int col = 0; col < matDst.Cols; col++, pp += 1) {
-         //      byte color = Marshal.ReadByte(pp);
-         //      color = (byte)~color;
-         //      Marshal.WriteByte(pp, color);
+         //   for (int col = 0; col < matDst.Cols; col++) {
+         //      byte color = matDst.Get<byte>(row, col);
+         //      matDst.Set(row, col, (byte)(~color));
          //   }
          //}
 
@@ -292,12 +274,25 @@ namespace OpenCVTestLoadImage {
          //matDst.Dispose();
 
 
+         // 11. 픽셀 버퍼 제어 Gray by IntPtr
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         for (int row = 0; row < matDst.Rows; row++) {
+            IntPtr pp = matDst.Ptr(0) + (int)matDst.Step();
+            for (int col = 0; col < matDst.Cols; col++, pp += 1) {
+               byte color = Marshal.ReadByte(pp);
+               Marshal.WriteByte(pp, (byte)~color);
+            }
+         }
+
+         DrawMat(matDst, this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+
+
          // 12. 픽셀 버퍼 제어 Gray by pointer
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-         //byte* ptr = (byte*)matDst.Data;
-         //var stride = matDst.Step();
          //for (int row = 0; row < matDst.Rows; row++) {
-         //   byte* pp = ptr + stride;
+         //   byte* pp = matDst.DataPointer + matDst.Step();
          //   for (int col = 0; col < matDst.Cols; col++, pp++) {
          //      *pp = (byte)~(*pp);
          //   }
