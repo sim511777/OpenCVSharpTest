@@ -333,19 +333,19 @@ namespace OpenCVSharpTest {
          //DrawHistogram(matDst, this.chtDst);
          //matDst.Dispose();
 
-         // 15. 픽셀 버퍼 제어 Gray by MMX(Vector class) Dll
+         // 15. 픽셀 버퍼 제어 Gray by MMX(AVX) Dll
          var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
 
-         IpDll.VecInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+         IpDll.AvxInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
 
          DrawMat(matDst, this.pbxDst);
          DrawHistogram(matDst, this.chtDst);
          matDst.Dispose();
 
-         // 16. 픽셀 버퍼 제어 Gray by MMX(AVX) Dll
+         // 16. 픽셀 버퍼 제어 Gray by MMX(Vector class) Dll
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
 
-         //IpDll.AvxInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+         //IpDll.VecInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
 
          //DrawMat(matDst, this.pbxDst);
          //DrawHistogram(matDst, this.chtDst);
