@@ -9,6 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{ECF7769F-4
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCVSharpTest", "OpenCVSharpTest\OpenCVSharpTest.csproj", "{B5009719-A98E-46B3-B969-15A2B2FAEAFC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A1A72F89-7FF7-4A02-9C6E-33586820DCC7} = {A1A72F89-7FF7-4A02-9C6E-33586820DCC7}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IP", "IP\IP.vcxproj", "{A1A72F89-7FF7-4A02-9C6E-33586820DCC7}"
 EndProject

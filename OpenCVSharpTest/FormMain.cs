@@ -9,12 +9,12 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Drawing;
-using OpenCVTestLoadImage.Properties;
+using OpenCVSharpTest.Properties;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using OpenCvSharp.Blob;
 
-namespace OpenCVTestLoadImage {
+namespace OpenCVSharpTest {
    public partial class FormMain : Form {
       public FormMain() {
          InitializeComponent();
@@ -80,7 +80,7 @@ namespace OpenCVTestLoadImage {
 
       private void StartLive() {
          this.cap = new VideoCapture(0);
-         this.cap.FrameWidth = 1920;
+         this.cap.FrameWidth = 1913;
          this.cap.FrameHeight = 1080;
          this.timer1.Enabled = true;
          this.btnLive.Text = "Live Stop";
@@ -290,32 +290,38 @@ namespace OpenCVTestLoadImage {
          //DrawHistogram(matDst, this.chtDst);
          //matDst.Dispose();
 
-         if (this.chkUseNativeDll.Checked == false) {
-            // 12. 픽셀 버퍼 제어 Gray by pointer
-            var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            byte* buf = matDst.DataPointer;
-            int bw = matDst.Width;
-            int bh = matDst.Height;
-            int stride = (int)matDst.Step();
-            for (int y = 0; y < bh; y++) {
-               byte* pp = buf + stride * y;
-               for (int x = 0; x < bw; x++, pp++) {
-                  *pp = (byte)~(*pp);
-               }
-            }
+         // 12. 픽셀 버퍼 제어 Gray by pointer
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         //byte* buf = matDst.DataPointer;
+         //int bw = matDst.Width;
+         //int bh = matDst.Height;
+         //int stride = (int)matDst.Step();
+         //for (int y = 0; y < bh; y++) {
+         //   byte* pp = buf + stride * y;
+         //   for (int x = 0; x < bw; x++, pp++) {
+         //      *pp = (byte)~(*pp);
+         //   }
+         //}
 
-            DrawMat(matDst, this.pbxDst);
-            DrawHistogram(matDst, this.chtDst);
-            matDst.Dispose();
-         } else {
-            // 13. 픽셀 버퍼 제어 Gray by C Dll
-            var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            IpDll.InverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
 
-            DrawMat(matDst, this.pbxDst);
-            DrawHistogram(matDst, this.chtDst);
-            matDst.Dispose();
-         }
+         // 13. 픽셀 버퍼 제어 Gray by C Dll
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         //IpDll.InverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
+
+         // 14. 픽셀 버퍼 제어 Gray by MMX Dll
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         IpDll.MmxInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+
+         DrawMat(matDst, this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
 
          this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
       }
