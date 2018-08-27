@@ -317,19 +317,39 @@ namespace OpenCVSharpTest {
 
          // 13. 픽셀 버퍼 제어 Gray by C Dll
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+
          //IpDll.InverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
 
          //DrawMat(matDst, this.pbxDst);
          //DrawHistogram(matDst, this.chtDst);
          //matDst.Dispose();
 
-         // 14. 픽셀 버퍼 제어 Gray by MMX Dll
+         // 14. 픽셀 버퍼 제어 Gray by MMX(SSE) Dll
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+
+         //IpDll.SseInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
+
+         // 15. 픽셀 버퍼 제어 Gray by MMX(Vector class) Dll
          var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-         IpDll.MmxInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+
+         IpDll.VecInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
 
          DrawMat(matDst, this.pbxDst);
          DrawHistogram(matDst, this.chtDst);
          matDst.Dispose();
+
+         // 16. 픽셀 버퍼 제어 Gray by MMX(AVX) Dll
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+
+         //IpDll.AvxInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
 
          this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
       }
