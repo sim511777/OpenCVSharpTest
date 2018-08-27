@@ -4,10 +4,12 @@ ok 3. HSV 변환 후 histo equalization
 ok 4. Contrast expansion
 5. pixel 버퍼 직접 제어
 ok - by api
- - by IntPtr
- - by pointer
+ok - by IntPtr
+ok - by pointer
  - by C Dll
  - by MMX Dll
+ 6. 커널 연산
+ 7. 커널 연산 엣지 처리
 
 100. 이미지 확대/축소/Fit 기능
  - 마우스 휠 확대/축소

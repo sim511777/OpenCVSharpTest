@@ -275,32 +275,35 @@ namespace OpenCVTestLoadImage {
 
 
          // 11. 픽셀 버퍼 제어 Gray by IntPtr
-         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-         for (int row = 0; row < matDst.Rows; row++) {
-            IntPtr pp = matDst.Ptr(0) + (int)matDst.Step();
-            for (int col = 0; col < matDst.Cols; col++, pp += 1) {
-               byte color = Marshal.ReadByte(pp);
-               Marshal.WriteByte(pp, (byte)~color);
-            }
-         }
-
-         DrawMat(matDst, this.pbxDst);
-         DrawHistogram(matDst, this.chtDst);
-         matDst.Dispose();
-
-
-         // 12. 픽셀 버퍼 제어 Gray by pointer
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
          //for (int row = 0; row < matDst.Rows; row++) {
-         //   byte* pp = matDst.DataPointer + matDst.Step();
-         //   for (int col = 0; col < matDst.Cols; col++, pp++) {
-         //      *pp = (byte)~(*pp);
+         //   IntPtr pp = matDst.Ptr(row);
+         //   for (int col = 0; col < matDst.Cols; col++, pp += 1) {
+         //      byte color = Marshal.ReadByte(pp);
+         //      Marshal.WriteByte(pp, (byte)~color);
          //   }
          //}
 
          //DrawMat(matDst, this.pbxDst);
          //DrawHistogram(matDst, this.chtDst);
          //matDst.Dispose();
+
+         // 12. 픽셀 버퍼 제어 Gray by pointer
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         byte *buf = matDst.DataPointer;
+         int bw = matDst.Width;
+         int bh = matDst.Height;
+         int stride = (int)matDst.Step();
+         for (int y = 0; y < bh; y++) {
+            byte* pp = buf + stride*y;
+            for (int x = 0; x < bw; x++, pp++) {
+               *pp = (byte)~(*pp);
+            }
+         }
+
+         DrawMat(matDst, this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
 
          this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
       }
