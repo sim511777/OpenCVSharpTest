@@ -6,7 +6,8 @@ ok 4. Contrast expansion
 ok - by api
 ok - by IntPtr
 ok - by pointer
- - by C Dll
+ok - by C Dll
+ok - C# pointer vs C Dll 성능차이 비교 - 미미해
  - by MMX Dll
  6. 커널 연산
  7. 커널 연산 엣지 처리
