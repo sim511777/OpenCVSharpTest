@@ -261,6 +261,14 @@ namespace OpenCVSharpTest {
          //DrawHistogram(matDst, this.chtDst);
          //matDst.Dispose();
 
+         // 픽셀 버퍼 제어 비교 테스트
+         //var matDst = new Mat();
+         //Cv2.BitwiseNot(matSrc.CvtColor(ColorConversionCodes.BGR2GRAY), matDst);
+
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
+
 
          // 10. 픽셀 버퍼 제어 Gray by API
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
