@@ -354,5 +354,10 @@ namespace OpenCVSharpTest {
 
          this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
       }
+
+      private void btnZoomReset_Click(object sender, EventArgs e) {
+         this.pbxSrc.ResetZoom();
+         this.pbxDst.ResetZoom();
+      }
    }
 }

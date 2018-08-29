@@ -51,6 +51,12 @@ namespace ShimLib {
          this.Paint += new PaintEventHandler(this.ZoomPictureBox_Paint);
       }
 
+      public void ResetZoom() {
+         this.pan = new SizeF(0, 0);
+         this.zoom = 1f;
+         this.Invalidate();
+      }
+
       public PointF WindowToReal(Point ptWnd) {
          float realX = (ptWnd.X - this.pan.Width )/this.zoom;
          float realY = (ptWnd.Y - this.pan.Height)/this.zoom;
@@ -121,7 +127,7 @@ namespace ShimLib {
 
          if (this.ShowPixelInfo) {
             PointF ptReal = this.WindowToReal(e.Location);
-            Point ptRealInt = new Point((int)ptReal.X, (int)ptReal.Y);
+            Point ptRealInt = new Point((int)Math.Floor(ptReal.X), (int)Math.Floor(ptReal.Y));
             Color col = Color.Black;
             if (this.DrawImage != null) {
                if (ptRealInt.X >= 0 && ptRealInt.X < this.DrawImage.Width && ptRealInt.Y >= 0 && ptRealInt.Y < this.DrawImage.Height) {
