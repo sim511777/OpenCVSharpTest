@@ -134,7 +134,7 @@ namespace ShimLib {
                   col = this.DrawImage.GetPixel(ptRealInt.X, ptRealInt.Y);
                }
             }
-            this.pixelInfo = $"({ptRealInt.X},{ptRealInt.Y})/[{col.R},{col.G},{col.B}]";
+            this.pixelInfo = $"({ptRealInt.X},{ptRealInt.Y})[{col.R},{col.G},{col.B}]";
          }
          this.Invalidate();
       }
