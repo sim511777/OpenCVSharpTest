@@ -372,14 +372,31 @@ namespace OpenCVSharpTest {
 
 
          // 18. Crop Copy
-         Rect roi = new Rect(100, 100, 200, 200);
-         Mat matCrop = new Mat(matSrc, roi)  // 크롭 이미지 생성 하여 수정
+         //Rect roi = new Rect(100, 100, 200, 200);
+         //Mat matCrop = new Mat(matSrc, roi)  // 크롭 이미지 생성 하여 수정
+         //   .CvtColor(ColorConversionCodes.BGR2GRAY)
+         //   .Threshold(128, 255, ThresholdTypes.Binary)
+         //   .CvtColor(ColorConversionCodes.GRAY2BGR);
+         //Mat matDst = matSrc.Clone();
+         //Mat matRoi = new Mat(matDst, roi);  // 부분 참조 이미지 생성
+         //matCrop.CopyTo(matRoi);             // 수정된 이미지를 참조 버퍼에 복사
+
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
+
+         // 19. Kernel
+         float[] data = {
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1, };
+
+         var kernel = new Mat(3, 3, MatType.CV_32FC1, data).Normalize();
+         var matDst = matSrc
             .CvtColor(ColorConversionCodes.BGR2GRAY)
-            .Threshold(128, 255, ThresholdTypes.Binary)
-            .CvtColor(ColorConversionCodes.GRAY2BGR);
-         Mat matDst = matSrc.Clone();
-         Mat matRoi = new Mat(matDst, roi);  // 부분 참조 이미지 생성
-         matCrop.CopyTo(matRoi);             // 수정된 이미지를 참조 버퍼에 복사
+            .Filter2D(MatType.CV_8UC1, kernel);
+
+         kernel.Dispose();
 
          DrawMat(matDst, this.pbxDst);
          DrawHistogram(matDst, this.chtDst);
