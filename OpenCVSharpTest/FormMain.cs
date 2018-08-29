@@ -361,9 +361,22 @@ namespace OpenCVSharpTest {
          //matDst.Dispose();
 
          // 17. Crop
-         //Rect roi = new Rect(10, 10, 100, 100);
-         //Mat matDst = new Mat(matSrc, roi);
-         Mat matDst = matSrc[10, 110, 10, 110];
+         ////Rect roi = new Rect(10, 10, 100, 100);
+         ////Mat matDst = new Mat(matSrc, roi);
+         //Mat matDst = matSrc[10, 110, 10, 110];
+
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
+
+         // 18. Crop Copy
+         Mat matDst = matSrc.Clone();
+
+         Mat matCrop = new Mat(matDst, new Rect(200, 100, 100, 100));
+         Rect rect = new Rect(0, 0, matCrop.Rows, matCrop.Cols);//定义第一个矩阵，前2个参数是要放的位置，后面插入图片的大小
+         Mat pos = new Mat(matDst, rect);
+         matCrop.CopyTo(pos);
+
 
          DrawMat(matDst, this.pbxDst);
          DrawHistogram(matDst, this.chtDst);
