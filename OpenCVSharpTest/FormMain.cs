@@ -360,7 +360,10 @@ namespace OpenCVSharpTest {
          //DrawHistogram(matDst, this.chtDst);
          //matDst.Dispose();
 
-         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         // 17. Crop
+         //Rect roi = new Rect(10, 10, 100, 100);
+         //Mat matDst = new Mat(matSrc, roi);
+         Mat matDst = matSrc[10, 110, 10, 110];
 
          DrawMat(matDst, this.pbxDst);
          DrawHistogram(matDst, this.chtDst);
