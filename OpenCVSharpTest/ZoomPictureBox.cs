@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using ShimLib;
 using Vector = System.Windows.Vector;
 
 namespace OpenCVSharpTest {
@@ -59,6 +60,8 @@ namespace OpenCVSharpTest {
          if (this.EnableWheelZoom == false)
             return;
          float factor = ((e.Delta > 0) ? this.ZoomStep : (1 / this.ZoomStep));
+         var zoomTemp = (this.zoom * factor).Range(this.ZoomMin, this.ZoomMax);
+         factor = zoomTemp/this.zoom;
          Vector vM = new Vector(e.Location.X, e.Location.Y);
          Vector vI = new Vector(this.pan.Width, this.pan.Height);
          Vector vI2 = (vI-vM)*factor+vM;
