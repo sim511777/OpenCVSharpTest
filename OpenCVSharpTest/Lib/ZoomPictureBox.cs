@@ -7,12 +7,14 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using ShimLib;
-using System.Numerics;
+using System.Windows;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
 
 namespace ShimLib {
    class ZoomPictureBox : PictureBox {
-      private Image drawImage = null;
-      public Image DrawImage {
+      private Bitmap drawImage = null;
+      public Bitmap DrawImage {
          get { return this.drawImage; }
          set { this.drawImage = value; this.Invalidate(); }
       }
@@ -34,6 +36,7 @@ namespace ShimLib {
       public float ZoomMax { get; set; } = 10f;
       public bool EnableWheelZoom { get; set; } = true;
       public bool EnableMousePan { get; set; } = true;
+      public bool ShowPixelInfo { get; set; } = true;
 
       public bool AxisXInvert { get; set; } = false;
       public bool AxisYInvert { get; set; } = false;
@@ -48,12 +51,29 @@ namespace ShimLib {
          this.Paint += new PaintEventHandler(this.ZoomPictureBox_Paint);
       }
 
+      public PointF WindowToReal(Point ptWnd) {
+         float realX = (ptWnd.X - this.pan.Width )/this.zoom;
+         float realY = (ptWnd.Y - this.pan.Height)/this.zoom;
+         return new PointF(realX, realY);
+      }
+
+      public Point RealToWindow(PointF ptReal) {
+         float wndX = ptReal.X * this.zoom + this.pan.Width;
+         float wndY = ptReal.Y * this.zoom + this.pan.Height;
+         return new Point((int)wndX, (int)wndY);
+      }
+
       private void ZoomPictureBox_Paint(object sender, PaintEventArgs e) {
-         if (this.drawImage == null)
-            return;
          var g = e.Graphics;
          g.InterpolationMode = InterpolationMode.NearestNeighbor;
-         g.DrawImage(this.drawImage, this.pan.Width, this.pan.Height, this.DrawImage.Width*this.zoom, this.DrawImage.Height*this.zoom);
+         g.PixelOffsetMode = PixelOffsetMode.Half;
+         if (this.drawImage != null) {
+            g.DrawImage(this.drawImage, this.pan.Width, this.pan.Height, this.DrawImage.Width*this.zoom, this.DrawImage.Height*this.zoom);
+         }
+         Font font = SystemFonts.DefaultFont;
+         var drawSize = g.MeasureString(this.pixelInfo, font);
+         g.FillRectangle(Brushes.White, 0, 0, drawSize.Width, drawSize.Height);
+         g.DrawString(pixelInfo, font, Brushes.Black, 0, 0);
       }
 
       private void ZoomPictureBox_MouseWheel(object sender, MouseEventArgs e) {
@@ -62,12 +82,13 @@ namespace ShimLib {
          float factor = ((e.Delta > 0) ? this.ZoomStep : (1 / this.ZoomStep));
          var zoomTemp = (this.zoom * factor).Range(this.ZoomMin, this.ZoomMax);
          factor = zoomTemp/this.zoom;
-         Vector2 vM = new Vector2(e.Location.X, e.Location.Y);
-         Vector2 vI = new Vector2(this.pan.Width, this.pan.Height);
-         Vector2 vI2 = (vI-vM)*factor+vM;
+         Vector vM = new Vector(e.Location.X, e.Location.Y);
+         Vector vI = new Vector(this.pan.Width, this.pan.Height);
+         Vector vI2 = (vI-vM)*factor+vM;
          this.pan.Width = (float)vI2.X;
          this.pan.Height = (float)vI2.Y;
-         this.Zoom *= factor;
+         this.zoom *= factor;
+         this.Invalidate();
       }
 
       private bool mousePan = false;
@@ -91,14 +112,25 @@ namespace ShimLib {
          this.mousePan = false;
       }
 
+      private string pixelInfo = string.Empty;
       private void ZoomPictureBox_MouseMove(object sender, MouseEventArgs e) {
-         if (this.EnableMousePan == false)
-            return;
+         if (this.EnableMousePan && this.mousePan) {
+            this.pan += (Size)e.Location - (Size)this.ptOld;
+            this.ptOld = e.Location;
+         }
 
-         if (!this.mousePan)
-            return;
-         this.Pan += (Size)e.Location - (Size)this.ptOld;
-         this.ptOld = e.Location;
+         if (this.ShowPixelInfo) {
+            PointF ptReal = this.WindowToReal(e.Location);
+            Point ptRealInt = new Point((int)ptReal.X, (int)ptReal.Y);
+            Color col = Color.Black;
+            if (this.DrawImage != null) {
+               if (ptRealInt.X >= 0 && ptRealInt.X < this.DrawImage.Width && ptRealInt.Y >= 0 && ptRealInt.Y < this.DrawImage.Height) {
+                  col = this.DrawImage.GetPixel(ptRealInt.X, ptRealInt.Y);
+               }
+            }
+            this.pixelInfo = $"({ptRealInt.X},{ptRealInt.Y})/[{col.R},{col.G},{col.B}]";
+         }
+         this.Invalidate();
       }
    }
 }
