@@ -52,6 +52,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -72,6 +73,54 @@
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="IpDll.cs" />
+    <Compile Include="Lib\Crc32.cs" />
+    <Compile Include="Lib\ExtensionMethods.cs" />
+    <Compile Include="Lib\FormBackgroundWorker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lib\FormBackgroundWorker.designer.cs">
+      <DependentUpon>FormBackgroundWorker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lib\FormConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lib\FormConfig.designer.cs">
+      <DependentUpon>FormConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lib\FormLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lib\FormLog.designer.cs">
+      <DependentUpon>FormLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lib\FormProfileEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lib\FormProfileEditor.designer.cs">
+      <DependentUpon>FormProfileEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lib\IniFile.cs" />
+    <Compile Include="Lib\JsonFile.cs" />
+    <Compile Include="Lib\ListViewItemComparer.cs" />
+    <Compile Include="Lib\Logger.cs" />
+    <Compile Include="Lib\MesDataBase.cs" />
+    <Compile Include="Lib\MessageBoxScroll.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lib\MessageBoxScroll.Designer.cs">
+      <DependentUpon>MessageBoxScroll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lib\ProfileChart.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lib\ProfileChart.designer.cs">
+      <DependentUpon>ProfileChart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lib\Sequence.cs" />
+    <Compile Include="Lib\Udp.cs" />
+    <Compile Include="Lib\Util.cs" />
+    <Compile Include="Lib\ValueTypeTypeConverter.cs" />
+    <Compile Include="Lib\XmlFile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZoomPictureBox.cs">
@@ -79,6 +128,24 @@
     </Compile>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lib\FormBackgroundWorker.resx">
+      <DependentUpon>FormBackgroundWorker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lib\FormConfig.resx">
+      <DependentUpon>FormConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lib\FormLog.resx">
+      <DependentUpon>FormLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lib\FormProfileEditor.resx">
+      <DependentUpon>FormProfileEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lib\MessageBoxScroll.resx">
+      <DependentUpon>MessageBoxScroll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lib\ProfileChart.resx">
+      <DependentUpon>ProfileChart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
