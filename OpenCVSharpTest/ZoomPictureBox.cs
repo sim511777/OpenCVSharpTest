@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using ShimLib;
-using Vector = System.Windows.Vector;
+using System.Numerics;
 
 namespace OpenCVSharpTest {
    class ZoomPictureBox : PictureBox {
@@ -62,9 +62,9 @@ namespace OpenCVSharpTest {
          float factor = ((e.Delta > 0) ? this.ZoomStep : (1 / this.ZoomStep));
          var zoomTemp = (this.zoom * factor).Range(this.ZoomMin, this.ZoomMax);
          factor = zoomTemp/this.zoom;
-         Vector vM = new Vector(e.Location.X, e.Location.Y);
-         Vector vI = new Vector(this.pan.Width, this.pan.Height);
-         Vector vI2 = (vI-vM)*factor+vM;
+         Vector2 vM = new Vector2(e.Location.X, e.Location.Y);
+         Vector2 vI = new Vector2(this.pan.Width, this.pan.Height);
+         Vector2 vI2 = (vI-vM)*factor+vM;
          this.pan.Width = (float)vI2.X;
          this.pan.Height = (float)vI2.Y;
          this.Zoom *= factor;
