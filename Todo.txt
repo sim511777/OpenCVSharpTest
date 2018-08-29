@@ -19,3 +19,7 @@ ok - by C Dll SIMD(AVX)
  - 마우스 이동
  - 마우스 픽셀 좌표, 컬러값 표시
 101. 웹캠 라이브 타이머 -> 쓰레드
+
+ZoomPictureBox
+1. InvertX,Y, FlipXY
+2. Display PixelPos, PixelValue

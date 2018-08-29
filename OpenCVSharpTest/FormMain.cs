@@ -149,10 +149,10 @@ namespace OpenCVSharpTest {
          return histo;
       }
 
-      private static void DrawMat(Mat mat, PictureBox pbx) {
+      private static void DrawMat(Mat mat, ZoomPictureBox pbx) {
          var bmpOld = pbx.Image;
          var bmpSrc = mat.ToBitmap();
-         pbx.Image = bmpSrc;
+         pbx.DrawImage = bmpSrc;
          if (bmpOld != null)
             bmpOld.Dispose();
       }
