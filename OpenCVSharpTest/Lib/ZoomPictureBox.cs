@@ -37,6 +37,8 @@ namespace ShimLib {
       public bool EnableWheelZoom { get; set; } = true;
       public bool EnableMousePan { get; set; } = true;
       public bool ShowPixelInfo { get; set; } = true;
+      public bool DrawPixelValue { get; set; } = true;
+      public float DrawPixelValueZoom { get; set; } = 30f;
 
       public bool AxisXInvert { get; set; } = false;
       public bool AxisYInvert { get; set; } = false;
@@ -75,11 +77,25 @@ namespace ShimLib {
          g.PixelOffsetMode = PixelOffsetMode.Half;
          if (this.drawImage != null) {
             g.DrawImage(this.drawImage, this.pan.Width, this.pan.Height, this.DrawImage.Width*this.zoom, this.DrawImage.Height*this.zoom);
+            if (this.DrawPixelValue && this.zoom >= this.DrawPixelValueZoom) {
+               PointF ptMin = this.WindowToReal(new Point(0, 0));
+               PointF ptMax = this.WindowToReal(new Point(this.ClientSize.Width, this.ClientSize.Height));
+               int x1 = ((int)Math.Floor(ptMin.X)).Range(0, this.drawImage.Width - 1);
+               int x2 = ((int)Math.Floor(ptMax.X)).Range(0, this.drawImage.Width - 1);
+               int y1 = ((int)Math.Floor(ptMin.Y)).Range(0, this.drawImage.Height - 1);
+               int y2 = ((int)Math.Floor(ptMax.Y)).Range(0, this.drawImage.Height - 1);
+               for (int y = y1; y <= y2; y++) {
+                  for (int x = x1; x <= x2; x++) {
+                     Color col = this.drawImage.GetPixel(x, y);
+                     string colorText = string.Format("{0},{1},{2}", col.R, col.G, col.B);
+                     g.DrawString(colorText, SystemFonts.DialogFont, ((col.R + col.G + col.B) / 3 < 128) ? Brushes.Yellow : Brushes.Blue, this.RealToWindow(new Point(x, y)));
+                  }
+               }
+            }
          }
-         Font font = SystemFonts.DefaultFont;
-         var drawSize = g.MeasureString(this.pixelInfo, font);
+         var drawSize = g.MeasureString(this.pixelInfo, SystemFonts.DefaultFont);
          g.FillRectangle(Brushes.White, 0, 0, drawSize.Width, drawSize.Height);
-         g.DrawString(pixelInfo, font, Brushes.Black, 0, 0);
+         g.DrawString(pixelInfo, SystemFonts.DefaultFont, Brushes.Black, 0, 0);
       }
 
       private void ZoomPictureBox_MouseWheel(object sender, MouseEventArgs e) {
