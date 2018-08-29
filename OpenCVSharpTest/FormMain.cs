@@ -19,6 +19,14 @@ namespace OpenCVSharpTest {
    public partial class FormMain : Form {
       public FormMain() {
          InitializeComponent();
+         this.pbxDst.FuncGetPixelValueDisp = GetDstPixelValue;
+      }
+
+      private Tuple<string, Brush> GetDstPixelValue(int x, int y) {
+         Color col = this.pbxDst.DrawImage.GetPixel(x, y);
+         int avg = (col.R + col.G + col.B) / 3;
+         Brush br = (avg > 128) ? Brushes.Blue : Brushes.Yellow;
+         return Tuple.Create(avg.ToString(), br);
       }
 
       private void btnLenna_Click(object sender, EventArgs e) {
@@ -81,8 +89,8 @@ namespace OpenCVSharpTest {
 
       private void StartLive() {
          this.cap = new VideoCapture(0);
-         this.cap.FrameWidth = 1913;
-         this.cap.FrameHeight = 1080;
+         //this.cap.FrameWidth = 1913;
+         //this.cap.FrameHeight = 1080;
          this.timer1.Enabled = true;
          this.btnLive.Text = "Live Stop";
       }
@@ -335,13 +343,13 @@ namespace OpenCVSharpTest {
          //matDst.Dispose();
 
          // 15. 픽셀 버퍼 제어 Gray by MMX(AVX) Dll
-         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
 
-         IpDll.AvxInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+         //IpDll.AvxInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
 
-         DrawMat(matDst, this.pbxDst);
-         DrawHistogram(matDst, this.chtDst);
-         matDst.Dispose();
+         //DrawMat(matDst, this.pbxDst);
+         //DrawHistogram(matDst, this.chtDst);
+         //matDst.Dispose();
 
          // 16. 픽셀 버퍼 제어 Gray by MMX(Vector class) Dll
          //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
@@ -351,6 +359,13 @@ namespace OpenCVSharpTest {
          //DrawMat(matDst, this.pbxDst);
          //DrawHistogram(matDst, this.chtDst);
          //matDst.Dispose();
+
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+
+         DrawMat(matDst, this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+
 
          this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
       }

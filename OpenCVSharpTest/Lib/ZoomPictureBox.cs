@@ -39,6 +39,7 @@ namespace ShimLib {
       public bool ShowPixelInfo { get; set; } = true;
       public bool DrawPixelValue { get; set; } = true;
       public float DrawPixelValueZoom { get; set; } = 30f;
+      public Func<int, int, Tuple<string, Brush>> FuncGetPixelValueDisp { get; set; }
 
       public bool AxisXInvert { get; set; } = false;
       public bool AxisYInvert { get; set; } = false;
@@ -71,6 +72,13 @@ namespace ShimLib {
          return new Point((int)wndX, (int)wndY);
       }
 
+      private Tuple<string, Brush> GetBuiltinDispPixelValue(int x, int y) {
+         Color col = this.drawImage.GetPixel(x, y);
+         var text = string.Format("{0},{1},{2}", col.R, col.G, col.B);
+         var br = ((col.R + col.G + col.B) / 3 < 128) ? Brushes.Yellow : Brushes.Blue;
+         return Tuple.Create(text, br);
+      }
+
       private void ZoomPictureBox_Paint(object sender, PaintEventArgs e) {
          var g = e.Graphics;
          g.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -86,9 +94,14 @@ namespace ShimLib {
                int y2 = ((int)Math.Floor(ptMax.Y)).Range(0, this.drawImage.Height - 1);
                for (int y = y1; y <= y2; y++) {
                   for (int x = x1; x <= x2; x++) {
-                     Color col = this.drawImage.GetPixel(x, y);
-                     string colorText = string.Format("{0},{1},{2}", col.R, col.G, col.B);
-                     g.DrawString(colorText, SystemFonts.DialogFont, ((col.R + col.G + col.B) / 3 < 128) ? Brushes.Yellow : Brushes.Blue, this.RealToWindow(new Point(x, y)));
+                     Tuple<string, Brush> dispPixel;
+                     if (this.FuncGetPixelValueDisp != null) {
+                        dispPixel = this.FuncGetPixelValueDisp(x, y);
+                     } else {
+                        dispPixel = GetBuiltinDispPixelValue(x, y);
+                     }
+                     var pt = this.RealToWindow(new Point(x, y));
+                     g.DrawString(dispPixel.Item1, SystemFonts.DefaultFont, dispPixel.Item2, pt);
                   }
                }
             }
