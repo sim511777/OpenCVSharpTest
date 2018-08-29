@@ -13,24 +13,10 @@ using Size = System.Drawing.Size;
 
 namespace ShimLib {
    class ZoomPictureBox : PictureBox {
-      private Bitmap drawImage = null;
-      public Bitmap DrawImage {
-         get { return this.drawImage; }
-         set { this.drawImage = value; this.Invalidate(); }
-      }
-
-      private float zoom= 1;
-      public float Zoom {
-         get { return this.zoom; }
-         set { this.zoom = value; this.Invalidate(); }
-      }
-
-      public SizeF pan = new SizeF(0, 0);
-      public SizeF Pan {
-         get { return this.pan; }
-         set { this.pan = value; this.Invalidate(); }
-      }
-
+      // 이미지
+      public Bitmap DrawImage { get; set; } = null;
+      public float Zoom { get; set; } = 1;
+      public SizeF Pan { get; set; } = new SizeF(0, 0);
       public float ZoomStep { get; set; } = 1.2f;
       public float ZoomMin { get; set; } = 0.1f;
       public float ZoomMax { get; set; } = 10f;
@@ -55,25 +41,25 @@ namespace ShimLib {
       }
 
       public void ResetZoom() {
-         this.pan = new SizeF(0, 0);
-         this.zoom = 1f;
+         this.Pan = new SizeF(0, 0);
+         this.Zoom = 1f;
          this.Invalidate();
       }
 
       public PointF WindowToReal(Point ptWnd) {
-         float realX = (ptWnd.X - this.pan.Width )/this.zoom;
-         float realY = (ptWnd.Y - this.pan.Height)/this.zoom;
+         float realX = (ptWnd.X - this.Pan.Width )/this.Zoom;
+         float realY = (ptWnd.Y - this.Pan.Height)/this.Zoom;
          return new PointF(realX, realY);
       }
 
       public Point RealToWindow(PointF ptReal) {
-         float wndX = ptReal.X * this.zoom + this.pan.Width;
-         float wndY = ptReal.Y * this.zoom + this.pan.Height;
+         float wndX = ptReal.X * this.Zoom + this.Pan.Width;
+         float wndY = ptReal.Y * this.Zoom + this.Pan.Height;
          return new Point((int)wndX, (int)wndY);
       }
 
       private Tuple<string, Brush> GetBuiltinDispPixelValue(int x, int y) {
-         Color col = this.drawImage.GetPixel(x, y);
+         Color col = this.DrawImage.GetPixel(x, y);
          var text = string.Format("{0},{1},{2}", col.R, col.G, col.B);
          var br = ((col.R + col.G + col.B) / 3 < 128) ? Brushes.Yellow : Brushes.Blue;
          return Tuple.Create(text, br);
@@ -83,15 +69,15 @@ namespace ShimLib {
          var g = e.Graphics;
          g.InterpolationMode = InterpolationMode.NearestNeighbor;
          g.PixelOffsetMode = PixelOffsetMode.Half;
-         if (this.drawImage != null) {
-            g.DrawImage(this.drawImage, this.pan.Width, this.pan.Height, this.DrawImage.Width*this.zoom, this.DrawImage.Height*this.zoom);
-            if (this.DrawPixelValue && this.zoom >= this.DrawPixelValueZoom) {
+         if (this.DrawImage != null) {
+            g.DrawImage(this.DrawImage, this.Pan.Width, this.Pan.Height, this.DrawImage.Width*this.Zoom, this.DrawImage.Height*this.Zoom);
+            if (this.DrawPixelValue && this.Zoom >= this.DrawPixelValueZoom) {
                PointF ptMin = this.WindowToReal(new Point(0, 0));
                PointF ptMax = this.WindowToReal(new Point(this.ClientSize.Width, this.ClientSize.Height));
-               int x1 = ((int)Math.Floor(ptMin.X)).Range(0, this.drawImage.Width - 1);
-               int x2 = ((int)Math.Floor(ptMax.X)).Range(0, this.drawImage.Width - 1);
-               int y1 = ((int)Math.Floor(ptMin.Y)).Range(0, this.drawImage.Height - 1);
-               int y2 = ((int)Math.Floor(ptMax.Y)).Range(0, this.drawImage.Height - 1);
+               int x1 = ((int)Math.Floor(ptMin.X)).Range(0, this.DrawImage.Width - 1);
+               int x2 = ((int)Math.Floor(ptMax.X)).Range(0, this.DrawImage.Width - 1);
+               int y1 = ((int)Math.Floor(ptMin.Y)).Range(0, this.DrawImage.Height - 1);
+               int y2 = ((int)Math.Floor(ptMax.Y)).Range(0, this.DrawImage.Height - 1);
                for (int y = y1; y <= y2; y++) {
                   for (int x = x1; x <= x2; x++) {
                      Tuple<string, Brush> dispPixel;
@@ -115,14 +101,13 @@ namespace ShimLib {
          if (this.EnableWheelZoom == false)
             return;
          float factor = ((e.Delta > 0) ? this.ZoomStep : (1 / this.ZoomStep));
-         var zoomTemp = (this.zoom * factor).Range(this.ZoomMin, this.ZoomMax);
-         factor = zoomTemp/this.zoom;
+         var zoomTemp = (this.Zoom * factor).Range(this.ZoomMin, this.ZoomMax);
+         factor = zoomTemp/this.Zoom;
          Vector vM = new Vector(e.Location.X, e.Location.Y);
-         Vector vI = new Vector(this.pan.Width, this.pan.Height);
+         Vector vI = new Vector(this.Pan.Width, this.Pan.Height);
          Vector vI2 = (vI-vM)*factor+vM;
-         this.pan.Width = (float)vI2.X;
-         this.pan.Height = (float)vI2.Y;
-         this.zoom *= factor;
+         this.Pan = new SizeF((float)vI2.X, (float)vI2.Y);
+         this.Zoom *= factor;
          this.Invalidate();
       }
 
@@ -150,7 +135,7 @@ namespace ShimLib {
       private string pixelInfo = string.Empty;
       private void ZoomPictureBox_MouseMove(object sender, MouseEventArgs e) {
          if (this.EnableMousePan && this.mousePan) {
-            this.pan += (Size)e.Location - (Size)this.ptOld;
+            this.Pan += (Size)e.Location - (Size)this.ptOld;
             this.ptOld = e.Location;
          }
 

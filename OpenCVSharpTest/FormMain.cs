@@ -162,6 +162,7 @@ namespace OpenCVSharpTest {
          var bmpOld = pbx.Image;
          var bmpSrc = mat.ToBitmap();
          pbx.DrawImage = bmpSrc;
+         pbx.Invalidate();
          if (bmpOld != null)
             bmpOld.Dispose();
       }
