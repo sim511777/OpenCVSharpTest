@@ -13,6 +13,7 @@ using OpenCVSharpTest.Properties;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using OpenCvSharp.Blob;
+using ShimLib;
 
 namespace OpenCVSharpTest {
    public partial class FormMain : Form {

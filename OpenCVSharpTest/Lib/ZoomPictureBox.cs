@@ -9,7 +9,7 @@ using System.Drawing.Drawing2D;
 using ShimLib;
 using System.Numerics;
 
-namespace OpenCVSharpTest {
+namespace ShimLib {
    class ZoomPictureBox : PictureBox {
       private Image drawImage = null;
       public Image DrawImage {
@@ -29,9 +29,9 @@ namespace OpenCVSharpTest {
          set { this.pan = value; this.Invalidate(); }
       }
 
-      public float ZoomStep { get; set; } = 1.1f;
-      public float ZoomMin { get; set; } = 0.01f;
-      public float ZoomMax { get; set; } = 100f;
+      public float ZoomStep { get; set; } = 1.2f;
+      public float ZoomMin { get; set; } = 0.1f;
+      public float ZoomMax { get; set; } = 10f;
       public bool EnableWheelZoom { get; set; } = true;
       public bool EnableMousePan { get; set; } = true;
 

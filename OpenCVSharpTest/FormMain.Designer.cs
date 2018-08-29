@@ -61,8 +61,8 @@
          this.statusStrip1 = new System.Windows.Forms.StatusStrip();
          this.lblGrabTime = new System.Windows.Forms.ToolStripStatusLabel();
          this.lblProcessingTime = new System.Windows.Forms.ToolStripStatusLabel();
-         this.pbxDst = new OpenCVSharpTest.ZoomPictureBox();
-         this.pbxSrc = new OpenCVSharpTest.ZoomPictureBox();
+         this.pbxDst = new ShimLib.ZoomPictureBox();
+         this.pbxSrc = new ShimLib.ZoomPictureBox();
          this.panel1.SuspendLayout();
          this.tableLayoutPanel1.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)(this.chtDst)).BeginInit();
@@ -416,8 +416,8 @@
       private System.Windows.Forms.Button btnLive;
       private System.Windows.Forms.Timer timer1;
       private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-      private ZoomPictureBox pbxDst;
-      private ZoomPictureBox pbxSrc;
+      private ShimLib.ZoomPictureBox pbxDst;
+      private ShimLib.ZoomPictureBox pbxSrc;
       private System.Windows.Forms.DataVisualization.Charting.Chart chtSrc;
       private System.Windows.Forms.Button btnClipboard;
       private System.Windows.Forms.DataVisualization.Charting.Chart chtDst;
