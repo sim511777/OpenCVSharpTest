@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using ShimLib;
 using System.Windows;
+using System.Drawing.Imaging;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 
@@ -80,12 +81,20 @@ namespace ShimLib {
       }
 
       private Tuple<string, Brush> GetBuiltinDispPixelValue(int x, int y) {
-         Color col = Color.Black;
-         if (this.DrawImage == null || x < 0 || x >= this.DrawImage.Width || y < 0 || y >= this.DrawImage.Height)
-            col = Color.Black;
-         else
-            col = this.DrawImage.GetPixel(x, y);
-         var text = string.Format("{0},{1},{2}", col.R, col.G, col.B);
+         if (this.DrawImage == null)
+            return Tuple.Create("0", Brushes.Black);
+         if (x < 0 || x >= this.DrawImage.Width || y < 0 || y >= this.DrawImage.Height) {
+            if (this.DrawImage.PixelFormat == PixelFormat.Format8bppIndexed)
+               return Tuple.Create("0", Brushes.Black);
+            else
+               return Tuple.Create("0,0,0", Brushes.Black);
+         }
+
+         Color col = this.DrawImage.GetPixel(x, y);
+         string text =
+            (this.DrawImage.PixelFormat == PixelFormat.Format8bppIndexed)
+            ? string.Format("{0}", (col.R + col.G + col.B)/3)
+            : string.Format("{0},{1},{2}", col.R, col.G, col.B);
          var br = ((col.R + col.G + col.B) / 3 < 128) ? Brushes.Yellow : Brushes.Blue;
          return Tuple.Create(text, br);
       }
