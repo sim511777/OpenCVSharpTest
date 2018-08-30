@@ -47,6 +47,22 @@ namespace ShimLib {
          this.Invalidate();
       }
 
+      public void FitZoom() {
+         if (this.DrawImage == null) {
+            this.ResetZoom();
+            return;
+         }
+         
+         float scale1 = (float)this.ClientRectangle.Height / this.DrawImage.Height;
+         float scale2 = (float)this.ClientRectangle.Width / this.DrawImage.Width;
+         this.Zoom = Math.Min(scale1, scale2).Range(this.ZoomMin, this.ZoomMax);
+         float panX = (this.ClientRectangle.Width - this.DrawImage.Width * this.Zoom) / 2;
+         float panY = (this.ClientRectangle.Height - this.DrawImage.Height * this.Zoom) / 2;
+         this.Pan = new SizeF(panX, panY);
+
+         this.Invalidate();
+      }
+
       public void SetFuncGetPixelValueDisp(Func<int, int, Tuple<string, Brush>> FuncGetPixelValueDisp) {
          this.FuncGetPixelValueDisp = FuncGetPixelValueDisp;
       }
@@ -64,7 +80,11 @@ namespace ShimLib {
       }
 
       private Tuple<string, Brush> GetBuiltinDispPixelValue(int x, int y) {
-         Color col = this.DrawImage.GetPixel(x, y);
+         Color col = Color.Black;
+         if (this.DrawImage == null || x < 0 || x >= this.DrawImage.Width || y < 0 || y >= this.DrawImage.Height)
+            col = Color.Black;
+         else
+            col = this.DrawImage.GetPixel(x, y);
          var text = string.Format("{0},{1},{2}", col.R, col.G, col.B);
          var br = ((col.R + col.G + col.B) / 3 < 128) ? Brushes.Yellow : Brushes.Blue;
          return Tuple.Create(text, br);
@@ -153,7 +173,13 @@ namespace ShimLib {
                   col = this.DrawImage.GetPixel(ptRealInt.X, ptRealInt.Y);
                }
             }
-            this.pixelInfo = $"({ptRealInt.X},{ptRealInt.Y})[{col.R},{col.G},{col.B}]";
+            Tuple<string, Brush> dispPixel;
+            if (this.FuncGetPixelValueDisp != null) {
+               dispPixel = this.FuncGetPixelValueDisp(ptRealInt.X, ptRealInt.Y);
+            } else {
+               dispPixel = GetBuiltinDispPixelValue(ptRealInt.X, ptRealInt.Y);
+            }
+            this.pixelInfo = $"({ptRealInt.X},{ptRealInt.Y})[{dispPixel.Item1}]";
          }
          this.Invalidate();
       }

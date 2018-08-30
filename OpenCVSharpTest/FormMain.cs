@@ -23,7 +23,11 @@ namespace OpenCVSharpTest {
       }
 
       private Tuple<string, Brush> GetDstPixelValue(int x, int y) {
-         Color col = this.pbxDst.DrawImage.GetPixel(x, y);
+         Color col;
+         if (this.pbxDst.DrawImage == null || x < 0 || x >= this.pbxDst.DrawImage.Width || y < 0 || y >= this.pbxDst.DrawImage.Height)
+            col = Color.Black;
+         else
+            col = this.pbxDst.DrawImage.GetPixel(x, y);
          int avg = (col.R + col.G + col.B) / 3;
          Brush br = (avg > 128) ? Brushes.Blue : Brushes.Yellow;
          return Tuple.Create(avg.ToString(), br);
@@ -408,6 +412,11 @@ namespace OpenCVSharpTest {
       private void btnZoomReset_Click(object sender, EventArgs e) {
          this.pbxSrc.ResetZoom();
          this.pbxDst.ResetZoom();
+      }
+
+      private void btnFitZoom_Click(object sender, EventArgs e) {
+         this.pbxSrc.FitZoom();
+         this.pbxDst.FitZoom();
       }
    }
 }
