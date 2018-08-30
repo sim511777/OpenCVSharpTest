@@ -58,20 +58,20 @@
          this.timer1 = new System.Windows.Forms.Timer(this.components);
          this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
          this.chtDst = new System.Windows.Forms.DataVisualization.Charting.Chart();
-         this.pbxDst = new ShimLib.ZoomPictureBox();
-         this.pbxSrc = new ShimLib.ZoomPictureBox();
          this.chtSrc = new System.Windows.Forms.DataVisualization.Charting.Chart();
          this.statusStrip1 = new System.Windows.Forms.StatusStrip();
          this.lblGrabTime = new System.Windows.Forms.ToolStripStatusLabel();
          this.lblProcessingTime = new System.Windows.Forms.ToolStripStatusLabel();
          this.btnFitZoom = new System.Windows.Forms.Button();
+         this.pbxDst = new ShimLib.ZoomPictureBox();
+         this.pbxSrc = new ShimLib.ZoomPictureBox();
          this.panel1.SuspendLayout();
          this.tableLayoutPanel1.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)(this.chtDst)).BeginInit();
-         ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).BeginInit();
-         ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.chtSrc)).BeginInit();
          this.statusStrip1.SuspendLayout();
+         ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).BeginInit();
+         ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).BeginInit();
          this.SuspendLayout();
          // 
          // panel1
@@ -92,9 +92,9 @@
          // 
          this.btnZoomReset.Location = new System.Drawing.Point(12, 128);
          this.btnZoomReset.Name = "btnZoomReset";
-         this.btnZoomReset.Size = new System.Drawing.Size(90, 23);
+         this.btnZoomReset.Size = new System.Drawing.Size(109, 23);
          this.btnZoomReset.TabIndex = 3;
-         this.btnZoomReset.Text = "Reset Zoom";
+         this.btnZoomReset.Text = "Zoom Original";
          this.btnZoomReset.UseVisualStyleBackColor = true;
          this.btnZoomReset.Click += new System.EventHandler(this.btnZoomReset_Click);
          // 
@@ -102,7 +102,7 @@
          // 
          this.btnLive.Location = new System.Drawing.Point(12, 99);
          this.btnLive.Name = "btnLive";
-         this.btnLive.Size = new System.Drawing.Size(90, 23);
+         this.btnLive.Size = new System.Drawing.Size(109, 23);
          this.btnLive.TabIndex = 3;
          this.btnLive.Text = "Live";
          this.btnLive.UseVisualStyleBackColor = true;
@@ -112,7 +112,7 @@
          // 
          this.btnLenna.Location = new System.Drawing.Point(12, 12);
          this.btnLenna.Name = "btnLenna";
-         this.btnLenna.Size = new System.Drawing.Size(90, 23);
+         this.btnLenna.Size = new System.Drawing.Size(109, 23);
          this.btnLenna.TabIndex = 0;
          this.btnLenna.Text = "Lenna";
          this.btnLenna.UseVisualStyleBackColor = true;
@@ -122,7 +122,7 @@
          // 
          this.btnClipboard.Location = new System.Drawing.Point(12, 41);
          this.btnClipboard.Name = "btnClipboard";
-         this.btnClipboard.Size = new System.Drawing.Size(90, 23);
+         this.btnClipboard.Size = new System.Drawing.Size(109, 23);
          this.btnClipboard.TabIndex = 1;
          this.btnClipboard.Text = "Clipboard";
          this.btnClipboard.UseVisualStyleBackColor = true;
@@ -132,7 +132,7 @@
          // 
          this.btnLoad.Location = new System.Drawing.Point(12, 70);
          this.btnLoad.Name = "btnLoad";
-         this.btnLoad.Size = new System.Drawing.Size(90, 23);
+         this.btnLoad.Size = new System.Drawing.Size(109, 23);
          this.btnLoad.TabIndex = 2;
          this.btnLoad.Text = "Load";
          this.btnLoad.UseVisualStyleBackColor = true;
@@ -254,52 +254,6 @@
          this.chtDst.TabIndex = 0;
          this.chtDst.Text = "chart1";
          // 
-         // pbxDst
-         // 
-         this.pbxDst.AxisXInvert = false;
-         this.pbxDst.AxisXYFlip = false;
-         this.pbxDst.AxisYInvert = false;
-         this.pbxDst.Dock = System.Windows.Forms.DockStyle.Fill;
-         this.pbxDst.DrawImage = null;
-         this.pbxDst.DrawPixelValue = true;
-         this.pbxDst.DrawPixelValueZoom = 30F;
-         this.pbxDst.EnableMousePan = true;
-         this.pbxDst.EnableWheelZoom = true;
-         this.pbxDst.Location = new System.Drawing.Point(313, 3);
-         this.pbxDst.Name = "pbxDst";
-         this.pbxDst.Pan = new System.Drawing.SizeF(0F, 0F);
-         this.pbxDst.ShowPixelInfo = true;
-         this.pbxDst.Size = new System.Drawing.Size(304, 201);
-         this.pbxDst.TabIndex = 1;
-         this.pbxDst.TabStop = false;
-         this.pbxDst.Zoom = 1F;
-         this.pbxDst.ZoomMax = 100F;
-         this.pbxDst.ZoomMin = 0.1F;
-         this.pbxDst.ZoomStep = 1.2F;
-         // 
-         // pbxSrc
-         // 
-         this.pbxSrc.AxisXInvert = false;
-         this.pbxSrc.AxisXYFlip = false;
-         this.pbxSrc.AxisYInvert = false;
-         this.pbxSrc.Dock = System.Windows.Forms.DockStyle.Fill;
-         this.pbxSrc.DrawImage = null;
-         this.pbxSrc.DrawPixelValue = true;
-         this.pbxSrc.DrawPixelValueZoom = 30F;
-         this.pbxSrc.EnableMousePan = true;
-         this.pbxSrc.EnableWheelZoom = true;
-         this.pbxSrc.Location = new System.Drawing.Point(3, 3);
-         this.pbxSrc.Name = "pbxSrc";
-         this.pbxSrc.Pan = new System.Drawing.SizeF(0F, 0F);
-         this.pbxSrc.ShowPixelInfo = true;
-         this.pbxSrc.Size = new System.Drawing.Size(304, 201);
-         this.pbxSrc.TabIndex = 0;
-         this.pbxSrc.TabStop = false;
-         this.pbxSrc.Zoom = 1F;
-         this.pbxSrc.ZoomMax = 100F;
-         this.pbxSrc.ZoomMin = 0.1F;
-         this.pbxSrc.ZoomStep = 1.2F;
-         // 
          // chtSrc
          // 
          chartArea2.AxisX.LabelStyle.Interval = 20D;
@@ -418,11 +372,57 @@
          // 
          this.btnFitZoom.Location = new System.Drawing.Point(12, 157);
          this.btnFitZoom.Name = "btnFitZoom";
-         this.btnFitZoom.Size = new System.Drawing.Size(90, 23);
+         this.btnFitZoom.Size = new System.Drawing.Size(109, 23);
          this.btnFitZoom.TabIndex = 3;
-         this.btnFitZoom.Text = "Fti Zoom";
+         this.btnFitZoom.Text = "Zoom Fit";
          this.btnFitZoom.UseVisualStyleBackColor = true;
          this.btnFitZoom.Click += new System.EventHandler(this.btnFitZoom_Click);
+         // 
+         // pbxDst
+         // 
+         this.pbxDst.AxisXInvert = false;
+         this.pbxDst.AxisXYFlip = false;
+         this.pbxDst.AxisYInvert = false;
+         this.pbxDst.Dock = System.Windows.Forms.DockStyle.Fill;
+         this.pbxDst.DrawImage = null;
+         this.pbxDst.DrawPixelValue = true;
+         this.pbxDst.DrawPixelValueZoom = 30F;
+         this.pbxDst.EnableMousePan = true;
+         this.pbxDst.EnableWheelZoom = true;
+         this.pbxDst.Location = new System.Drawing.Point(313, 3);
+         this.pbxDst.Name = "pbxDst";
+         this.pbxDst.Pan = new System.Drawing.SizeF(0F, 0F);
+         this.pbxDst.ShowPixelInfo = true;
+         this.pbxDst.Size = new System.Drawing.Size(304, 201);
+         this.pbxDst.TabIndex = 1;
+         this.pbxDst.TabStop = false;
+         this.pbxDst.Zoom = 1F;
+         this.pbxDst.ZoomMax = 100F;
+         this.pbxDst.ZoomMin = 0.1F;
+         this.pbxDst.ZoomStep = 1.2F;
+         // 
+         // pbxSrc
+         // 
+         this.pbxSrc.AxisXInvert = false;
+         this.pbxSrc.AxisXYFlip = false;
+         this.pbxSrc.AxisYInvert = false;
+         this.pbxSrc.Dock = System.Windows.Forms.DockStyle.Fill;
+         this.pbxSrc.DrawImage = null;
+         this.pbxSrc.DrawPixelValue = true;
+         this.pbxSrc.DrawPixelValueZoom = 30F;
+         this.pbxSrc.EnableMousePan = true;
+         this.pbxSrc.EnableWheelZoom = true;
+         this.pbxSrc.Location = new System.Drawing.Point(3, 3);
+         this.pbxSrc.Name = "pbxSrc";
+         this.pbxSrc.Pan = new System.Drawing.SizeF(0F, 0F);
+         this.pbxSrc.ShowPixelInfo = true;
+         this.pbxSrc.Size = new System.Drawing.Size(304, 201);
+         this.pbxSrc.TabIndex = 0;
+         this.pbxSrc.TabStop = false;
+         this.pbxSrc.Zoom = 1F;
+         this.pbxSrc.ZoomMax = 100F;
+         this.pbxSrc.ZoomMin = 0.1F;
+         this.pbxSrc.ZoomStep = 1.2F;
          // 
          // FormMain
          // 
@@ -437,11 +437,11 @@
          this.panel1.ResumeLayout(false);
          this.tableLayoutPanel1.ResumeLayout(false);
          ((System.ComponentModel.ISupportInitialize)(this.chtDst)).EndInit();
-         ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).EndInit();
-         ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.chtSrc)).EndInit();
          this.statusStrip1.ResumeLayout(false);
          this.statusStrip1.PerformLayout();
+         ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).EndInit();
+         ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).EndInit();
          this.ResumeLayout(false);
          this.PerformLayout();
 
