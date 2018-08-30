@@ -19,7 +19,7 @@ namespace OpenCVSharpTest {
    public partial class FormMain : Form {
       public FormMain() {
          InitializeComponent();
-         this.pbxDst.FuncGetPixelValueDisp = GetDstPixelValue;
+         this.pbxDst.SetFuncGetPixelValueDisp(GetDstPixelValue);
       }
 
       private Tuple<string, Brush> GetDstPixelValue(int x, int y) {

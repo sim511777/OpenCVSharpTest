@@ -13,6 +13,8 @@ using Size = System.Drawing.Size;
 
 namespace ShimLib {
    class ZoomPictureBox : PictureBox {
+      private Func<int, int, Tuple<string, Brush>> FuncGetPixelValueDisp = null;
+
       // 이미지
       public Bitmap DrawImage { get; set; } = null;
       public float Zoom { get; set; } = 1;
@@ -25,7 +27,6 @@ namespace ShimLib {
       public bool ShowPixelInfo { get; set; } = true;
       public bool DrawPixelValue { get; set; } = true;
       public float DrawPixelValueZoom { get; set; } = 30f;
-      public Func<int, int, Tuple<string, Brush>> FuncGetPixelValueDisp { get; set; }
 
       public bool AxisXInvert { get; set; } = false;
       public bool AxisYInvert { get; set; } = false;
@@ -44,6 +45,10 @@ namespace ShimLib {
          this.Pan = new SizeF(0, 0);
          this.Zoom = 1f;
          this.Invalidate();
+      }
+
+      public void SetFuncGetPixelValueDisp(Func<int, int, Tuple<string, Brush>> FuncGetPixelValueDisp) {
+         this.FuncGetPixelValueDisp = FuncGetPixelValueDisp;
       }
 
       public PointF WindowToReal(Point ptWnd) {
