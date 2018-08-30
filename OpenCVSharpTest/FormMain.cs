@@ -394,7 +394,7 @@ namespace OpenCVSharpTest {
          var kernel = new Mat(5, 5, MatType.CV_32FC1, data).Normalize(normType:NormTypes.L1);
          var matDst = matSrc
             .CvtColor(ColorConversionCodes.BGR2GRAY)
-            .Filter2D(MatType.CV_8UC1, kernel);
+            .Filter2D(MatType.CV_8UC1, kernel, borderType:BorderTypes.Default);
 
          kernel.Dispose();
 

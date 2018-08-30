@@ -11,7 +11,7 @@ ok - by C Dll SIMD(SSE)
 ok - by C Dll SIMD(AVX)
 ok 6. ROI
 ok 7. 커널 연산
- 8. 엣지 처리
+ok 8. 엣지 처리
  9. ROI 좀더 : crop/copy가 아닌 버퍼에서 특정 ROI만 처리, 
 
 ==== ZoomPictureBox
