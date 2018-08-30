@@ -389,12 +389,9 @@ namespace OpenCVSharpTest {
          //matDst.Dispose();
 
          // 19. Kernel
-         float[] data = {
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1, };
+         float[] data = Enumerable.Repeat(1f, 25).ToArray();
 
-         var kernel = new Mat(3, 3, MatType.CV_32FC1, data).Normalize();
+         var kernel = new Mat(5, 5, MatType.CV_32FC1, data).Normalize(normType:NormTypes.L1);
          var matDst = matSrc
             .CvtColor(ColorConversionCodes.BGR2GRAY)
             .Filter2D(MatType.CV_8UC1, kernel);
