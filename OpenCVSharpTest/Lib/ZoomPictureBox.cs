@@ -70,16 +70,16 @@ namespace ShimLib {
          this.FuncGetPixelValueDisp = FuncGetPixelValueDisp;
       }
 
-      public PointF WindowToReal(Point ptWnd) {
+      public PointF DrawToReal(PointF ptWnd) {
          float realX = (ptWnd.X - this.Pan.Width )/this.Zoom;
          float realY = (ptWnd.Y - this.Pan.Height)/this.Zoom;
          return new PointF(realX, realY);
       }
 
-      public Point RealToWindow(PointF ptReal) {
+      public PointF RealToDraw(PointF ptReal) {
          float wndX = ptReal.X * this.Zoom + this.Pan.Width;
          float wndY = ptReal.Y * this.Zoom + this.Pan.Height;
-         return new Point((int)wndX, (int)wndY);
+         return new PointF((int)wndX, (int)wndY);
       }
 
       private Tuple<string, Brush> GetBuiltinDispPixelValue(int x, int y) {
@@ -113,8 +113,8 @@ namespace ShimLib {
             
             // 이미지 개별 픽셀 값 표시
             if (this.DrawPixelValue && this.Zoom >= this.DrawPixelValueZoom) {
-               PointF ptMin = this.WindowToReal(new Point(0, 0));
-               PointF ptMax = this.WindowToReal(new Point(this.ClientSize.Width, this.ClientSize.Height));
+               PointF ptMin = this.DrawToReal(new Point(0, 0));
+               PointF ptMax = this.DrawToReal(new Point(this.ClientSize.Width, this.ClientSize.Height));
                int x1 = ((int)Math.Floor(ptMin.X)).Range(0, this.DrawImage.Width - 1);
                int x2 = ((int)Math.Floor(ptMax.X)).Range(0, this.DrawImage.Width - 1);
                int y1 = ((int)Math.Floor(ptMin.Y)).Range(0, this.DrawImage.Height - 1);
@@ -127,7 +127,7 @@ namespace ShimLib {
                      } else {
                         dispPixel = GetBuiltinDispPixelValue(x, y);
                      }
-                     var pt = this.RealToWindow(new Point(x, y));
+                     var pt = this.RealToDraw(new Point(x, y));
                      g.DrawString(dispPixel.Item1, SystemFonts.DefaultFont, dispPixel.Item2, pt);
                   }
                }
@@ -141,8 +141,8 @@ namespace ShimLib {
                Point ptH2 = new Point(this.DrawImage.Width, this.DrawImage.Height/2);
                Point ptV1 = new Point(this.DrawImage.Width/2, 0);
                Point ptV2 = new Point(this.DrawImage.Width/2, this.DrawImage.Height);
-               g.DrawLine(pen, RealToWindow(ptH1), RealToWindow(ptH2));
-               g.DrawLine(pen, RealToWindow(ptV1), RealToWindow(ptV2));
+               g.DrawLine(pen, RealToDraw(ptH1), RealToDraw(ptH2));
+               g.DrawLine(pen, RealToDraw(ptV1), RealToDraw(ptV2));
                pen.Dispose();
             }
          }
@@ -196,7 +196,7 @@ namespace ShimLib {
          }
 
          if (this.ShowPixelInfo) {
-            PointF ptReal = this.WindowToReal(e.Location);
+            PointF ptReal = this.DrawToReal(e.Location);
             Point ptRealInt = new Point((int)Math.Floor(ptReal.X), (int)Math.Floor(ptReal.Y));
             Color col = Color.Black;
             if (this.DrawImage != null) {
