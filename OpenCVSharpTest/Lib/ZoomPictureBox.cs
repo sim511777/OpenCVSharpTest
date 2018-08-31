@@ -28,6 +28,8 @@ namespace ShimLib {
       public bool ShowPixelInfo { get; set; } = true;
       public bool DrawPixelValue { get; set; } = true;
       public float DrawPixelValueZoom { get; set; } = 30f;
+      public bool DrawCenterLine { get; set; } = true;
+      public Color CenterLineColor { get; set; } = Color.Yellow;
 
       public bool AxisXInvert { get; set; } = false;
       public bool AxisYInvert { get; set; } = false;
@@ -101,10 +103,15 @@ namespace ShimLib {
 
       private void ZoomPictureBox_Paint(object sender, PaintEventArgs e) {
          var g = e.Graphics;
-         g.InterpolationMode = InterpolationMode.NearestNeighbor;
-         g.PixelOffsetMode = PixelOffsetMode.Half;
+
          if (this.DrawImage != null) {
+            g.InterpolationMode = InterpolationMode.NearestNeighbor;
+            g.PixelOffsetMode = PixelOffsetMode.Half;
+            
+            // 이미지 표시
             g.DrawImage(this.DrawImage, this.Pan.Width, this.Pan.Height, this.DrawImage.Width*this.Zoom, this.DrawImage.Height*this.Zoom);
+            
+            // 이미지 개별 픽셀 값 표시
             if (this.DrawPixelValue && this.Zoom >= this.DrawPixelValueZoom) {
                PointF ptMin = this.WindowToReal(new Point(0, 0));
                PointF ptMax = this.WindowToReal(new Point(this.ClientSize.Width, this.ClientSize.Height));
@@ -125,7 +132,22 @@ namespace ShimLib {
                   }
                }
             }
+
+            // 센터라인 표시
+            if (this.DrawCenterLine) {
+               Pen pen = new Pen(this.CenterLineColor);
+               pen.DashStyle = DashStyle.Dot;
+               Point ptH1 = new Point(0, this.DrawImage.Height/2);
+               Point ptH2 = new Point(this.DrawImage.Width, this.DrawImage.Height/2);
+               Point ptV1 = new Point(this.DrawImage.Width/2, 0);
+               Point ptV2 = new Point(this.DrawImage.Width/2, this.DrawImage.Height);
+               g.DrawLine(pen, RealToWindow(ptH1), RealToWindow(ptH2));
+               g.DrawLine(pen, RealToWindow(ptV1), RealToWindow(ptV2));
+               pen.Dispose();
+            }
          }
+
+         // 상단 픽셀 정보 표시
          var drawSize = g.MeasureString(this.pixelInfo, SystemFonts.DefaultFont);
          g.FillRectangle(Brushes.White, 0, 0, drawSize.Width, drawSize.Height);
          g.DrawString(pixelInfo, SystemFonts.DefaultFont, Brushes.Black, 0, 0);
