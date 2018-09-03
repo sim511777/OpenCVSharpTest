@@ -392,7 +392,8 @@ namespace OpenCVSharpTest {
          float[] data = Enumerable.Repeat(1f, 9).ToArray();
 
          var kernel = new Mat(3, 3, MatType.CV_32FC1, data);
-         kernel /= kernel.Sum().Val0;
+         //kernel /= kernel.Sum().Val0;
+         kernel = kernel.Normalize(normType:NormTypes.L1);
 
          var matDst = matSrc
             .CvtColor(ColorConversionCodes.BGR2GRAY)
