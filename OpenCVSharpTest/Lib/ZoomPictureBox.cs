@@ -82,6 +82,18 @@ namespace ShimLib {
          return new PointF((int)wndX, (int)wndY);
       }
 
+      int pseudo_div = 32;
+      Brush[] pseudo = {
+         Brushes.White,      // 0~31
+         Brushes.LightCyan,  // 32~63           // blue
+         Brushes.DodgerBlue,  // 63~95
+         Brushes.Yellow,     // 96~127
+         Brushes.Brown,      // 128~159         // green
+         Brushes.Magenta,    // 160~191
+         Brushes.Red    ,    // 192~223         // red
+         Brushes.Black,      // 224~255
+      };
+
       private Tuple<string, Brush> GetBuiltinDispPixelValue(int x, int y) {
          if (this.DrawImage == null)
             return Tuple.Create("0", Brushes.Black);
@@ -97,7 +109,7 @@ namespace ShimLib {
             (this.DrawImage.PixelFormat == PixelFormat.Format8bppIndexed)
             ? string.Format("{0}", (col.R + col.G + col.B)/3)
             : string.Format("{0},{1},{2}", col.R, col.G, col.B);
-         var br = ((col.R + col.G + col.B) / 3 < 128) ? Brushes.Yellow : Brushes.Blue;
+         var br = pseudo[(col.R + col.G + col.B) / 3 / pseudo_div];
          return Tuple.Create(text, br);
       }
 
