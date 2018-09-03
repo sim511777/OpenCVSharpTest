@@ -148,7 +148,7 @@ namespace ShimLib {
             // 센터라인 표시
             if (this.DrawCenterLine) {
                Pen pen = new Pen(this.CenterLineColor);
-               pen.DashStyle = DashStyle.Dot;
+               pen.DashStyle = DashStyle.Dash;
                Point ptH1 = new Point(0, this.DrawImage.Height/2);
                Point ptH2 = new Point(this.DrawImage.Width, this.DrawImage.Height/2);
                Point ptV1 = new Point(this.DrawImage.Width/2, 0);
