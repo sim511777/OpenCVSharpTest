@@ -121,7 +121,7 @@ namespace ShimLib {
             g.PixelOffsetMode = PixelOffsetMode.Half;
             
             // 이미지 표시
-            g.DrawImage(this.DrawImage, this.Pan.Width, this.Pan.Height, this.DrawImage.Width*this.Zoom, this.DrawImage.Height*this.Zoom);
+            g.DrawImage(this.DrawImage, this.Pan.Width-0.5f*this.Zoom, this.Pan.Height-0.5f*this.Zoom, this.DrawImage.Width*this.Zoom, this.DrawImage.Height*this.Zoom);
             
             // 이미지 개별 픽셀 값 표시
             if (this.DrawPixelValue && this.Zoom >= this.DrawPixelValueZoom) {
@@ -209,7 +209,7 @@ namespace ShimLib {
 
          if (this.ShowPixelInfo) {
             PointF ptReal = this.DrawToReal(e.Location);
-            Point ptRealInt = new Point((int)Math.Floor(ptReal.X), (int)Math.Floor(ptReal.Y));
+            Point ptRealInt = new Point((int)Math.Round(ptReal.X), (int)Math.Round(ptReal.Y));
             Color col = Color.Black;
             if (this.DrawImage != null) {
                if (ptRealInt.X >= 0 && ptRealInt.X < this.DrawImage.Width && ptRealInt.Y >= 0 && ptRealInt.Y < this.DrawImage.Height) {
