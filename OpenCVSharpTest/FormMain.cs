@@ -14,11 +14,27 @@ using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using OpenCvSharp.Blob;
 using ShimLib;
+using System.Reflection;
+using System.Collections;
+using CvSize = OpenCvSharp.Size;
+using CvPoint = OpenCvSharp.Point;
 
 namespace OpenCVSharpTest {
    public partial class FormMain : Form {
       public FormMain() {
          InitializeComponent();
+         this.InitFunctionList();
+      }
+
+      private void InitFunctionList() {
+         var type = typeof(FormMain);
+         MethodInfo[] mis = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic);
+         var list = mis.Where(m => m.Name.StartsWith("IP_")).Select(m => new MethodInfoItem(m)).ToArray();
+         this.cbxFunc.DisplayMember = "Display";
+         this.cbxFunc.ValueMember = "MethodInfo";
+         this.cbxFunc.Items.AddRange(list);
+         if (this.cbxFunc.Items.Count>0)
+            this.cbxFunc.SelectedIndex = 0;
       }
 
       private Tuple<string, Brush> GetDstPixelValue(int x, int y) {
@@ -116,6 +132,13 @@ namespace OpenCVSharpTest {
       }
 
       public static void DrawHistogram(Mat mat, Chart cht) {
+         if (mat == null) {
+            cht.Series[0].Enabled = false;
+            cht.Series[1].Enabled = false;
+            cht.Series[2].Enabled = false;
+            return;
+         }
+
          MatType matType = mat.Type();
          if (matType == MatType.CV_8UC1) {
             var histo = GetHistogram(mat, 0);
@@ -123,6 +146,9 @@ namespace OpenCVSharpTest {
             var histoAccum = histo.Select(val => acc += val).ToArray();
             DrawHistogram(histo, cht.Series[0], "Gray", Color.Black);
             DrawHistogram(histoAccum, cht.Series[1], "Accum", Color.Red, AxisType.Secondary);
+            cht.Series[0].Enabled = true;
+            cht.Series[1].Enabled = true;
+            cht.Series[2].Enabled = false;
          } else if (matType == MatType.CV_8UC3 || matType == MatType.CV_8UC4) {
             var histR = GetHistogram(mat, 2);
             var histG = GetHistogram(mat, 1);
@@ -130,6 +156,9 @@ namespace OpenCVSharpTest {
             DrawHistogram(histR, cht.Series[0], "R", Color.Red);
             DrawHistogram(histG, cht.Series[1], "G", Color.Green);
             DrawHistogram(histB, cht.Series[2], "B", Color.Blue);
+            cht.Series[0].Enabled = true;
+            cht.Series[1].Enabled = true;
+            cht.Series[2].Enabled = true;
          }
       }
 
@@ -161,249 +190,244 @@ namespace OpenCVSharpTest {
          return histo;
       }
 
-      private static void DrawMat(Mat mat, ZoomPictureBox pbx) {
+      private static void DrawMat(Bitmap bmp, ZoomPictureBox pbx) {
          var bmpOld = pbx.Image;
-         var bmpSrc = mat.ToBitmap();
+         var bmpSrc = bmp;
          pbx.DrawImage = bmpSrc;
          pbx.Invalidate();
          if (bmpOld != null)
             bmpOld.Dispose();
       }
 
-      // 이미지 처리
-      unsafe private void ProcessImage(Mat matSrc) {
-         var oldTime = DateTime.Now;
-
-         DrawMat(matSrc, this.pbxSrc);
-         DrawHistogram(matSrc, this.chtSrc);
-
-
-         // 1. GrayScale 
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-
-         // 2. Histogram Equalize
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).EqualizeHist();
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-
-         // 3. Threshhold (absolute)
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Binary);
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-
-         // 4. Edge (Canny)
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(5, 200);
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-
-         // 5. Blur (Gaussian)
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).GaussianBlur(new OpenCvSharp.Size(5, 5), 5);
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-
-         // 6. Erode
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu).Erode(new Mat(), iterations:2);
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-
-         // 7. Blob
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
-         //var blobs = new CvBlobs();
-         //blobs.Label(matDst);
-         //var matDsp = new Mat(matSrc.Rows, matSrc.Cols, MatType.CV_8UC3);
-         //blobs.RenderBlobs(matDsp, matDsp);
-
-         //DrawMat(matDsp, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-
-         //matDsp.Dispose();
-         //matDst.Dispose();
-
-
-         // 8. 명암/밝기 변환
-         //// BGR to HSV변환
-         //matSrc = matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
-         //// 채널 분리
-         //var hsvChannels = matSrc.Split();
-         //// 변환
-         //double x1 = 60;
-         //double y1 = 0;
-         //double x2 = 255;
-         //double y2 = 255;
-         //double scale = (y2-y1)/(x2-x1);
-         //double offset = (x2*y1-x1*y2)/(x2-x1);
-         //hsvChannels[2].ConvertTo(hsvChannels[2], MatType.CV_8UC1, scale, offset);
-         //// 채널 병합
-         //var matDst = new Mat();
-         //Cv2.Merge(hsvChannels, matDst);
-         //// HSV to BGR변환
-         //matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
-
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-
-         // 9. 픽셀 버퍼 제어 RGB by 
-         //var matDst = new Mat(matSrc.Rows, matSrc.Cols, MatType.CV_8UC3);
-         //for (int row=0; row<matDst.Rows; row++) {
-         //   for (int col=0; col<matDst.Cols; col++) {
-         //      Vec3b color = matSrc.Get<Vec3b>(row, col);
-         //      color.Item0 = (byte)(255-color.Item0);
-         //      color.Item1 = (byte)(255-color.Item1);
-         //      color.Item2 = (byte)(255-color.Item2);
-         //      matDst.Set(row, col, color);
-         //   }
-         //}
-
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-         // 픽셀 버퍼 제어 비교 테스트
-         //var matDst = new Mat();
-         //Cv2.BitwiseNot(matSrc.CvtColor(ColorConversionCodes.BGR2GRAY), matDst);
-
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-
-         // 10. 픽셀 버퍼 제어 Gray by API
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-         //for (int row = 0; row < matDst.Rows; row++) {
-         //   for (int col = 0; col < matDst.Cols; col++) {
-         //      byte color = matDst.Get<byte>(row, col);
-         //      matDst.Set(row, col, (byte)(~color));
-         //   }
-         //}
-
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-
-         // 11. 픽셀 버퍼 제어 Gray by IntPtr
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-         //for (int row = 0; row < matDst.Rows; row++) {
-         //   IntPtr pp = matDst.Ptr(row);
-         //   for (int col = 0; col < matDst.Cols; col++, pp += 1) {
-         //      byte color = Marshal.ReadByte(pp);
-         //      Marshal.WriteByte(pp, (byte)~color);
-         //   }
-         //}
-
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-         // 12. 픽셀 버퍼 제어 Gray by pointer
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-         //byte* buf = matDst.DataPointer;
-         //int bw = matDst.Width;
-         //int bh = matDst.Height;
-         //int stride = (int)matDst.Step();
-         //for (int y = 0; y < bh; y++) {
-         //   byte* pp = buf + stride * y;
-         //   for (int x = 0; x < bw; x++, pp++) {
-         //      *pp = (byte)~(*pp);
-         //   }
-         //}
-
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-         // 13. 픽셀 버퍼 제어 Gray by C Dll
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-
-         //IpDll.InverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-         // 14. 픽셀 버퍼 제어 Gray by MMX(SSE) Dll
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-
-         //IpDll.SseInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-         // 15. 픽셀 버퍼 제어 Gray by MMX(AVX) Dll
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-
-         //IpDll.AvxInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-         // 16. 픽셀 버퍼 제어 Gray by MMX(Vector class) Dll
-         //var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-
-         //IpDll.VecInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-
-         // 17. Crop
-         //Rect roi = new Rect(10, 10, 100, 100);
-         //Mat matDst = new Mat(matSrc, roi);
-
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-
-         // 18. Crop Copy
-         //Rect roi = new Rect(100, 100, 200, 200);
-         //Mat matCrop = new Mat(matSrc, roi)  // 크롭 이미지 생성 하여 수정
-         //   .CvtColor(ColorConversionCodes.BGR2GRAY)
-         //   .Threshold(128, 255, ThresholdTypes.Binary)
-         //   .CvtColor(ColorConversionCodes.GRAY2BGR);
-         //Mat matDst = matSrc.Clone();
-         //Mat matRoi = new Mat(matDst, roi);  // 부분 참조 이미지 생성
-         //matCrop.CopyTo(matRoi);             // 수정된 이미지를 참조 버퍼에 복사
-
-         //DrawMat(matDst, this.pbxDst);
-         //DrawHistogram(matDst, this.chtDst);
-         //matDst.Dispose();
-
-         // 19. Kernel
-         float[] data = Enumerable.Repeat(1f, 9).ToArray();
-
-         var kernel = new Mat(3, 3, MatType.CV_32FC1, data);
-         //kernel /= kernel.Sum().Val0;
-         kernel = kernel.Normalize(normType:NormTypes.L1);
-
-         var matDst = matSrc
-            .CvtColor(ColorConversionCodes.BGR2GRAY)
-            .Filter2D(MatType.CV_8UC1, kernel, borderType:BorderTypes.Default);
-
-         kernel.Dispose();
-
-         DrawMat(matDst, this.pbxDst);
+      private Mat matSrc = null;
+      private void IP_CvtColor(ColorConversionCodes code) {
+         var matDst = matSrc.CvtColor(code);
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
          DrawHistogram(matDst, this.chtDst);
          matDst.Dispose();
+      }
+
+      private void IP_EqualizeHist() {
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).EqualizeHist();
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_Threshold(double thresh, double maxvalue, ThresholdTypes type) {
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(thresh, maxvalue, type);
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_Canny(double threshold1, double threshold2, int apertureSize = 3, bool L2gradient = false) {
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(threshold1, threshold2, apertureSize, L2gradient);
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_GaussianBlur(double ksize = 5, double sigmaX = 5, double sigmaY = 5, BorderTypes borderType = BorderTypes.Reflect101) {
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).GaussianBlur(new OpenCvSharp.Size(ksize, ksize), sigmaX, sigmaY, borderType);
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_Erode(int iterations = 1) {
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu).Erode(new Mat(), iterations: iterations);
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_Blob() {
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+         var blobs = new CvBlobs();
+         blobs.Label(matDst);
+         var matDsp = new Mat(matSrc.Rows, matSrc.Cols, MatType.CV_8UC3);
+         blobs.RenderBlobs(matDsp, matDsp);
+         DrawMat(matDsp.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDsp.Dispose();
+         matDst.Dispose();
+      }
+
+      private void IP_ContrastBrightness(double x1 = 0, double y1 = 0, double x2 = 255, double y2 = 255) {
+         // BGR to HSV변환
+         matSrc = matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
+         // 채널 분리
+         var hsvChannels = matSrc.Split();
+         // 변환
+         double scale = (y2 - y1) / (x2 - x1);
+         double offset = (x2 * y1 - x1 * y2) / (x2 - x1);
+         hsvChannels[2].ConvertTo(hsvChannels[2], MatType.CV_8UC1, scale, offset);
+         // 채널 병합
+         var matDst = new Mat();
+         Cv2.Merge(hsvChannels, matDst);
+         // HSV to BGR변환
+         matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_PixelBuffer_ByApi_Rgb() {
+         var matDst = new Mat(matSrc.Rows, matSrc.Cols, MatType.CV_8UC3);
+         for (int row = 0; row < matDst.Rows; row++) {
+            for (int col = 0; col < matDst.Cols; col++) {
+               Vec3b color = matSrc.Get<Vec3b>(row, col);
+               color.Item0 = (byte)(255 - color.Item0);
+               color.Item1 = (byte)(255 - color.Item1);
+               color.Item2 = (byte)(255 - color.Item2);
+               matDst.Set(row, col, color);
+            }
+         }
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_PixelBuffer_ByApi() {
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         for (int row = 0; row < matDst.Rows; row++) {
+            for (int col = 0; col < matDst.Cols; col++) {
+               byte color = matDst.Get<byte>(row, col);
+               matDst.Set(row, col, (byte)(~color));
+            }
+         }
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_PixelBuffer_ByIntPtr() {
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         for (int row = 0; row < matDst.Rows; row++) {
+            IntPtr pp = matDst.Ptr(row);
+            for (int col = 0; col < matDst.Cols; col++, pp += 1) {
+               byte color = Marshal.ReadByte(pp);
+               Marshal.WriteByte(pp, (byte)~color);
+            }
+         }
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      unsafe private void IP_PixelBuffer_ByPointer() {
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         byte* buf = matDst.DataPointer;
+         int bw = matDst.Width;
+         int bh = matDst.Height;
+         int stride = (int)matDst.Step();
+         for (int y = 0; y < bh; y++) {
+            byte* pp = buf + stride * y;
+            for (int x = 0; x < bw; x++, pp++) {
+               *pp = (byte)~(*pp);
+            }
+         }
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_PixelBuffer_ByDll_C() {
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         IpDll.InverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_PixelBuffer_ByDll_Sse() {
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         IpDll.SseInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_PixelBuffer_ByDll_Avx() {
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         IpDll.AvxInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_PixelBuffer_ByDll_VectorClass() {
+         var matDst = matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+         IpDll.VecInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_Crop(int x=10, int y=10, int width=100, int height=100) {
+         Rect roi = new Rect(x, y, width, height);
+         Mat matDst = new Mat(matSrc, roi);
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_CropAndCopy(int x=100, int y=100, int width=100, int height=100) {
+         Rect roi = new Rect(x, y, width, height);
+         Mat matCrop = new Mat(matSrc, roi)  // 크롭 이미지 생성 하여 수정
+            .CvtColor(ColorConversionCodes.BGR2GRAY)
+            .Threshold(128, 255, ThresholdTypes.Binary)
+            .CvtColor(ColorConversionCodes.GRAY2BGR);
+         Mat matDst = matSrc.Clone();
+         Mat matRoi = new Mat(matDst, roi);  // 부분 참조 이미지 생성
+         matCrop.CopyTo(matRoi);             // 수정된 이미지를 참조 버퍼에 복사
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+      private void IP_Kernel() {
+         float[] data = Enumerable.Repeat(1f, 9).ToArray();
+         var kernel = new Mat(3, 3, MatType.CV_32FC1, data);
+         kernel = kernel.Normalize(normType: NormTypes.L1);
+         var matDst = matSrc
+            .CvtColor(ColorConversionCodes.BGR2GRAY)
+            .Filter2D(MatType.CV_8UC1, kernel, borderType: BorderTypes.Default);
+         kernel.Dispose();
+         DrawMat(matDst.ToBitmap(), this.pbxDst);
+         DrawHistogram(matDst, this.chtDst);
+         matDst.Dispose();
+      }
+
+
+      // 이미지 처리
+      private void ProcessImage(Mat matSrc) {
+         var oldTime = DateTime.Now;
+
+         DrawMat(matSrc.ToBitmap(), this.pbxSrc);
+         DrawHistogram(matSrc, this.chtSrc);
+         
+         this.matSrc = matSrc;
+         var method = (this.cbxFunc.SelectedItem as MethodInfoItem)?.MethodInfo;
+         var prmNameList = method.GetParameters().Select(prm => prm.Name);
+         if (method != null) {
+            try {
+               var adapter = this.grdParameter.SelectedObject as DictionaryPropertyGridAdapter;
+               var props = adapter.GetProperties(null).Cast<PropertyDescriptor>();
+               var prmList = prmNameList.Select(prmName => props.First(prop => prop.Name == prmName).GetValue(null)).ToArray();
+               object r = method.Invoke(this, prmList);
+               this.lblLog.Text = $"IP Succ";
+            } catch (TargetInvocationException ex) {
+               DrawMat(null, this.pbxDst);
+               DrawHistogram(null, this.chtDst);
+               this.lblLog.Text = $"IP Fail: {ex.InnerException.Message}";
+            } catch (Exception ex) {
+               DrawMat(null, this.pbxDst);
+               DrawHistogram(null, this.chtDst);
+               this.lblLog.Text = $"IP Fail: {ex.Message}";
+            }
+         }
 
          this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
       }
@@ -416,6 +440,27 @@ namespace OpenCVSharpTest {
       private void btnFitZoom_Click(object sender, EventArgs e) {
          this.pbxSrc.FitZoom();
          this.pbxDst.FitZoom();
+      }
+
+      private void cbxTest_SelectedIndexChanged(object sender, EventArgs e) {
+         var methodInfo = ((MethodInfoItem)this.cbxFunc.SelectedItem).MethodInfo;
+         var paramInfos = methodInfo.GetParameters();
+         Hashtable dict = new Hashtable();
+         foreach (var pi in paramInfos) {
+            dict[pi.Name] = pi.HasDefaultValue ? pi.DefaultValue : Activator.CreateInstance(pi.ParameterType);
+         }
+
+         grdParameter.SelectedObject = new DictionaryPropertyGridAdapter(dict);
+      }
+   }
+
+   class MethodInfoItem {
+      public string Display { get; set; }
+      public MethodInfo MethodInfo { get; set; }
+      public MethodInfoItem(MethodInfo mi) {
+         var paramDisp = string.Join(", ", mi.GetParameters().Select(prm => $"{prm.ParameterType.Name} {prm.Name}").ToArray());
+         this.Display = $"{mi.ReturnType.Name} {mi.Name}({paramDisp})";
+         this.MethodInfo = mi;
       }
    }
 }

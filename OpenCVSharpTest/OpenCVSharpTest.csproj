@@ -74,6 +74,7 @@
     </Compile>
     <Compile Include="IpDll.cs" />
     <Compile Include="Lib\Crc32.cs" />
+    <Compile Include="Lib\DictionaryPropertyGrid.cs" />
     <Compile Include="Lib\ExtensionMethods.cs" />
     <Compile Include="Lib\FormBackgroundWorker.cs">
       <SubType>Form</SubType>
