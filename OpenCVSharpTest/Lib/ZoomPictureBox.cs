@@ -13,7 +13,7 @@ using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 
 namespace ShimLib {
-   class ZoomPictureBox : PictureBox {
+   public class ZoomPictureBox : PictureBox {
       private Func<int, int, Tuple<string, Brush>> FuncGetPixelValueDisp = null;
 
       // 이미지

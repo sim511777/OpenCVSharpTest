@@ -49,40 +49,40 @@
          System.Windows.Forms.DataVisualization.Charting.Series series19 = new System.Windows.Forms.DataVisualization.Charting.Series();
          System.Windows.Forms.DataVisualization.Charting.Series series20 = new System.Windows.Forms.DataVisualization.Charting.Series();
          this.panel1 = new System.Windows.Forms.Panel();
-         this.btnFitZoom = new System.Windows.Forms.Button();
+         this.groupBox3 = new System.Windows.Forms.GroupBox();
+         this.grdParameter = new System.Windows.Forms.PropertyGrid();
+         this.label2 = new System.Windows.Forms.Label();
+         this.cbxFunc = new System.Windows.Forms.ComboBox();
+         this.label1 = new System.Windows.Forms.Label();
+         this.groupBox2 = new System.Windows.Forms.GroupBox();
          this.btnZoomReset = new System.Windows.Forms.Button();
-         this.btnLive = new System.Windows.Forms.Button();
+         this.btnFitZoom = new System.Windows.Forms.Button();
+         this.groupBox1 = new System.Windows.Forms.GroupBox();
          this.btnLenna = new System.Windows.Forms.Button();
-         this.btnClipboard = new System.Windows.Forms.Button();
          this.btnLoad = new System.Windows.Forms.Button();
+         this.btnClipboard = new System.Windows.Forms.Button();
+         this.btnLive = new System.Windows.Forms.Button();
          this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
          this.timer1 = new System.Windows.Forms.Timer(this.components);
          this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
          this.chtDst = new System.Windows.Forms.DataVisualization.Charting.Chart();
+         this.pbxDst = new ShimLib.ZoomPictureBox();
+         this.pbxSrc = new ShimLib.ZoomPictureBox();
          this.chtSrc = new System.Windows.Forms.DataVisualization.Charting.Chart();
          this.statusStrip1 = new System.Windows.Forms.StatusStrip();
          this.lblGrabTime = new System.Windows.Forms.ToolStripStatusLabel();
          this.lblProcessingTime = new System.Windows.Forms.ToolStripStatusLabel();
-         this.cbxFunc = new System.Windows.Forms.ComboBox();
-         this.groupBox1 = new System.Windows.Forms.GroupBox();
-         this.groupBox2 = new System.Windows.Forms.GroupBox();
-         this.groupBox3 = new System.Windows.Forms.GroupBox();
-         this.grdParameter = new System.Windows.Forms.PropertyGrid();
          this.lblLog = new System.Windows.Forms.ToolStripStatusLabel();
-         this.label1 = new System.Windows.Forms.Label();
-         this.label2 = new System.Windows.Forms.Label();
-         this.pbxDst = new ShimLib.ZoomPictureBox();
-         this.pbxSrc = new ShimLib.ZoomPictureBox();
          this.panel1.SuspendLayout();
+         this.groupBox3.SuspendLayout();
+         this.groupBox2.SuspendLayout();
+         this.groupBox1.SuspendLayout();
          this.tableLayoutPanel1.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)(this.chtDst)).BeginInit();
-         ((System.ComponentModel.ISupportInitialize)(this.chtSrc)).BeginInit();
-         this.statusStrip1.SuspendLayout();
-         this.groupBox1.SuspendLayout();
-         this.groupBox2.SuspendLayout();
-         this.groupBox3.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).BeginInit();
+         ((System.ComponentModel.ISupportInitialize)(this.chtSrc)).BeginInit();
+         this.statusStrip1.SuspendLayout();
          this.SuspendLayout();
          // 
          // panel1
@@ -96,15 +96,73 @@
          this.panel1.Size = new System.Drawing.Size(379, 630);
          this.panel1.TabIndex = 0;
          // 
-         // btnFitZoom
+         // groupBox3
          // 
-         this.btnFitZoom.Location = new System.Drawing.Point(6, 49);
-         this.btnFitZoom.Name = "btnFitZoom";
-         this.btnFitZoom.Size = new System.Drawing.Size(91, 23);
-         this.btnFitZoom.TabIndex = 3;
-         this.btnFitZoom.Text = "Fit";
-         this.btnFitZoom.UseVisualStyleBackColor = true;
-         this.btnFitZoom.Click += new System.EventHandler(this.btnFitZoom_Click);
+         this.groupBox3.Controls.Add(this.grdParameter);
+         this.groupBox3.Controls.Add(this.label2);
+         this.groupBox3.Controls.Add(this.cbxFunc);
+         this.groupBox3.Controls.Add(this.label1);
+         this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
+         this.groupBox3.Location = new System.Drawing.Point(0, 184);
+         this.groupBox3.Name = "groupBox3";
+         this.groupBox3.Size = new System.Drawing.Size(379, 326);
+         this.groupBox3.TabIndex = 6;
+         this.groupBox3.TabStop = false;
+         this.groupBox3.Text = "Test";
+         // 
+         // grdParameter
+         // 
+         this.grdParameter.Dock = System.Windows.Forms.DockStyle.Top;
+         this.grdParameter.Location = new System.Drawing.Point(3, 61);
+         this.grdParameter.Name = "grdParameter";
+         this.grdParameter.PropertySort = System.Windows.Forms.PropertySort.Categorized;
+         this.grdParameter.Size = new System.Drawing.Size(373, 232);
+         this.grdParameter.TabIndex = 3;
+         this.grdParameter.ToolbarVisible = false;
+         // 
+         // label2
+         // 
+         this.label2.AutoSize = true;
+         this.label2.Dock = System.Windows.Forms.DockStyle.Top;
+         this.label2.Location = new System.Drawing.Point(3, 49);
+         this.label2.Name = "label2";
+         this.label2.Size = new System.Drawing.Size(122, 12);
+         this.label2.TabIndex = 8;
+         this.label2.Text = "Function Parameters";
+         // 
+         // cbxFunc
+         // 
+         this.cbxFunc.Dock = System.Windows.Forms.DockStyle.Top;
+         this.cbxFunc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+         this.cbxFunc.FormattingEnabled = true;
+         this.cbxFunc.Location = new System.Drawing.Point(3, 29);
+         this.cbxFunc.Name = "cbxFunc";
+         this.cbxFunc.Size = new System.Drawing.Size(373, 20);
+         this.cbxFunc.TabIndex = 2;
+         this.cbxFunc.SelectedIndexChanged += new System.EventHandler(this.cbxTest_SelectedIndexChanged);
+         // 
+         // label1
+         // 
+         this.label1.AutoSize = true;
+         this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+         this.label1.Location = new System.Drawing.Point(3, 17);
+         this.label1.Name = "label1";
+         this.label1.Size = new System.Drawing.Size(82, 12);
+         this.label1.TabIndex = 7;
+         this.label1.Text = "Test Function";
+         // 
+         // groupBox2
+         // 
+         this.groupBox2.AutoSize = true;
+         this.groupBox2.Controls.Add(this.btnZoomReset);
+         this.groupBox2.Controls.Add(this.btnFitZoom);
+         this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
+         this.groupBox2.Location = new System.Drawing.Point(0, 92);
+         this.groupBox2.Name = "groupBox2";
+         this.groupBox2.Size = new System.Drawing.Size(379, 92);
+         this.groupBox2.TabIndex = 5;
+         this.groupBox2.TabStop = false;
+         this.groupBox2.Text = "Zoom";
          // 
          // btnZoomReset
          // 
@@ -116,15 +174,30 @@
          this.btnZoomReset.UseVisualStyleBackColor = true;
          this.btnZoomReset.Click += new System.EventHandler(this.btnZoomReset_Click);
          // 
-         // btnLive
+         // btnFitZoom
          // 
-         this.btnLive.Location = new System.Drawing.Point(109, 49);
-         this.btnLive.Name = "btnLive";
-         this.btnLive.Size = new System.Drawing.Size(97, 23);
-         this.btnLive.TabIndex = 3;
-         this.btnLive.Text = "Live";
-         this.btnLive.UseVisualStyleBackColor = true;
-         this.btnLive.Click += new System.EventHandler(this.btnLive_Click);
+         this.btnFitZoom.Location = new System.Drawing.Point(6, 49);
+         this.btnFitZoom.Name = "btnFitZoom";
+         this.btnFitZoom.Size = new System.Drawing.Size(91, 23);
+         this.btnFitZoom.TabIndex = 3;
+         this.btnFitZoom.Text = "Fit";
+         this.btnFitZoom.UseVisualStyleBackColor = true;
+         this.btnFitZoom.Click += new System.EventHandler(this.btnFitZoom_Click);
+         // 
+         // groupBox1
+         // 
+         this.groupBox1.AutoSize = true;
+         this.groupBox1.Controls.Add(this.btnLenna);
+         this.groupBox1.Controls.Add(this.btnLoad);
+         this.groupBox1.Controls.Add(this.btnClipboard);
+         this.groupBox1.Controls.Add(this.btnLive);
+         this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+         this.groupBox1.Location = new System.Drawing.Point(0, 0);
+         this.groupBox1.Name = "groupBox1";
+         this.groupBox1.Size = new System.Drawing.Size(379, 92);
+         this.groupBox1.TabIndex = 4;
+         this.groupBox1.TabStop = false;
+         this.groupBox1.Text = "Image Source";
          // 
          // btnLenna
          // 
@@ -136,6 +209,16 @@
          this.btnLenna.UseVisualStyleBackColor = true;
          this.btnLenna.Click += new System.EventHandler(this.btnLenna_Click);
          // 
+         // btnLoad
+         // 
+         this.btnLoad.Location = new System.Drawing.Point(109, 20);
+         this.btnLoad.Name = "btnLoad";
+         this.btnLoad.Size = new System.Drawing.Size(97, 23);
+         this.btnLoad.TabIndex = 2;
+         this.btnLoad.Text = "Load";
+         this.btnLoad.UseVisualStyleBackColor = true;
+         this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+         // 
          // btnClipboard
          // 
          this.btnClipboard.Location = new System.Drawing.Point(6, 49);
@@ -146,15 +229,15 @@
          this.btnClipboard.UseVisualStyleBackColor = true;
          this.btnClipboard.Click += new System.EventHandler(this.btnClipboard_Click);
          // 
-         // btnLoad
+         // btnLive
          // 
-         this.btnLoad.Location = new System.Drawing.Point(109, 20);
-         this.btnLoad.Name = "btnLoad";
-         this.btnLoad.Size = new System.Drawing.Size(97, 23);
-         this.btnLoad.TabIndex = 2;
-         this.btnLoad.Text = "Load";
-         this.btnLoad.UseVisualStyleBackColor = true;
-         this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+         this.btnLive.Location = new System.Drawing.Point(109, 49);
+         this.btnLive.Name = "btnLive";
+         this.btnLive.Size = new System.Drawing.Size(97, 23);
+         this.btnLive.TabIndex = 3;
+         this.btnLive.Text = "Live";
+         this.btnLive.UseVisualStyleBackColor = true;
+         this.btnLive.Click += new System.EventHandler(this.btnLive_Click);
          // 
          // dlgOpen
          // 
@@ -272,6 +355,56 @@
          this.chtDst.TabIndex = 0;
          this.chtDst.Text = "chart1";
          // 
+         // pbxDst
+         // 
+         this.pbxDst.AxisXInvert = false;
+         this.pbxDst.AxisXYFlip = false;
+         this.pbxDst.AxisYInvert = false;
+         this.pbxDst.CenterLineColor = System.Drawing.Color.Yellow;
+         this.pbxDst.Dock = System.Windows.Forms.DockStyle.Fill;
+         this.pbxDst.DrawCenterLine = true;
+         this.pbxDst.DrawImage = null;
+         this.pbxDst.DrawPixelValue = true;
+         this.pbxDst.DrawPixelValueZoom = 30F;
+         this.pbxDst.EnableMousePan = true;
+         this.pbxDst.EnableWheelZoom = true;
+         this.pbxDst.Location = new System.Drawing.Point(401, 3);
+         this.pbxDst.Name = "pbxDst";
+         this.pbxDst.Pan = new System.Drawing.SizeF(0F, 0F);
+         this.pbxDst.ShowPixelInfo = true;
+         this.pbxDst.Size = new System.Drawing.Size(393, 309);
+         this.pbxDst.TabIndex = 1;
+         this.pbxDst.TabStop = false;
+         this.pbxDst.Zoom = 1F;
+         this.pbxDst.ZoomMax = 100F;
+         this.pbxDst.ZoomMin = 0.1F;
+         this.pbxDst.ZoomStep = 1.2F;
+         // 
+         // pbxSrc
+         // 
+         this.pbxSrc.AxisXInvert = false;
+         this.pbxSrc.AxisXYFlip = false;
+         this.pbxSrc.AxisYInvert = false;
+         this.pbxSrc.CenterLineColor = System.Drawing.Color.Yellow;
+         this.pbxSrc.Dock = System.Windows.Forms.DockStyle.Fill;
+         this.pbxSrc.DrawCenterLine = true;
+         this.pbxSrc.DrawImage = null;
+         this.pbxSrc.DrawPixelValue = true;
+         this.pbxSrc.DrawPixelValueZoom = 30F;
+         this.pbxSrc.EnableMousePan = true;
+         this.pbxSrc.EnableWheelZoom = true;
+         this.pbxSrc.Location = new System.Drawing.Point(3, 3);
+         this.pbxSrc.Name = "pbxSrc";
+         this.pbxSrc.Pan = new System.Drawing.SizeF(0F, 0F);
+         this.pbxSrc.ShowPixelInfo = true;
+         this.pbxSrc.Size = new System.Drawing.Size(392, 309);
+         this.pbxSrc.TabIndex = 0;
+         this.pbxSrc.TabStop = false;
+         this.pbxSrc.Zoom = 1F;
+         this.pbxSrc.ZoomMax = 100F;
+         this.pbxSrc.ZoomMin = 0.1F;
+         this.pbxSrc.ZoomStep = 1.2F;
+         // 
          // chtSrc
          // 
          chartArea2.AxisX.LabelStyle.Interval = 20D;
@@ -387,144 +520,11 @@
          this.lblProcessingTime.Text = "proc time:";
          this.lblProcessingTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
          // 
-         // cbxFunc
-         // 
-         this.cbxFunc.Dock = System.Windows.Forms.DockStyle.Top;
-         this.cbxFunc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-         this.cbxFunc.FormattingEnabled = true;
-         this.cbxFunc.Location = new System.Drawing.Point(3, 29);
-         this.cbxFunc.Name = "cbxFunc";
-         this.cbxFunc.Size = new System.Drawing.Size(373, 20);
-         this.cbxFunc.TabIndex = 2;
-         this.cbxFunc.SelectedIndexChanged += new System.EventHandler(this.cbxTest_SelectedIndexChanged);
-         // 
-         // groupBox1
-         // 
-         this.groupBox1.AutoSize = true;
-         this.groupBox1.Controls.Add(this.btnLenna);
-         this.groupBox1.Controls.Add(this.btnLoad);
-         this.groupBox1.Controls.Add(this.btnClipboard);
-         this.groupBox1.Controls.Add(this.btnLive);
-         this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-         this.groupBox1.Location = new System.Drawing.Point(0, 0);
-         this.groupBox1.Name = "groupBox1";
-         this.groupBox1.Size = new System.Drawing.Size(379, 92);
-         this.groupBox1.TabIndex = 4;
-         this.groupBox1.TabStop = false;
-         this.groupBox1.Text = "Image Source";
-         // 
-         // groupBox2
-         // 
-         this.groupBox2.AutoSize = true;
-         this.groupBox2.Controls.Add(this.btnZoomReset);
-         this.groupBox2.Controls.Add(this.btnFitZoom);
-         this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-         this.groupBox2.Location = new System.Drawing.Point(0, 92);
-         this.groupBox2.Name = "groupBox2";
-         this.groupBox2.Size = new System.Drawing.Size(379, 92);
-         this.groupBox2.TabIndex = 5;
-         this.groupBox2.TabStop = false;
-         this.groupBox2.Text = "Zoom";
-         // 
-         // groupBox3
-         // 
-         this.groupBox3.Controls.Add(this.grdParameter);
-         this.groupBox3.Controls.Add(this.label2);
-         this.groupBox3.Controls.Add(this.cbxFunc);
-         this.groupBox3.Controls.Add(this.label1);
-         this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
-         this.groupBox3.Location = new System.Drawing.Point(0, 184);
-         this.groupBox3.Name = "groupBox3";
-         this.groupBox3.Size = new System.Drawing.Size(379, 326);
-         this.groupBox3.TabIndex = 6;
-         this.groupBox3.TabStop = false;
-         this.groupBox3.Text = "Test";
-         // 
-         // grdParameter
-         // 
-         this.grdParameter.Dock = System.Windows.Forms.DockStyle.Top;
-         this.grdParameter.Location = new System.Drawing.Point(3, 61);
-         this.grdParameter.Name = "grdParameter";
-         this.grdParameter.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-         this.grdParameter.Size = new System.Drawing.Size(373, 232);
-         this.grdParameter.TabIndex = 3;
-         this.grdParameter.ToolbarVisible = false;
-         // 
          // lblLog
          // 
          this.lblLog.Name = "lblLog";
          this.lblLog.Size = new System.Drawing.Size(27, 17);
          this.lblLog.Text = "log:";
-         // 
-         // label1
-         // 
-         this.label1.AutoSize = true;
-         this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-         this.label1.Location = new System.Drawing.Point(3, 17);
-         this.label1.Name = "label1";
-         this.label1.Size = new System.Drawing.Size(82, 12);
-         this.label1.TabIndex = 7;
-         this.label1.Text = "Test Function";
-         // 
-         // label2
-         // 
-         this.label2.AutoSize = true;
-         this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-         this.label2.Location = new System.Drawing.Point(3, 49);
-         this.label2.Name = "label2";
-         this.label2.Size = new System.Drawing.Size(122, 12);
-         this.label2.TabIndex = 8;
-         this.label2.Text = "Function Parameters";
-         // 
-         // pbxDst
-         // 
-         this.pbxDst.AxisXInvert = false;
-         this.pbxDst.AxisXYFlip = false;
-         this.pbxDst.AxisYInvert = false;
-         this.pbxDst.CenterLineColor = System.Drawing.Color.Yellow;
-         this.pbxDst.Dock = System.Windows.Forms.DockStyle.Fill;
-         this.pbxDst.DrawCenterLine = true;
-         this.pbxDst.DrawImage = null;
-         this.pbxDst.DrawPixelValue = true;
-         this.pbxDst.DrawPixelValueZoom = 30F;
-         this.pbxDst.EnableMousePan = true;
-         this.pbxDst.EnableWheelZoom = true;
-         this.pbxDst.Location = new System.Drawing.Point(401, 3);
-         this.pbxDst.Name = "pbxDst";
-         this.pbxDst.Pan = new System.Drawing.SizeF(0F, 0F);
-         this.pbxDst.ShowPixelInfo = true;
-         this.pbxDst.Size = new System.Drawing.Size(393, 309);
-         this.pbxDst.TabIndex = 1;
-         this.pbxDst.TabStop = false;
-         this.pbxDst.Zoom = 1F;
-         this.pbxDst.ZoomMax = 100F;
-         this.pbxDst.ZoomMin = 0.1F;
-         this.pbxDst.ZoomStep = 1.2F;
-         // 
-         // pbxSrc
-         // 
-         this.pbxSrc.AxisXInvert = false;
-         this.pbxSrc.AxisXYFlip = false;
-         this.pbxSrc.AxisYInvert = false;
-         this.pbxSrc.CenterLineColor = System.Drawing.Color.Yellow;
-         this.pbxSrc.Dock = System.Windows.Forms.DockStyle.Fill;
-         this.pbxSrc.DrawCenterLine = true;
-         this.pbxSrc.DrawImage = null;
-         this.pbxSrc.DrawPixelValue = true;
-         this.pbxSrc.DrawPixelValueZoom = 30F;
-         this.pbxSrc.EnableMousePan = true;
-         this.pbxSrc.EnableWheelZoom = true;
-         this.pbxSrc.Location = new System.Drawing.Point(3, 3);
-         this.pbxSrc.Name = "pbxSrc";
-         this.pbxSrc.Pan = new System.Drawing.SizeF(0F, 0F);
-         this.pbxSrc.ShowPixelInfo = true;
-         this.pbxSrc.Size = new System.Drawing.Size(392, 309);
-         this.pbxSrc.TabIndex = 0;
-         this.pbxSrc.TabStop = false;
-         this.pbxSrc.Zoom = 1F;
-         this.pbxSrc.ZoomMax = 100F;
-         this.pbxSrc.ZoomMin = 0.1F;
-         this.pbxSrc.ZoomStep = 1.2F;
          // 
          // FormMain
          // 
@@ -538,17 +538,17 @@
          this.Text = "Form1";
          this.panel1.ResumeLayout(false);
          this.panel1.PerformLayout();
+         this.groupBox3.ResumeLayout(false);
+         this.groupBox3.PerformLayout();
+         this.groupBox2.ResumeLayout(false);
+         this.groupBox1.ResumeLayout(false);
          this.tableLayoutPanel1.ResumeLayout(false);
          ((System.ComponentModel.ISupportInitialize)(this.chtDst)).EndInit();
+         ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).EndInit();
+         ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.chtSrc)).EndInit();
          this.statusStrip1.ResumeLayout(false);
          this.statusStrip1.PerformLayout();
-         this.groupBox1.ResumeLayout(false);
-         this.groupBox2.ResumeLayout(false);
-         this.groupBox3.ResumeLayout(false);
-         this.groupBox3.PerformLayout();
-         ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).EndInit();
-         ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).EndInit();
          this.ResumeLayout(false);
          this.PerformLayout();
 
@@ -561,11 +561,7 @@
       private System.Windows.Forms.Button btnLive;
       private System.Windows.Forms.Timer timer1;
       private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-      private ShimLib.ZoomPictureBox pbxDst;
-      private ShimLib.ZoomPictureBox pbxSrc;
-      private System.Windows.Forms.DataVisualization.Charting.Chart chtSrc;
       private System.Windows.Forms.Button btnClipboard;
-      private System.Windows.Forms.DataVisualization.Charting.Chart chtDst;
       private System.Windows.Forms.StatusStrip statusStrip1;
       private System.Windows.Forms.ToolStripStatusLabel lblProcessingTime;
       private System.Windows.Forms.ToolStripStatusLabel lblGrabTime;
@@ -580,6 +576,10 @@
       private System.Windows.Forms.ToolStripStatusLabel lblLog;
       private System.Windows.Forms.Label label2;
       private System.Windows.Forms.Label label1;
+      public System.Windows.Forms.DataVisualization.Charting.Chart chtSrc;
+      public System.Windows.Forms.DataVisualization.Charting.Chart chtDst;
+      public ShimLib.ZoomPictureBox pbxDst;
+      public ShimLib.ZoomPictureBox pbxSrc;
    }
 }
 

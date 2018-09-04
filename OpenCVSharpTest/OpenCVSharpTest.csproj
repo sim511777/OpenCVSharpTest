@@ -72,6 +72,7 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImageProcessing.cs" />
     <Compile Include="IpDll.cs" />
     <Compile Include="Lib\Crc32.cs" />
     <Compile Include="Lib\DictionaryPropertyGrid.cs" />

@@ -1,3 +1,4 @@
+==== Image Processing
 ok 1. 클립보드 복사
 ok 2. histogram Color 일때와 Gray 일때, HSV일때 알아서 다르게 표시, GetHistogram 함수는 Mat을 파라미터로 받도록 수정, Series도 자동으로 할것
 ok 3. HSV 변환 후 histo equalization
@@ -12,20 +13,22 @@ ok - by C Dll SIMD(AVX)
 ok 6. ROI
 ok 7. 커널 연산
 ok 8. 엣지 처리
- 9. ROI 좀더 : crop/copy가 아닌 버퍼에서 특정 ROI만 처리, 
+9. ROI 좀더 : crop/copy가 아닌 버퍼에서 특정 ROI만 처리, 
 
 ==== ZoomPictureBox
 ok 101. 이미지 확대/축소/Fit 기능
 ok 102. 마우스 픽셀 좌표, 컬러값 표시
 ok 103. 이미지 확대시 픽셀에 컬러값 표시
-104. InvertX,Y/FlipXY 기능 구현
-105. 이미지 축소시 기능
-ok 106. FitZoom
-ok 107. 센터라인 표시
+ok 104. FitZoom
+ok 105. 센터라인 표시
+106. InvertX,Y/FlipXY 기능 구현
+107. 이미지 축소시 기능
 
 ==== UI
-201. 테스트 별로 함수 분리
-202. UI에서 테스트 선택 및 파라미터 넣을 수 있도록 할것 (Collapse Panle 사용, 체크박스)
+ok 201. 테스트 별로 함수 분리
+ok 202. UI에서 테스트 선택 및 파라미터 넣을 수 있도록 할것 (Collapse Panle 사용, 체크박스)
+203. 프로퍼티 그리드 파라미터 순서 바뀌지 않도록 할것 -> Dynamic PropertyGrid 로 변경
+
 
 ==== 기타
 301. 웹캠 라이브 타이머 -> 쓰레드
