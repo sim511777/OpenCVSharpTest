@@ -27,7 +27,7 @@ ok 105. 센터라인 표시
 ==== UI
 ok 201. 테스트 별로 함수 분리
 ok 202. UI에서 테스트 선택 및 파라미터 넣을 수 있도록 할것 (Collapse Panle 사용, 체크박스)
-203. 프로퍼티 그리드 파라미터 순서 바뀌지 않도록 할것 -> Dynamic PropertyGrid 로 변경
+ok 203. 프로퍼티 그리드 파라미터 순서 바뀌지 않도록 할것 -> Dynamic PropertyGrid 로 변경
 
 
 ==== 기타

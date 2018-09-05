@@ -222,7 +222,7 @@ namespace ShimLib {
             } else {
                dispPixel = GetBuiltinDispPixelValue(ptRealInt.X, ptRealInt.Y);
             }
-            this.pixelInfo = $"({ptRealInt.X},{ptRealInt.Y})[{dispPixel.Item1}]";
+            this.pixelInfo = $"{this.Zoom,0:0.0}X({ptRealInt.X},{ptRealInt.Y})[{dispPixel.Item1}]";
          }
          this.Invalidate();
       }

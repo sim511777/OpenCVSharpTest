@@ -216,11 +216,9 @@ namespace OpenCVSharpTest {
          var prmNameList = method.GetParameters().Select(prm => prm.Name);
          if (method != null) {
             try {
-               var adapter = this.grdParameter.SelectedObject as DictionaryPropertyGridAdapter;
-               var props = adapter.GetProperties(null).Cast<PropertyDescriptor>();
-               var prmList = prmNameList.Select(prmName => props.First(prop => prop.Name == prmName).GetValue(null)).ToArray();
-               object r = method.Invoke(this, prmList);
-               this.lblLog.Text = $"IP Succ";
+               var cs = this.grdParameter.SelectedObject as CustomClass;
+               var prms = cs.Cast<CustomProperty>().Select(prop => prop.Value).ToArray();
+               object r = method.Invoke(this, prms);
             } catch (TargetInvocationException ex) {
                DrawMat(null, this.pbxDst);
                DrawHistogram(null, this.chtDst);
@@ -246,14 +244,16 @@ namespace OpenCVSharpTest {
       }
 
       private void cbxTest_SelectedIndexChanged(object sender, EventArgs e) {
-         var methodInfo = ((MethodInfoItem)this.cbxFunc.SelectedItem).MethodInfo;
-         var paramInfos = methodInfo.GetParameters();
-         Hashtable dict = new Hashtable();
+         var mii = this.cbxFunc.SelectedItem as MethodInfoItem;
+         var mi = mii.MethodInfo;
+         var paramInfos = mi.GetParameters();
+         CustomClass cs = new CustomClass();
          foreach (var pi in paramInfos) {
-            dict[pi.Name] = pi.HasDefaultValue ? pi.DefaultValue : Activator.CreateInstance(pi.ParameterType);
+            CustomProperty cp = new CustomProperty($"{pi.Name} : {pi.ParameterType.Name}", pi.HasDefaultValue ? pi.DefaultValue : Activator.CreateInstance(pi.ParameterType), pi.ParameterType, false, true);
+            cs.Add(cp);
          }
-
-         grdParameter.SelectedObject = new DictionaryPropertyGridAdapter(dict);
+         grdParameter.SelectedObject = cs;
+         grdParameter.Refresh();
       }
    }
 
@@ -261,8 +261,7 @@ namespace OpenCVSharpTest {
       public string Display { get; set; }
       public MethodInfo MethodInfo { get; set; }
       public MethodInfoItem(MethodInfo mi) {
-         var paramDisp = string.Join(", ", mi.GetParameters().Select(prm => $"{prm.ParameterType.Name} {prm.Name}").ToArray());
-         this.Display = $"{mi.ReturnType.Name} {mi.Name}({paramDisp})";
+         this.Display = mi.Name;
          this.MethodInfo = mi;
       }
    }
