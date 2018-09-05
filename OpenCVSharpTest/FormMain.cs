@@ -102,7 +102,7 @@ namespace OpenCVSharpTest {
       private void InitFunctionList() {
          var type = typeof(ImageProcessing);
          MethodInfo[] mis = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
-         var list = mis.Select(m => new MethodInfoItem(m)).ToArray();
+         var list = mis.Select((m, i) => new MethodInfoItem(i, m)).ToArray();
          this.cbxFunc.DisplayMember = "Display";
          this.cbxFunc.ValueMember = "MethodInfo";
          this.cbxFunc.Items.AddRange(list);
@@ -127,11 +127,13 @@ namespace OpenCVSharpTest {
          }
 
          var oldTime = DateTime.Now;
-         var matSrc = Resources.Lenna.ToMat();
+
+         if (this.matSrc != null)
+            this.matSrc.Dispose();
+         this.matSrc = Resources.Lenna.ToMat();
          this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
-         this.ProcessImage(matSrc);
-         matSrc.Dispose();
+         this.ProcessImage();
       }
 
       private void btnClipboard_Click(object sender, EventArgs e) {
@@ -144,13 +146,15 @@ namespace OpenCVSharpTest {
          }
 
          var oldTime = DateTime.Now;
+
+         if (this.matSrc != null)
+            this.matSrc.Dispose();
          Bitmap bmp = new Bitmap(img);
-         var matSrc = bmp.ToMat();
+         this.matSrc = bmp.ToMat();
          bmp.Dispose();
          this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
-         this.ProcessImage(matSrc);
-         matSrc.Dispose();
+         this.ProcessImage();
       }
 
       private void btnLoad_Click(object sender, EventArgs e) {
@@ -162,11 +166,25 @@ namespace OpenCVSharpTest {
          }
 
          var oldTime = DateTime.Now;
-         var matSrc = new Mat(this.dlgOpen.FileName);
+
+         if (this.matSrc != null)
+            this.matSrc.Dispose();
+         this.matSrc = new Mat(this.dlgOpen.FileName);
          this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
-         this.ProcessImage(matSrc);
-         matSrc.Dispose();
+         this.ProcessImage();
+      }
+
+      private void timer1_Tick(object sender, EventArgs e) {
+         var oldTime = DateTime.Now;
+         
+         if (this.matSrc != null)
+            this.matSrc.Dispose();
+         this.matSrc = new Mat();
+         this.cap.Read(matSrc);
+         this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
+         
+         this.ProcessImage();
       }
       
       private VideoCapture cap;
@@ -194,23 +212,15 @@ namespace OpenCVSharpTest {
          this.btnLive.Text = "Live";
       }
 
-      private void timer1_Tick(object sender, EventArgs e) {
-         var oldTime = DateTime.Now;
-         var matSrc = new Mat();
-         this.cap.Read(matSrc);
-         this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
-
-         this.ProcessImage(matSrc);
-         matSrc.Dispose();
-      }
-
       // 이미지 처리
-      private void ProcessImage(Mat matSrc) {
+      private void ProcessImage() {
+         if (this.matSrc == null)
+            return;
+
          var oldTime = DateTime.Now;
 
          DrawMat(matSrc.ToBitmap(), this.pbxSrc);
          DrawHistogram(matSrc, this.chtSrc);
-         this.matSrc = matSrc;
          
          var method = (this.cbxFunc.SelectedItem as MethodInfoItem)?.MethodInfo;
          var prmNameList = method.GetParameters().Select(prm => prm.Name);
@@ -254,14 +264,16 @@ namespace OpenCVSharpTest {
          }
          grdParameter.SelectedObject = cs;
          grdParameter.Refresh();
+
+         this.ProcessImage();
       }
    }
 
    class MethodInfoItem {
       public string Display { get; set; }
       public MethodInfo MethodInfo { get; set; }
-      public MethodInfoItem(MethodInfo mi) {
-         this.Display = mi.Name;
+      public MethodInfoItem(int index, MethodInfo mi) {
+         this.Display = $"{index}. {mi.Name}";
          this.MethodInfo = mi;
       }
    }

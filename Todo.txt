@@ -13,7 +13,8 @@ ok - by C Dll SIMD(AVX)
 ok 6. ROI
 ok 7. 커널 연산
 ok 8. 엣지 처리
-9. ROI 좀더 : crop/copy가 아닌 버퍼에서 특정 ROI만 처리, 
+ok 9. 기본 파라미터 수정
+10. ROI 좀더 : crop/copy가 아닌 버퍼에서 특정 ROI만 처리, 
 
 ==== ZoomPictureBox
 ok 101. 이미지 확대/축소/Fit 기능
@@ -28,7 +29,7 @@ ok 105. 센터라인 표시
 ok 201. 테스트 별로 함수 분리
 ok 202. UI에서 테스트 선택 및 파라미터 넣을 수 있도록 할것 (Collapse Panle 사용, 체크박스)
 ok 203. 프로퍼티 그리드 파라미터 순서 바뀌지 않도록 할것 -> Dynamic PropertyGrid 로 변경
-
+204. Function 선택시 IP자동 적용
 
 ==== 기타
 301. 웹캠 라이브 타이머 -> 쓰레드

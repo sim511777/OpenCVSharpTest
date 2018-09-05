@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 
 namespace OpenCVSharpTest {
    class ImageProcessing {
-      public static void CvtColor(ColorConversionCodes code) {
+      public static void CvtColor(ColorConversionCodes code = ColorConversionCodes.BGR2GRAY) {
          var form = FormMain.form;
          var matDst = form.matSrc.CvtColor(code);
          form.DrawMat(matDst.ToBitmap(), form.pbxDst);
@@ -27,7 +27,7 @@ namespace OpenCVSharpTest {
          matDst.Dispose();
       }
 
-      public static void Threshold(double thresh, double maxvalue, ThresholdTypes type) {
+      public static void Threshold(double thresh = 128, double maxvalue = 255, ThresholdTypes type = ThresholdTypes.Binary) {
          var form = FormMain.form;
          var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(thresh, maxvalue, type);
          form.DrawMat(matDst.ToBitmap(), form.pbxDst);
@@ -35,7 +35,7 @@ namespace OpenCVSharpTest {
          matDst.Dispose();
       }
 
-      public static void Canny(double threshold1, double threshold2, int apertureSize = 3, bool L2gradient = false) {
+      public static void Canny(double threshold1 = 50, double threshold2 = 200, int apertureSize = 3, bool L2gradient = false) {
          var form = FormMain.form;
          var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(threshold1, threshold2, apertureSize, L2gradient);
          form.DrawMat(matDst.ToBitmap(), form.pbxDst);
@@ -72,12 +72,12 @@ namespace OpenCVSharpTest {
          matDst.Dispose();
       }
 
-      public static void ContrastBrightness(double x1 = 0, double y1 = 0, double x2 = 255, double y2 = 255) {
+      public static void ContrastBrightness(double x1 = 64, double y1 = 0, double x2 = 192, double y2 = 255) {
          var form = FormMain.form;
          // BGR to HSV변환
-         form.matSrc = form.matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
+         var matHsv = form.matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
          // 채널 분리
-         var hsvChannels = form.matSrc.Split();
+         var hsvChannels = matHsv.Split();
          // 변환
          double scale = (y2 - y1) / (x2 - x1);
          double offset = (x2 * y1 - x1 * y2) / (x2 - x1);
@@ -89,6 +89,7 @@ namespace OpenCVSharpTest {
          matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
          form.DrawMat(matDst.ToBitmap(), form.pbxDst);
          form.DrawHistogram(matDst, form.chtDst);
+         matHsv.Dispose();
          matDst.Dispose();
       }
 
