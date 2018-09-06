@@ -101,7 +101,7 @@ namespace OpenCVSharpTest {
       private void InitFunctionList() {
          var type = typeof(ImageProcessing);
          MethodInfo[] mis = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
-         var list = mis.Select((m, i) => new MethodInfoItem(i, m)).ToArray();
+         var list = mis.Select((m, i) => new MethodInfoItem(i+1, m)).ToArray();
          this.cbxFunc.DisplayMember = "Display";
          this.cbxFunc.ValueMember = "MethodInfo";
          this.cbxFunc.Items.AddRange(list);

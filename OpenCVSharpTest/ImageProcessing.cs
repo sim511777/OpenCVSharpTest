@@ -27,6 +27,25 @@ namespace OpenCVSharpTest {
          matDst.Dispose();
       }
 
+      public static void EqualizeHistHsv() {
+         var form = FormMain.form;
+         // BGR to HSV변환
+         var matHsv = form.matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
+         // 채널 분리
+         var hsvChannels = matHsv.Split();
+         // 변환
+         hsvChannels[2] = hsvChannels[2].EqualizeHist();
+         // 채널 병합
+         var matDst = new Mat();
+         Cv2.Merge(hsvChannels, matDst);
+         // HSV to BGR변환
+         matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
+         form.DrawMat(matDst.ToBitmap(), form.pbxDst);
+         form.DrawHistogram(matDst, form.chtDst);
+         matHsv.Dispose();
+         matDst.Dispose();
+      }
+
       public static void Threshold(double thresh = 128, double maxvalue = 255, ThresholdTypes type = ThresholdTypes.Binary) {
          var form = FormMain.form;
          var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(thresh, maxvalue, type);
