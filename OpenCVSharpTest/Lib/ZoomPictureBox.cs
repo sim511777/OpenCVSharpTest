@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using ShimLib;
 using System.Windows;
 using System.Drawing.Imaging;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 
-namespace ShimLib {
+namespace OpenCVSharpTest {
    public class ZoomPictureBox : PictureBox {
       private Func<int, int, Tuple<string, Brush>> FuncGetPixelValueDisp = null;
 

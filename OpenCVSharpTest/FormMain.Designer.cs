@@ -71,8 +71,8 @@
          this.lblGrabTime = new System.Windows.Forms.ToolStripStatusLabel();
          this.lblProcessingTime = new System.Windows.Forms.ToolStripStatusLabel();
          this.lblLog = new System.Windows.Forms.ToolStripStatusLabel();
-         this.pbxDst = new ShimLib.ZoomPictureBox();
-         this.pbxSrc = new ShimLib.ZoomPictureBox();
+         this.pbxDst = new ZoomPictureBox();
+         this.pbxSrc = new ZoomPictureBox();
          this.panel1.SuspendLayout();
          this.groupBox3.SuspendLayout();
          this.panel2.SuspendLayout();
@@ -576,8 +576,8 @@
       private System.Windows.Forms.Label label2;
       public System.Windows.Forms.DataVisualization.Charting.Chart chtSrc;
       public System.Windows.Forms.DataVisualization.Charting.Chart chtDst;
-      public ShimLib.ZoomPictureBox pbxDst;
-      public ShimLib.ZoomPictureBox pbxSrc;
+      public ZoomPictureBox pbxDst;
+      public ZoomPictureBox pbxSrc;
       private System.Windows.Forms.Panel panel2;
    }
 }

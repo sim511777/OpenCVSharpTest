@@ -13,7 +13,6 @@ using OpenCVSharpTest.Properties;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using OpenCvSharp.Blob;
-using ShimLib;
 using System.Reflection;
 using System.Collections;
 using CvSize = OpenCvSharp.Size;
