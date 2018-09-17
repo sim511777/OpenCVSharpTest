@@ -277,7 +277,7 @@ namespace OpenCVSharpTest {
         public string Display { get; set; }
         public MethodInfo MethodInfo { get; set; }
         public MethodInfoItem(int index, MethodInfo mi) {
-            this.Display = $"{index}. {mi.Name}";
+            this.Display = $"{index+1}. {mi.Name}";
             this.MethodInfo = mi;
         }
     }
