@@ -230,5 +230,13 @@ namespace OpenCVSharpTest {
             form.DrawHistogram(matDst, form.chtDst);
             matDst.Dispose();
         }
+
+        public static void Flip(FlipMode flipCode = FlipMode.X) {
+            var form = FormMain.form;
+            Mat matDst = form.matSrc.Flip(flipCode);
+            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
+            form.DrawHistogram(matDst, form.chtDst);
+            matDst.Dispose();
+        }
     }
 }

@@ -14,8 +14,9 @@ ok 6. ROI
 ok 7. 커널 연산
 ok 8. 엣지 처리
 ok 9. 기본 파라미터 수정
-10. ROI 좀더 : crop/copy가 아닌 버퍼에서 특정 ROI만 처리, 
-11. Erode PixelBuffer 제어 종류별로 테스트
+ok 10. Flip
+11. ROI 좀더 : crop/copy가 아닌 버퍼에서 특정 ROI만 처리, 
+12. Erode PixelBuffer 제어 종류별로 테스트
 
 ==== ZoomPictureBox
 ok 101. 이미지 확대/축소/Fit 기능
