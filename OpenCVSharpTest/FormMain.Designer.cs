@@ -71,8 +71,8 @@
             this.lblGrabTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblProcessingTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblLog = new System.Windows.Forms.ToolStripStatusLabel();
-            this.pbxDst = new ZoomPictureBox();
-            this.pbxSrc = new ZoomPictureBox();
+            this.pbxDst = new OpenCVSharpTest.ZoomPictureBox();
+            this.pbxSrc = new OpenCVSharpTest.ZoomPictureBox();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -118,6 +118,7 @@
             this.grdParameter.Size = new System.Drawing.Size(252, 212);
             this.grdParameter.TabIndex = 3;
             this.grdParameter.ToolbarVisible = false;
+            this.grdParameter.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.grdParameter_PropertyValueChanged);
             // 
             // label2
             // 

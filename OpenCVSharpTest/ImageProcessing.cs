@@ -43,9 +43,25 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
+        public static void Blur(double ksize = 5, BorderTypes borderType = BorderTypes.Reflect101) {
+            var form = FormMain.form;
+            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Blur(new Size(ksize, ksize), borderType:borderType);
+            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
+            form.DrawHistogram(matDst, form.chtDst);
+            matDst.Dispose();
+        }
+
         public static void GaussianBlur(double ksize = 5, double sigmaX = 5, double sigmaY = 5, BorderTypes borderType = BorderTypes.Reflect101) {
             var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).GaussianBlur(new OpenCvSharp.Size(ksize, ksize), sigmaX, sigmaY, borderType);
+            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).GaussianBlur(new Size(ksize, ksize), sigmaX, sigmaY, borderType);
+            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
+            form.DrawHistogram(matDst, form.chtDst);
+            matDst.Dispose();
+        }
+
+        public static void MedianBlur(int ksize = 3) {
+            var form = FormMain.form;
+            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).MedianBlur(ksize);
             form.DrawMat(matDst.ToBitmap(), form.pbxDst);
             form.DrawHistogram(matDst, form.chtDst);
             matDst.Dispose();

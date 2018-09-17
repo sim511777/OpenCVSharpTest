@@ -228,14 +228,15 @@ namespace OpenCVSharpTest {
                     var cs = this.grdParameter.SelectedObject as CustomClass;
                     var prms = cs.Cast<CustomProperty>().Select(prop => prop.Value).ToArray();
                     object r = method.Invoke(this, prms);
+                    this.lblLog.Text = $"{method.Name} Succeed:";
                 } catch (TargetInvocationException ex) {
                     DrawMat(null, this.pbxDst);
                     DrawHistogram(null, this.chtDst);
-                    this.lblLog.Text = $"IP Fail: {ex.InnerException.Message}";
+                    this.lblLog.Text = $"{method.Name} Fail: {ex.InnerException.Message}";
                 } catch (Exception ex) {
                     DrawMat(null, this.pbxDst);
                     DrawHistogram(null, this.chtDst);
-                    this.lblLog.Text = $"IP Fail: {ex.Message}";
+                    this.lblLog.Text = $"{method.Name} Fail: {ex.Message}";
                 }
             }
 
@@ -264,6 +265,10 @@ namespace OpenCVSharpTest {
             grdParameter.SelectedObject = cs;
             grdParameter.Refresh();
 
+            this.ProcessImage();
+        }
+
+        private void grdParameter_PropertyValueChanged(object s, PropertyValueChangedEventArgs e) {
             this.ProcessImage();
         }
     }
