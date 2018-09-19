@@ -273,5 +273,14 @@ namespace OpenCVSharpTest {
             form.DrawHistogram(matDst, form.chtDst);
             matDst.Dispose();
         }
+
+        public static void Negative() {
+            var form = FormMain.form;
+            var matDst = new Mat();
+            Cv2.BitwiseNot(form.matSrc, matDst);
+            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
+            form.DrawHistogram(matDst, form.chtDst);
+            matDst.Dispose();
+        }
     }
 }
