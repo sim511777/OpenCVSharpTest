@@ -51,7 +51,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.grdParameter = new System.Windows.Forms.PropertyGrid();
-            this.label2 = new System.Windows.Forms.Label();
             this.cbxFunc = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -66,13 +65,13 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.chtDst = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.pbxDst = new OpenCVSharpTest.ZoomPictureBox();
+            this.pbxSrc = new OpenCVSharpTest.ZoomPictureBox();
             this.chtSrc = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblGrabTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblProcessingTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblLog = new System.Windows.Forms.ToolStripStatusLabel();
-            this.pbxDst = new OpenCVSharpTest.ZoomPictureBox();
-            this.pbxSrc = new OpenCVSharpTest.ZoomPictureBox();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -80,10 +79,10 @@
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chtDst)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chtSrc)).BeginInit();
-            this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chtSrc)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -99,7 +98,6 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.grdParameter);
-            this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.cbxFunc);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 79);
@@ -112,23 +110,13 @@
             // grdParameter
             // 
             this.grdParameter.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grdParameter.Location = new System.Drawing.Point(3, 49);
+            this.grdParameter.Location = new System.Drawing.Point(3, 37);
             this.grdParameter.Name = "grdParameter";
             this.grdParameter.PropertySort = System.Windows.Forms.PropertySort.Categorized;
             this.grdParameter.Size = new System.Drawing.Size(252, 212);
             this.grdParameter.TabIndex = 3;
             this.grdParameter.ToolbarVisible = false;
             this.grdParameter.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.grdParameter_PropertyValueChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.Location = new System.Drawing.Point(3, 37);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 12);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Parameters";
             // 
             // cbxFunc
             // 
@@ -354,6 +342,56 @@
             this.chtDst.TabIndex = 0;
             this.chtDst.Text = "chart1";
             // 
+            // pbxDst
+            // 
+            this.pbxDst.AxisXInvert = false;
+            this.pbxDst.AxisXYFlip = false;
+            this.pbxDst.AxisYInvert = false;
+            this.pbxDst.CenterLineColor = System.Drawing.Color.Yellow;
+            this.pbxDst.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbxDst.DrawCenterLine = true;
+            this.pbxDst.DrawImage = null;
+            this.pbxDst.DrawPixelValue = true;
+            this.pbxDst.DrawPixelValueZoom = 30F;
+            this.pbxDst.EnableMousePan = true;
+            this.pbxDst.EnableWheelZoom = true;
+            this.pbxDst.Location = new System.Drawing.Point(462, 3);
+            this.pbxDst.Name = "pbxDst";
+            this.pbxDst.Pan = new System.Drawing.SizeF(0F, 0F);
+            this.pbxDst.ShowPixelInfo = true;
+            this.pbxDst.Size = new System.Drawing.Size(453, 309);
+            this.pbxDst.TabIndex = 1;
+            this.pbxDst.TabStop = false;
+            this.pbxDst.Zoom = 1F;
+            this.pbxDst.ZoomMax = 100F;
+            this.pbxDst.ZoomMin = 0.1F;
+            this.pbxDst.ZoomStep = 1.2F;
+            // 
+            // pbxSrc
+            // 
+            this.pbxSrc.AxisXInvert = false;
+            this.pbxSrc.AxisXYFlip = false;
+            this.pbxSrc.AxisYInvert = false;
+            this.pbxSrc.CenterLineColor = System.Drawing.Color.Yellow;
+            this.pbxSrc.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbxSrc.DrawCenterLine = true;
+            this.pbxSrc.DrawImage = null;
+            this.pbxSrc.DrawPixelValue = true;
+            this.pbxSrc.DrawPixelValueZoom = 30F;
+            this.pbxSrc.EnableMousePan = true;
+            this.pbxSrc.EnableWheelZoom = true;
+            this.pbxSrc.Location = new System.Drawing.Point(3, 3);
+            this.pbxSrc.Name = "pbxSrc";
+            this.pbxSrc.Pan = new System.Drawing.SizeF(0F, 0F);
+            this.pbxSrc.ShowPixelInfo = true;
+            this.pbxSrc.Size = new System.Drawing.Size(453, 309);
+            this.pbxSrc.TabIndex = 0;
+            this.pbxSrc.TabStop = false;
+            this.pbxSrc.Zoom = 1F;
+            this.pbxSrc.ZoomMax = 100F;
+            this.pbxSrc.ZoomMin = 0.1F;
+            this.pbxSrc.ZoomStep = 1.2F;
+            // 
             // chtSrc
             // 
             chartArea2.AxisX.LabelStyle.Interval = 20D;
@@ -475,56 +513,6 @@
             this.lblLog.Size = new System.Drawing.Size(27, 17);
             this.lblLog.Text = "log:";
             // 
-            // pbxDst
-            // 
-            this.pbxDst.AxisXInvert = false;
-            this.pbxDst.AxisXYFlip = false;
-            this.pbxDst.AxisYInvert = false;
-            this.pbxDst.CenterLineColor = System.Drawing.Color.Yellow;
-            this.pbxDst.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbxDst.DrawCenterLine = true;
-            this.pbxDst.DrawImage = null;
-            this.pbxDst.DrawPixelValue = true;
-            this.pbxDst.DrawPixelValueZoom = 30F;
-            this.pbxDst.EnableMousePan = true;
-            this.pbxDst.EnableWheelZoom = true;
-            this.pbxDst.Location = new System.Drawing.Point(462, 3);
-            this.pbxDst.Name = "pbxDst";
-            this.pbxDst.Pan = new System.Drawing.SizeF(0F, 0F);
-            this.pbxDst.ShowPixelInfo = true;
-            this.pbxDst.Size = new System.Drawing.Size(453, 309);
-            this.pbxDst.TabIndex = 1;
-            this.pbxDst.TabStop = false;
-            this.pbxDst.Zoom = 1F;
-            this.pbxDst.ZoomMax = 100F;
-            this.pbxDst.ZoomMin = 0.1F;
-            this.pbxDst.ZoomStep = 1.2F;
-            // 
-            // pbxSrc
-            // 
-            this.pbxSrc.AxisXInvert = false;
-            this.pbxSrc.AxisXYFlip = false;
-            this.pbxSrc.AxisYInvert = false;
-            this.pbxSrc.CenterLineColor = System.Drawing.Color.Yellow;
-            this.pbxSrc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbxSrc.DrawCenterLine = true;
-            this.pbxSrc.DrawImage = null;
-            this.pbxSrc.DrawPixelValue = true;
-            this.pbxSrc.DrawPixelValueZoom = 30F;
-            this.pbxSrc.EnableMousePan = true;
-            this.pbxSrc.EnableWheelZoom = true;
-            this.pbxSrc.Location = new System.Drawing.Point(3, 3);
-            this.pbxSrc.Name = "pbxSrc";
-            this.pbxSrc.Pan = new System.Drawing.SizeF(0F, 0F);
-            this.pbxSrc.ShowPixelInfo = true;
-            this.pbxSrc.Size = new System.Drawing.Size(453, 309);
-            this.pbxSrc.TabIndex = 0;
-            this.pbxSrc.TabStop = false;
-            this.pbxSrc.Zoom = 1F;
-            this.pbxSrc.ZoomMax = 100F;
-            this.pbxSrc.ZoomMin = 0.1F;
-            this.pbxSrc.ZoomStep = 1.2F;
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -537,18 +525,17 @@
             this.Text = "OpenCV Test";
             this.panel1.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chtDst)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chtSrc)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxDst)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxSrc)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -574,7 +561,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ToolStripStatusLabel lblLog;
-        private System.Windows.Forms.Label label2;
         public System.Windows.Forms.DataVisualization.Charting.Chart chtSrc;
         public System.Windows.Forms.DataVisualization.Charting.Chart chtDst;
         public ZoomPictureBox pbxDst;

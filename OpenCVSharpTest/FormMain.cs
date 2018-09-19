@@ -259,7 +259,14 @@ namespace OpenCVSharpTest {
             var paramInfos = mi.GetParameters();
             CustomClass cs = new CustomClass();
             foreach (var pi in paramInfos) {
-                CustomProperty cp = new CustomProperty($"{pi.Name} : {pi.ParameterType.Name}", pi.HasDefaultValue ? pi.DefaultValue : Activator.CreateInstance(pi.ParameterType), pi.ParameterType, false, true);
+                string itemName = pi.Name;
+                object itemValue = pi.HasDefaultValue ? pi.DefaultValue : Activator.CreateInstance(pi.ParameterType);
+                Type itemType = pi.ParameterType;
+                bool itemReadOnly = false;
+                bool itemVisible = true;
+                string itemDescription = pi.ParameterType.Name;
+                string itemCategory = "Parameter";
+                CustomProperty cp = new CustomProperty(itemName, itemValue, itemType, itemReadOnly, itemVisible, itemDescription, itemCategory);
                 cs.Add(cp);
             }
             grdParameter.SelectedObject = cs;
