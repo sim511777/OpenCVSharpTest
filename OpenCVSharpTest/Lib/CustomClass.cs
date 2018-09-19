@@ -135,13 +135,17 @@ namespace OpenCVSharpTest {
         private bool bReadOnly = false;
         private bool bVisible = true;
         private object objValue = null;
+        private string description = null;
+        private string category = null;
 
-        public CustomProperty(string sName, object value, Type type, bool bReadOnly, bool bVisible) {
+        public CustomProperty(string sName, object value, Type type, bool bReadOnly, bool bVisible, string description = null, string category = null) {
             this.sName = sName;
             this.objValue = value;
             this.type = type;
             this.bReadOnly = bReadOnly;
             this.bVisible = bVisible;
+            this.description = description;
+            this.category = category;
         }
 
         private Type type;
@@ -158,6 +162,18 @@ namespace OpenCVSharpTest {
         public string Name {
             get {
                 return sName;
+            }
+        }
+
+        public string Description {
+            get {
+                return description;
+            }
+        }
+
+        public string Category {
+            get {
+                return category;
             }
         }
 
@@ -203,11 +219,11 @@ namespace OpenCVSharpTest {
         }
 
         public override string Description {
-            get { return m_Property.Name; }
+            get { return m_Property.Description; }
         }
 
         public override string Category {
-            get { return string.Empty; }
+            get { return m_Property.Category; }
         }
 
         public override string DisplayName {

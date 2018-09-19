@@ -33,10 +33,10 @@ ok 201. 테스트 별로 함수 분리
 ok 202. UI에서 테스트 선택 및 파라미터 넣을 수 있도록 할것 (Collapse Panle 사용, 체크박스)
 ok 203. 프로퍼티 그리드 파라미터 순서 바뀌지 않도록 할것 -> Dynamic PropertyGrid 로 변경
 ok 204. Function 선택시 IP자동 적용
-205. Function 동적 조합 기능
+ok 205. CustomProperty Description 추가
+ok 206. CustomProperty Category 추가
+207. Function 동적 조합 기능
 - 함수 생성, 파라미터, 출력, 입력 처리
 
 ==== 기타
 301. 웹캠 라이브 타이머 -> 쓰레드
-
-aaa 커밋 테스트
