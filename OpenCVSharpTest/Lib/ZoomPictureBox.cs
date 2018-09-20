@@ -81,6 +81,22 @@ namespace OpenCVSharpTest {
             return new PointF((int)wndX, (int)wndY);
         }
 
+         public float RealToDrawX(float x) {
+            return x * Zoom + Pan.Width;
+         }
+
+         public float RealToDrawY(float y) {
+            return y * Zoom + Pan.Height;
+         }
+
+         public RectangleF RealToDrawRect(RectangleF rect) {
+            float x = rect.X * Zoom + Pan.Width;
+            float y = rect.Y * Zoom + Pan.Height;
+            float width = rect.Width * Zoom;
+            float height = rect.Height *Zoom;
+            return new RectangleF(x, y, width, height);
+         }
+
         int pseudo_div = 32;
         Brush[] pseudo = {
          Brushes.White,      // 0~31
@@ -159,9 +175,27 @@ namespace OpenCVSharpTest {
             }
 
             // 상단 픽셀 정보 표시
-            var drawSize = g.MeasureString(this.pixelInfo, SystemFonts.DefaultFont);
-            g.FillRectangle(Brushes.White, 0, 0, drawSize.Width, drawSize.Height);
-            g.DrawString(pixelInfo, SystemFonts.DefaultFont, Brushes.Black, 0, 0);
+            if (this.ShowPixelInfo) {
+                Point ptMouse = this.PointToClient(System.Windows.Forms.Cursor.Position);
+                PointF ptReal = this.DrawToReal(ptMouse);
+                Point ptRealInt = new Point((int)Math.Floor(ptReal.X), (int)Math.Floor(ptReal.Y));
+                Color col = Color.Black;
+                if (this.DrawImage != null) {
+                    if (ptRealInt.X >= 0 && ptRealInt.X < this.DrawImage.Width && ptRealInt.Y >= 0 && ptRealInt.Y < this.DrawImage.Height) {
+                        col = this.DrawImage.GetPixel(ptRealInt.X, ptRealInt.Y);
+                    }
+                }
+                Tuple<string, Brush> dispPixel;
+                if (this.FuncGetPixelValueDisp != null) {
+                    dispPixel = this.FuncGetPixelValueDisp(ptRealInt.X, ptRealInt.Y);
+                } else {
+                    dispPixel = GetBuiltinDispPixelValue(ptRealInt.X, ptRealInt.Y);
+                }
+                string pixelInfo = $"{this.Zoom,0:0.0}X ({ptRealInt.X},{ptRealInt.Y}) [{dispPixel.Item1}]";
+                var drawSize = g.MeasureString(pixelInfo, SystemFonts.DefaultFont);
+                g.FillRectangle(Brushes.White, 0, 0, drawSize.Width, drawSize.Height);
+                g.DrawString(pixelInfo, SystemFonts.DefaultFont, Brushes.Black, 0, 0);
+            }
         }
 
         private void ZoomPictureBox_MouseWheel(object sender, MouseEventArgs e) {
@@ -199,29 +233,10 @@ namespace OpenCVSharpTest {
             this.mousePan = false;
         }
 
-        private string pixelInfo = string.Empty;
         private void ZoomPictureBox_MouseMove(object sender, MouseEventArgs e) {
             if (this.EnableMousePan && this.mousePan) {
                 this.Pan += (Size)e.Location - (Size)this.ptOld;
                 this.ptOld = e.Location;
-            }
-
-            if (this.ShowPixelInfo) {
-                PointF ptReal = this.DrawToReal(e.Location);
-                Point ptRealInt = new Point((int)Math.Floor(ptReal.X), (int)Math.Floor(ptReal.Y));
-                Color col = Color.Black;
-                if (this.DrawImage != null) {
-                    if (ptRealInt.X >= 0 && ptRealInt.X < this.DrawImage.Width && ptRealInt.Y >= 0 && ptRealInt.Y < this.DrawImage.Height) {
-                        col = this.DrawImage.GetPixel(ptRealInt.X, ptRealInt.Y);
-                    }
-                }
-                Tuple<string, Brush> dispPixel;
-                if (this.FuncGetPixelValueDisp != null) {
-                    dispPixel = this.FuncGetPixelValueDisp(ptRealInt.X, ptRealInt.Y);
-                } else {
-                    dispPixel = GetBuiltinDispPixelValue(ptRealInt.X, ptRealInt.Y);
-                }
-                this.pixelInfo = $"{this.Zoom,0:0.0}X({ptRealInt.X},{ptRealInt.Y})[{dispPixel.Item1}]";
             }
             this.Invalidate();
         }
