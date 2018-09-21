@@ -25,7 +25,7 @@ namespace OpenCVSharpTest {
         public bool EnableMousePan { get; set; } = true;
         public bool AutoDrawCursorPixelInfo { get; set; } = true;
         public bool UseDrawPixelValue { get; set; } = true;
-        public float DrawPixelValueZoom { get; set; } = 30f;
+        public float DrawPixelValueZoom { get; set; } = 20f;
         public bool AutoDrawCenterLine { get; set; } = true;
         public Color CenterLineColor { get; set; } = Color.Yellow;
 
@@ -150,6 +150,9 @@ namespace OpenCVSharpTest {
 
             // 이미지 개별 픽셀 값 표시
             if (this.UseDrawPixelValue && this.Zoom >= this.DrawPixelValueZoom) {
+                FontFamily ff = SystemFonts.MessageBoxFont.FontFamily;
+                float fs = SystemFonts.MessageBoxFont.Size * this.Zoom / 70  * ((this.DrawingImage.PixelFormat == PixelFormat.Format8bppIndexed) ? 3f : 1);
+                Font font = new Font(ff, fs);
                 PointF ptMin = this.DrawToReal(new Point(0, 0));
                 PointF ptMax = this.DrawToReal(new Point(this.ClientSize.Width, this.ClientSize.Height));
                 int x1 = ((int)Math.Floor(ptMin.X)).Range(0, this.DrawingImage.Width - 1);
@@ -165,9 +168,10 @@ namespace OpenCVSharpTest {
                             dispPixel = GetBuiltinDispPixelValue(x, y);
                         }
                         var pt = this.RealToDraw(new Point(x, y));
-                        g.DrawString(dispPixel.Item1, SystemFonts.DefaultFont, dispPixel.Item2, pt);
+                        g.DrawString(dispPixel.Item1, font, dispPixel.Item2, pt);
                     }
                 }
+                font.Dispose();
             }
         }
 
