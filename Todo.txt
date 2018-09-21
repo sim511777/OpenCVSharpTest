@@ -25,6 +25,15 @@ ok 102. 마우스 픽셀 좌표, 컬러값 표시
 ok 103. 이미지 확대시 픽셀에 컬러값 표시
 ok 104. FitZoom
 ok 105. 센터라인 표시
+ok 106. 이름변경 DrawImage -> DrawingImage
+ok 107. 이름변경 ShowPixelInfo -> AutoDrawCursorPixelInfo
+ok 108. 이름변경 DrawPixelValue -> UseDrawPixelValue
+ok 109. 이름변경 DrawCenterLine -> AutoDrawCenterLine
+ok 110. 기본 ZoomMax 100x로 변경
+ok 111. ZoomIn()/ZoomOut() 함수 추가
+ok 112. Paint 이벤트 함수 분리
+ok 113. DrawCenterLine 외부에서 호출 할 수 있도록 수정
+ok 114. DrawCursorPixelInfo 외부에서 호출 할 수 있도록 수정
 106. InvertX,Y/FlipXY 기능 구현
 107. 이미지 축소시 기능
 

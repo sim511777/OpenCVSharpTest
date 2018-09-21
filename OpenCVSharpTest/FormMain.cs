@@ -86,7 +86,7 @@ namespace OpenCVSharpTest {
         public void DrawMat(Bitmap bmp, ZoomPictureBox pbx) {
             var bmpOld = pbx.Image;
             var bmpSrc = bmp;
-            pbx.DrawImage = bmpSrc;
+            pbx.DrawingImage = bmpSrc;
             pbx.Invalidate();
             if (bmpOld != null)
                 bmpOld.Dispose();
@@ -111,10 +111,10 @@ namespace OpenCVSharpTest {
 
         private Tuple<string, Brush> GetDstPixelValue(int x, int y) {
             Color col;
-            if (this.pbxDst.DrawImage == null || x < 0 || x >= this.pbxDst.DrawImage.Width || y < 0 || y >= this.pbxDst.DrawImage.Height)
+            if (this.pbxDst.DrawingImage == null || x < 0 || x >= this.pbxDst.DrawingImage.Width || y < 0 || y >= this.pbxDst.DrawingImage.Height)
                 col = Color.Black;
             else
-                col = this.pbxDst.DrawImage.GetPixel(x, y);
+                col = this.pbxDst.DrawingImage.GetPixel(x, y);
             int avg = (col.R + col.G + col.B) / 3;
             Brush br = (avg > 128) ? Brushes.Blue : Brushes.Yellow;
             return Tuple.Create(avg.ToString(), br);
@@ -244,13 +244,13 @@ namespace OpenCVSharpTest {
         }
 
         private void btnZoomReset_Click(object sender, EventArgs e) {
-            this.pbxSrc.ResetZoom();
-            this.pbxDst.ResetZoom();
+            this.pbxSrc.ZoomReset();
+            this.pbxDst.ZoomReset();
         }
 
         private void btnFitZoom_Click(object sender, EventArgs e) {
-            this.pbxSrc.FitZoom();
-            this.pbxDst.FitZoom();
+            this.pbxSrc.ZoomToWindow();
+            this.pbxDst.ZoomToWindow();
         }
 
         private void cbxTest_SelectedIndexChanged(object sender, EventArgs e) {
