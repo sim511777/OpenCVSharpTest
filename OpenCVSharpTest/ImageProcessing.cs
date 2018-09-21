@@ -128,7 +128,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void PixelBuffer_ByApi_Rgb() {
+        public static void PixelBuffer_By_Api_Rgb() {
             var form = FormMain.form;
             var matDst = new Mat(form.matSrc.Rows, form.matSrc.Cols, MatType.CV_8UC3);
             for (int row = 0; row < matDst.Rows; row++) {
@@ -145,13 +145,14 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void PixelBuffer_ByApi() {
+        public static void PixelBuffer_By_Api() {
             var form = FormMain.form;
             var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            for (int row = 0; row < matDst.Rows; row++) {
-                for (int col = 0; col < matDst.Cols; col++) {
-                    byte color = matDst.Get<byte>(row, col);
-                    matDst.Set(row, col, (byte)(~color));
+            int bw = matDst.Width;
+            int bh = matDst.Height;
+            for (int y = 0; y < bh; y++) {
+                for (int x = 0; x < bw; x++) {
+                    matDst.Set(y, x, (byte)~matDst.Get<byte>(y, x));
                 }
             }
             form.DrawMat(matDst.ToBitmap(), form.pbxDst);
@@ -159,14 +160,17 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void PixelBuffer_ByIntPtr() {
+        public static void PixelBuffer_By_Marshalling() {
             var form = FormMain.form;
             var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            for (int row = 0; row < matDst.Rows; row++) {
-                IntPtr pp = matDst.Ptr(row);
-                for (int col = 0; col < matDst.Cols; col++, pp += 1) {
-                    byte color = Marshal.ReadByte(pp);
-                    Marshal.WriteByte(pp, (byte)~color);
+            IntPtr buf = matDst.Data;
+            int bw = matDst.Width;
+            int bh = matDst.Height;
+            int stride = (int)matDst.Step();
+            for (int y = 0; y < bh; y++) {
+                IntPtr pp = buf + stride * y;
+                for (int x = 0; x < bw; x++, pp = pp + 1) {
+                   Marshal.WriteByte(pp, (byte)~Marshal.ReadByte(pp));
                 }
             }
             form.DrawMat(matDst.ToBitmap(), form.pbxDst);
@@ -174,7 +178,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        unsafe public static void PixelBuffer_ByPointer() {
+        unsafe public static void PixelBuffer_By_Unsafe_Pointer() {
             var form = FormMain.form;
             var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             byte* buf = matDst.DataPointer;
@@ -192,7 +196,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void PixelBuffer_ByDll_C() {
+        public static void PixelBuffer_By_Dll_C() {
             var form = FormMain.form;
             var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             IpDll.InverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
@@ -201,7 +205,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void PixelBuffer_ByDll_Sse() {
+        public static void PixelBuffer_By_Dll_Sse() {
             var form = FormMain.form;
             var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             IpDll.SseInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
@@ -210,7 +214,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void PixelBuffer_ByDll_Avx() {
+        public static void PixelBuffer_By_Dll_Avx() {
             var form = FormMain.form;
             var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             IpDll.AvxInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
@@ -219,7 +223,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void PixelBuffer_ByDll_VectorClass() {
+        public static void PixelBuffer_By_Dll_VectorClass() {
             var form = FormMain.form;
             var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             IpDll.VecInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
