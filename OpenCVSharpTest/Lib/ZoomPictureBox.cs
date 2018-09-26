@@ -8,7 +8,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
-using Vector = System.Windows.Vector;
+using System.Numerics;
 
 namespace OpenCVSharpTest {
     public class ZoomPictureBox : PictureBox {
@@ -61,17 +61,27 @@ namespace OpenCVSharpTest {
         }
 
         // 윈도우 크기에 이미지 줌 맞춤
-        public void ZoomToWindow() {
+        public void ZoomToImage() {
             if (this.DrawingImage == null) {
                 this.ZoomReset();
                 return;
             }
+            
+            this.ZoomToRect(0, 0, this.DrawingImage.Width, this.DrawingImage.Height);
+        }
 
-            float scale1 = (float)this.ClientRectangle.Height / this.DrawingImage.Height;
-            float scale2 = (float)this.ClientRectangle.Width / this.DrawingImage.Width;
+        // 윈도우 크기에 영역 줌 맞춤
+        public void ZoomToRect(RectangleF rect) {
+            this.ZoomToRect(rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
+        // 윈도우 크기에 영역 줌 맞춤
+        public void ZoomToRect(float x, float y, float width, float height) {
+            float scale1 = (float)this.ClientRectangle.Width / width;
+            float scale2 = (float)this.ClientRectangle.Height / height;
             this.Zoom = Math.Min(scale1, scale2).Range(this.ZoomMin, this.ZoomMax);
-            float panX = (this.ClientRectangle.Width - this.DrawingImage.Width * this.Zoom) / 2;
-            float panY = (this.ClientRectangle.Height - this.DrawingImage.Height * this.Zoom) / 2;
+            float panX = (this.ClientRectangle.Width - width * this.Zoom) / 2 - x * this.Zoom;
+            float panY = (this.ClientRectangle.Height - height * this.Zoom) / 2 - y * this.Zoom;
             this.Pan = new SizeF(panX, panY);
 
             this.Invalidate();
@@ -245,9 +255,9 @@ namespace OpenCVSharpTest {
             float factor = ((e.Delta > 0) ? this.ZoomStep : (1 / this.ZoomStep));
             var zoomTemp = (this.Zoom * factor).Range(this.ZoomMin, this.ZoomMax);
             factor = zoomTemp / this.Zoom;
-            Vector vM = new Vector(e.Location.X, e.Location.Y);
-            Vector vI = new Vector(this.Pan.Width, this.Pan.Height);
-            Vector vI2 = (vI - vM) * factor + vM;
+            Vector2 vM = new Vector2(e.Location.X, e.Location.Y);
+            Vector2 vI = new Vector2(this.Pan.Width, this.Pan.Height);
+            Vector2 vI2 = (vI - vM) * factor + vM;
             this.Pan = new SizeF((float)vI2.X, (float)vI2.Y);
             this.Zoom *= factor;
             this.Invalidate();
@@ -267,12 +277,13 @@ namespace OpenCVSharpTest {
         }
 
         private void ZoomPictureBox_MouseUp(object sender, MouseEventArgs e) {
+            this.mousePan = false;
+
             if (this.EnableMousePan == false)
                 return;
 
             if (e.Button != MouseButtons.Left)
                 return;
-            this.mousePan = false;
         }
 
         private void ZoomPictureBox_MouseMove(object sender, MouseEventArgs e) {

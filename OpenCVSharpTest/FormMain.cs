@@ -133,6 +133,9 @@ namespace OpenCVSharpTest {
             this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
             this.ProcessImage();
+
+            this.pbxSrc.ZoomToImage();
+            this.pbxDst.ZoomToImage();
         }
 
         private void btnClipboard_Click(object sender, EventArgs e) {
@@ -154,6 +157,9 @@ namespace OpenCVSharpTest {
             this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
             this.ProcessImage();
+
+            this.pbxSrc.ZoomToImage();
+            this.pbxDst.ZoomToImage();
         }
 
         private void btnLoad_Click(object sender, EventArgs e) {
@@ -172,6 +178,9 @@ namespace OpenCVSharpTest {
             this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
             this.ProcessImage();
+
+            this.pbxSrc.ZoomToImage();
+            this.pbxDst.ZoomToImage();
         }
 
         private void timer1_Tick(object sender, EventArgs e) {
@@ -198,10 +207,10 @@ namespace OpenCVSharpTest {
 
         private void StartLive() {
             this.cap = new VideoCapture(0);
-            //this.cap.FrameWidth = 1913;
-            //this.cap.FrameHeight = 1080;
             this.timer1.Enabled = true;
             this.btnLive.Text = "Live Stop";
+            this.pbxSrc.ZoomToRect(0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
+            this.pbxDst.ZoomToRect(0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
         }
 
         private void StopLive() {
@@ -249,8 +258,8 @@ namespace OpenCVSharpTest {
         }
 
         private void btnFitZoom_Click(object sender, EventArgs e) {
-            this.pbxSrc.ZoomToWindow();
-            this.pbxDst.ZoomToWindow();
+            this.pbxSrc.ZoomToImage();
+            this.pbxDst.ZoomToImage();
         }
 
         private void cbxTest_SelectedIndexChanged(object sender, EventArgs e) {
