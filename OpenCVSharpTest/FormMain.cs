@@ -35,6 +35,10 @@ namespace OpenCVSharpTest {
             series.Enabled = true;
         }
 
+      public void Log(string text) {
+         this.tbxLog.AppendText(text + Environment.NewLine);
+      }
+
         public void DrawHistogram(Mat mat, Chart cht) {
             if (mat == null) {
                 cht.Series[0].Enabled = false;

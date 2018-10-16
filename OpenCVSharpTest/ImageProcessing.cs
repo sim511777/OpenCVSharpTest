@@ -99,6 +99,13 @@ namespace OpenCVSharpTest {
             var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
             var blobs = new CvBlobs();
             blobs.Label(matDst);
+            form.Log("==== Blob List ====");
+            var pairList = blobs.OrderBy(blob => blob.Key);
+            foreach (var pair in pairList) {
+                CvBlob blob = pair.Value;
+                string msg = $"{blob.Label} {blob.Area}";
+                form.Log(msg);
+            }
             var matDsp = new Mat(form.matSrc.Rows, form.matSrc.Cols, MatType.CV_8UC3);
             blobs.RenderBlobs(matDsp, matDsp);
             form.DrawMat(matDsp.ToBitmap(), form.pbxDst);
