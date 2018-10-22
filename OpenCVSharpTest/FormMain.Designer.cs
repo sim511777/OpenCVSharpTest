@@ -72,8 +72,8 @@
             this.lblProcessingTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblLog = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitter1 = new System.Windows.Forms.Splitter();
-            this.pbxDst = new OpenCVSharpTest.ZoomPictureBox();
-            this.pbxSrc = new OpenCVSharpTest.ZoomPictureBox();
+            this.pbxDst = new ShimLib.ZoomPictureBox();
+            this.pbxSrc = new ShimLib.ZoomPictureBox();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -587,8 +587,8 @@
         private System.Windows.Forms.ToolStripStatusLabel lblLog;
         public System.Windows.Forms.DataVisualization.Charting.Chart chtSrc;
         public System.Windows.Forms.DataVisualization.Charting.Chart chtDst;
-        public ZoomPictureBox pbxDst;
-        public ZoomPictureBox pbxSrc;
+        public ShimLib.ZoomPictureBox pbxDst;
+        public ShimLib.ZoomPictureBox pbxSrc;
         private System.Windows.Forms.Panel panel2;
       private System.Windows.Forms.Splitter splitter1;
       private System.Windows.Forms.TextBox tbxLog;

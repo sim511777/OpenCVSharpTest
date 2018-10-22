@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace OpenCVSharpTest {
+namespace ShimLib {
     /// <summary>
     /// CustomClass (Which is binding to property grid)
     /// </summary>

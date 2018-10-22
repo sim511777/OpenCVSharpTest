@@ -9,7 +9,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 
-namespace OpenCVSharpTest {
+namespace ShimLib {
     public class ZoomPictureBox : PictureBox {
         private Func<int, int, Tuple<string, Brush>> FuncGetPixelValueDisp = null;
 

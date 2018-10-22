@@ -15,8 +15,7 @@ using OpenCvSharp.Extensions;
 using OpenCvSharp.Blob;
 using System.Reflection;
 using System.Collections;
-using CvSize = OpenCvSharp.Size;
-using CvPoint = OpenCvSharp.Point;
+using ShimLib;
 
 namespace OpenCVSharpTest {
     public partial class FormMain : Form {
