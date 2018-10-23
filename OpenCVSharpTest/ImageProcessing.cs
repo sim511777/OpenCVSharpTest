@@ -206,7 +206,7 @@ namespace OpenCVSharpTest {
         public static void PixelBuffer_By_Dll_C() {
             var form = FormMain.form;
             var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            IpDll.InverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+            IpDll.InverseImageC(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
             form.DrawMat(matDst.ToBitmap(), form.pbxDst);
             form.DrawHistogram(matDst, form.chtDst);
             matDst.Dispose();
@@ -215,16 +215,7 @@ namespace OpenCVSharpTest {
         public static void PixelBuffer_By_Dll_Sse() {
             var form = FormMain.form;
             var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            IpDll.SseInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
-            matDst.Dispose();
-        }
-
-        public static void PixelBuffer_By_Dll_Avx() {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            IpDll.AvxInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+            IpDll.InverseImageSse(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
             form.DrawMat(matDst.ToBitmap(), form.pbxDst);
             form.DrawHistogram(matDst, form.chtDst);
             matDst.Dispose();
@@ -233,7 +224,16 @@ namespace OpenCVSharpTest {
         public static void PixelBuffer_By_Dll_VectorClass() {
             var form = FormMain.form;
             var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            IpDll.VecInverseImage(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+            IpDll.InverseImageVec(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
+            form.DrawHistogram(matDst, form.chtDst);
+            matDst.Dispose();
+        }
+
+        public static void PixelBuffer_By_Dll_Avx() {
+            var form = FormMain.form;
+            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            IpDll.InverseImageAvx(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
             form.DrawMat(matDst.ToBitmap(), form.pbxDst);
             form.DrawHistogram(matDst, form.chtDst);
             matDst.Dispose();
