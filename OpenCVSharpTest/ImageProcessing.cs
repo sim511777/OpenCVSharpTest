@@ -94,6 +94,14 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
+        public static void Dilate(int iterations = 1) {
+            var form = FormMain.form;
+            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu).Dilate(new Mat(), iterations: iterations);
+            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
+            form.DrawHistogram(matDst, form.chtDst);
+            matDst.Dispose();
+        }
+
         public static void Blob() {
             var form = FormMain.form;
             var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);

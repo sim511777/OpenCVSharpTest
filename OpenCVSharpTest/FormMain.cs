@@ -87,7 +87,7 @@ namespace OpenCVSharpTest {
         }
 
         public void DrawMat(Bitmap bmp, ZoomPictureBox pbx) {
-            var bmpOld = pbx.Image;
+            var bmpOld = pbx.DrawingImage;
             var bmpSrc = bmp;
             pbx.DrawingImage = bmpSrc;
             pbx.Invalidate();
@@ -98,6 +98,7 @@ namespace OpenCVSharpTest {
         public FormMain() {
             FormMain.form = this;
             InitializeComponent();
+            this.cbxExampleImage.SelectedIndex = 0;
             this.InitFunctionList();
         }
 
@@ -123,16 +124,16 @@ namespace OpenCVSharpTest {
             return Tuple.Create(avg.ToString(), br);
         }
 
-        private void btnLenna_Click(object sender, EventArgs e) {
+        private void btnExample_Click(object sender, EventArgs e) {
             if (this.cap != null) {
                 this.StopLive();
             }
-
+            
             var oldTime = DateTime.Now;
 
             if (this.matSrc != null)
                 this.matSrc.Dispose();
-            this.matSrc = Resources.Lenna.ToMat();
+            this.matSrc = ((Bitmap)Resources.ResourceManager.GetObject(this.cbxExampleImage.Text)).ToMat();
             this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
             this.ProcessImage();
