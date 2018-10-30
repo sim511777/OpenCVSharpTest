@@ -271,14 +271,24 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void Kernel() {
+        public static void Kernel(
+            float w00 = 1, float w01 = 1, float w02 = 1,
+            float w10 = 1, float w11 = 1, float w12 = 1,
+            float w20 = 1, float w21 = 1, float w22 = 1,
+            bool normalize = true) {
             var form = FormMain.form;
-            float[] data = Enumerable.Repeat(1f, 9).ToArray();
+            float[] data = new float[] {
+                w00, w01, w02,
+                w10, w11, w12,
+                w20, w21, w22
+            };
             var kernel = new Mat(3, 3, MatType.CV_32FC1, data);
-            kernel = kernel.Normalize(normType: NormTypes.L1);
+            if (normalize) {
+                kernel = kernel.Normalize(normType: NormTypes.L1);
+            }
             var matDst = form.matSrc
-               .CvtColor(ColorConversionCodes.BGR2GRAY)
-               .Filter2D(MatType.CV_8UC1, kernel, borderType: BorderTypes.Default);
+                .CvtColor(ColorConversionCodes.BGR2GRAY)
+                .Filter2D(MatType.CV_8UC1, kernel, borderType: BorderTypes.Default);
             kernel.Dispose();
             form.DrawMat(matDst.ToBitmap(), form.pbxDst);
             form.DrawHistogram(matDst, form.chtDst);
