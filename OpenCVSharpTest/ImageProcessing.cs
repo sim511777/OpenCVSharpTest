@@ -12,157 +12,211 @@ using System.Runtime.InteropServices;
 namespace OpenCVSharpTest {
     class ImageProcessing {
         public static void CvtColor(ColorConversionCodes code = ColorConversionCodes.BGR2GRAY) {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(code);
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matDst = Glb.matSrc.CvtColor(code);
+            Glb.DrawMatAndHist1(matDst);
+
+            Glb.DrawMatAndHist2(matDst);
+
             matDst.Dispose();
         }
 
         public static void EqualizeHist() {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).EqualizeHist();
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matDst = matGray.EqualizeHist();
+            Glb.DrawMatAndHist2(matDst);
+
+            matGray.Dispose();
             matDst.Dispose();
         }
 
         public static void EqualizeHistHsv() {
-            var form = FormMain.form;
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
             // BGR to HSV변환
-            var matHsv = form.matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
+            var matHsv = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
             // 채널 분리
             var hsvChannels = matHsv.Split();
             // 변환
             hsvChannels[2] = hsvChannels[2].EqualizeHist();
+            Glb.DrawMatAndHist1(hsvChannels[2]);
             // 채널 병합
             var matDst = new Mat();
             Cv2.Merge(hsvChannels, matDst);
             // HSV to BGR변환
             matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist2(matDst);
             matHsv.Dispose();
             matDst.Dispose();
         }
 
         public static void Threshold(double thresh = 128, double maxvalue = 255, ThresholdTypes type = ThresholdTypes.Binary) {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(thresh, maxvalue, type);
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+            
+            var matDst = matGray.Threshold(thresh, maxvalue, type);
+            Glb.DrawMatAndHist2(matDst);
+
+            matGray.Dispose();
             matDst.Dispose();
         }
 
         public static void Canny(double threshold1 = 50, double threshold2 = 200, int apertureSize = 3, bool L2gradient = false) {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Canny(threshold1, threshold2, apertureSize, L2gradient);
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+            
+            var matDst = matGray.Canny(threshold1, threshold2, apertureSize, L2gradient);
+            Glb.DrawMatAndHist2(matDst);
+            
+            matGray.Dispose();
             matDst.Dispose();
         }
 
         public static void Blur(double ksize = 5, BorderTypes borderType = BorderTypes.Reflect101) {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Blur(new Size(ksize, ksize), borderType:borderType);
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+            
+            var matDst = matGray.Blur(new Size(ksize, ksize), borderType:borderType);
+            Glb.DrawMatAndHist2(matDst);
+
+            matGray.Dispose();
             matDst.Dispose();
         }
 
         public static void GaussianBlur(double ksize = 5, double sigmaX = 5, double sigmaY = 5, BorderTypes borderType = BorderTypes.Reflect101) {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).GaussianBlur(new Size(ksize, ksize), sigmaX, sigmaY, borderType);
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+            
+            var matDst = matGray.GaussianBlur(new Size(ksize, ksize), sigmaX, sigmaY, borderType);
+            Glb.DrawMatAndHist2(matDst);
+
+            matGray.Dispose();
             matDst.Dispose();
         }
 
         public static void MedianBlur(int ksize = 3) {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).MedianBlur(ksize);
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matDst = matGray.MedianBlur(ksize);
+            Glb.DrawMatAndHist2(matDst);
+
+            matGray.Dispose();
             matDst.Dispose();
         }
 
         public static void Erode(int iterations = 1) {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu).Erode(new Mat(), iterations: iterations);
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+            Glb.DrawMatAndHist1(matThr);
+
+            var matDst = matThr.Erode(new Mat(), iterations: iterations);
+            Glb.DrawMatAndHist2(matDst);
+
+            matThr.Dispose();
             matDst.Dispose();
         }
 
         public static void Dilate(int iterations = 1) {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu).Dilate(new Mat(), iterations: iterations);
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+            Glb.DrawMatAndHist1(matThr);
+
+            var matDst = matThr.Dilate(new Mat(), iterations: iterations);
+            Glb.DrawMatAndHist2(matDst);
+
+            matThr.Dispose();
             matDst.Dispose();
         }
 
         public static void Blob() {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+            Glb.DrawMatAndHist1(matThr);
+
             var blobs = new CvBlobs();
-            blobs.Label(matDst);
-            form.Log("==== Blob List ====");
+            blobs.Label(matThr);
+            Glb.Log("==== Blob List ====");
             var pairList = blobs.OrderBy(blob => blob.Key);
             foreach (var pair in pairList) {
                 CvBlob blob = pair.Value;
                 string msg = $"{blob.Label} {blob.Area}";
-                form.Log(msg);
+                Glb.Log(msg);
             }
-            var matDsp = new Mat(form.matSrc.Rows, form.matSrc.Cols, MatType.CV_8UC3);
+            var matDsp = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
             blobs.RenderBlobs(matDsp, matDsp);
-            form.DrawMat(matDsp.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist2(matDsp);
+
+            matThr.Dispose();
             matDsp.Dispose();
-            matDst.Dispose();
         }
 
         public static void ContrastBrightness(double x1 = 64, double y1 = 0, double x2 = 192, double y2 = 255) {
-            var form = FormMain.form;
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
             // BGR to HSV변환
-            var matHsv = form.matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
+            var matHsv = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
             // 채널 분리
             var hsvChannels = matHsv.Split();
             // 변환
             double scale = (y2 - y1) / (x2 - x1);
             double offset = (x2 * y1 - x1 * y2) / (x2 - x1);
             hsvChannels[2].ConvertTo(hsvChannels[2], MatType.CV_8UC1, scale, offset);
+            Glb.DrawMatAndHist1(hsvChannels[2]);
             // 채널 병합
             var matDst = new Mat();
             Cv2.Merge(hsvChannels, matDst);
             // HSV to BGR변환
             matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist2(matDst);
             matHsv.Dispose();
             matDst.Dispose();
         }
 
         public static void PixelBuffer_By_Api_Rgb() {
-            var form = FormMain.form;
-            var matDst = new Mat(form.matSrc.Rows, form.matSrc.Cols, MatType.CV_8UC3);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matDst = Glb.matSrc.Clone();
+            Glb.DrawMatAndHist1(matDst);
+
             for (int row = 0; row < matDst.Rows; row++) {
                 for (int col = 0; col < matDst.Cols; col++) {
-                    Vec3b color = form.matSrc.Get<Vec3b>(row, col);
+                    Vec3b color = matDst.Get<Vec3b>(row, col);
                     color.Item0 = (byte)(255 - color.Item0);
                     color.Item1 = (byte)(255 - color.Item1);
                     color.Item2 = (byte)(255 - color.Item2);
                     matDst.Set(row, col, color);
                 }
             }
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist2(matDst);
+
             matDst.Dispose();
         }
 
         public static void PixelBuffer_By_Api() {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matDst);
+
             int bw = matDst.Width;
             int bh = matDst.Height;
             for (int y = 0; y < bh; y++) {
@@ -170,14 +224,17 @@ namespace OpenCVSharpTest {
                     matDst.Set(y, x, (byte)~matDst.Get<byte>(y, x));
                 }
             }
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist2(matDst);
+
             matDst.Dispose();
         }
 
         public static void PixelBuffer_By_Marshalling() {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matDst);
+
             IntPtr buf = matDst.Data;
             int bw = matDst.Width;
             int bh = matDst.Height;
@@ -188,14 +245,17 @@ namespace OpenCVSharpTest {
                    Marshal.WriteByte(pp, (byte)~Marshal.ReadByte(pp));
                 }
             }
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist2(matDst);
+
             matDst.Dispose();
         }
 
         unsafe public static void PixelBuffer_By_Unsafe_Pointer() {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matDst);
+
             byte* buf = matDst.DataPointer;
             int bw = matDst.Width;
             int bh = matDst.Height;
@@ -206,68 +266,88 @@ namespace OpenCVSharpTest {
                     *pp = (byte)~(*pp);
                 }
             }
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist2(matDst);
+
             matDst.Dispose();
         }
 
         public static void PixelBuffer_By_Dll_C() {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matDst);
+
             IpDll.InverseImageC(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist2(matDst);
+
             matDst.Dispose();
         }
 
         public static void PixelBuffer_By_Dll_Sse() {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matDst);
+
             IpDll.InverseImageSse(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist2(matDst);
+
             matDst.Dispose();
         }
 
         public static void PixelBuffer_By_Dll_VectorClass() {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matDst);
+
             IpDll.InverseImageVec(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist2(matDst);
+
             matDst.Dispose();
         }
 
         public static void PixelBuffer_By_Dll_Avx() {
-            var form = FormMain.form;
-            var matDst = form.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matDst);
+
             IpDll.InverseImageAvx(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist2(matDst);
+
             matDst.Dispose();
         }
 
         public static void Crop(int x = 10, int y = 10, int width = 100, int height = 100) {
-            var form = FormMain.form;
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
             Rect roi = new Rect(x, y, width, height);
-            Mat matDst = new Mat(form.matSrc, roi);
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Mat matDst = new Mat(Glb.matSrc, roi);
+            Glb.DrawMatAndHist1(matDst);
+
+            Glb.DrawMatAndHist2(matDst);
+
             matDst.Dispose();
         }
 
         public static void CropAndCopy(int x = 100, int y = 100, int width = 100, int height = 100) {
-            var form = FormMain.form;
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
             Rect roi = new Rect(x, y, width, height);
-            Mat matCrop = new Mat(form.matSrc, roi)  // 크롭 이미지 생성 하여 수정
+            Mat matCrop = new Mat(Glb.matSrc, roi)  // 크롭 이미지 생성 하여 수정
                .CvtColor(ColorConversionCodes.BGR2GRAY)
                .Threshold(128, 255, ThresholdTypes.Binary)
                .CvtColor(ColorConversionCodes.GRAY2BGR);
-            Mat matDst = form.matSrc.Clone();
+            Glb.DrawMatAndHist1(matCrop);
+
+            Mat matDst = Glb.matSrc.Clone();
             Mat matRoi = new Mat(matDst, roi);  // 부분 참조 이미지 생성
             matCrop.CopyTo(matRoi);             // 수정된 이미지를 참조 버퍼에 복사
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+
+            Glb.DrawMatAndHist2(matDst);
+
+            matCrop.Dispose();
             matDst.Dispose();
         }
 
@@ -276,7 +356,9 @@ namespace OpenCVSharpTest {
             float w10 = 1, float w11 = 1, float w12 = 1,
             float w20 = 1, float w21 = 1, float w22 = 1,
             bool normalize = true) {
-            var form = FormMain.form;
+            
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
             float[] data = new float[] {
                 w00, w01, w02,
                 w10, w11, w12,
@@ -286,29 +368,40 @@ namespace OpenCVSharpTest {
             if (normalize) {
                 kernel = kernel.Normalize(normType: NormTypes.L1);
             }
-            var matDst = form.matSrc
-                .CvtColor(ColorConversionCodes.BGR2GRAY)
-                .Filter2D(MatType.CV_8UC1, kernel, borderType: BorderTypes.Default);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matDst = matGray.Filter2D(MatType.CV_8UC1, kernel, borderType: BorderTypes.Default);
             kernel.Dispose();
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist2(matDst);
+
+            matGray.Dispose();
             matDst.Dispose();
         }
 
         public static void Flip(FlipMode flipCode = FlipMode.X) {
-            var form = FormMain.form;
-            Mat matDst = form.matSrc.Flip(flipCode);
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            Mat matDst = Glb.matSrc.Flip(flipCode);
+            Glb.DrawMatAndHist1(matDst);
+
+            Glb.DrawMatAndHist2(matDst);
+
             matDst.Dispose();
         }
 
         public static void Negative() {
-            var form = FormMain.form;
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matBgr = Glb.matSrc.CvtColor(ColorConversionCodes.BGRA2BGR);
+            Glb.DrawMatAndHist1(matBgr);
+            
             var matDst = new Mat();
-            Cv2.BitwiseNot(form.matSrc.CvtColor(ColorConversionCodes.BGRA2BGR), matDst);
-            form.DrawMat(matDst.ToBitmap(), form.pbxDst);
-            form.DrawHistogram(matDst, form.chtDst);
+            Cv2.BitwiseNot(matBgr, matDst);
+            Glb.DrawMatAndHist2(matDst);
+
+            matBgr.Dispose();
             matDst.Dispose();
         }
     }

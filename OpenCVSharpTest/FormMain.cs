@@ -19,10 +19,6 @@ using ShimLib;
 
 namespace OpenCVSharpTest {
     public partial class FormMain : Form {
-        public static FormMain form;
-
-        public Mat matSrc = null;
-
         private void DrawHistogram(float[] histo, Series series, string name, Color color, AxisType yAxisTYpe = AxisType.Primary) {
             series.Name = name;
             series.Color = color;
@@ -96,7 +92,7 @@ namespace OpenCVSharpTest {
         }
 
         public FormMain() {
-            FormMain.form = this;
+            Glb.form = this;
             InitializeComponent();
             this.cbxExampleImage.SelectedIndex = 0;
             this.InitFunctionList();
@@ -115,10 +111,10 @@ namespace OpenCVSharpTest {
 
         private Tuple<string, Brush> GetDstPixelValue(int x, int y) {
             Color col;
-            if (this.pbxDst.DrawingImage == null || x < 0 || x >= this.pbxDst.DrawingImage.Width || y < 0 || y >= this.pbxDst.DrawingImage.Height)
+            if (this.pbx1.DrawingImage == null || x < 0 || x >= this.pbx1.DrawingImage.Width || y < 0 || y >= this.pbx1.DrawingImage.Height)
                 col = Color.Black;
             else
-                col = this.pbxDst.DrawingImage.GetPixel(x, y);
+                col = this.pbx1.DrawingImage.GetPixel(x, y);
             int avg = (col.R + col.G + col.B) / 3;
             Brush br = (avg > 128) ? Brushes.Blue : Brushes.Yellow;
             return Tuple.Create(avg.ToString(), br);
@@ -131,15 +127,16 @@ namespace OpenCVSharpTest {
             
             var oldTime = DateTime.Now;
 
-            if (this.matSrc != null)
-                this.matSrc.Dispose();
-            this.matSrc = ((Bitmap)Resources.ResourceManager.GetObject(this.cbxExampleImage.Text)).ToMat();
+            if (Glb.matSrc != null)
+                Glb.matSrc.Dispose();
+            Glb.matSrc = ((Bitmap)Resources.ResourceManager.GetObject(this.cbxExampleImage.Text)).ToMat();
             this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
             this.ProcessImage();
 
-            this.pbxSrc.ZoomToImage();
-            this.pbxDst.ZoomToImage();
+            this.pbx0.ZoomToImage();
+            this.pbx1.ZoomToImage();
+            this.pbx2.ZoomToImage();
         }
 
         private void btnClipboard_Click(object sender, EventArgs e) {
@@ -153,17 +150,18 @@ namespace OpenCVSharpTest {
 
             var oldTime = DateTime.Now;
 
-            if (this.matSrc != null)
-                this.matSrc.Dispose();
+            if (Glb.matSrc != null)
+                Glb.matSrc.Dispose();
             Bitmap bmp = new Bitmap(img);
-            this.matSrc = bmp.ToMat();
+            Glb.matSrc = bmp.ToMat();
             bmp.Dispose();
             this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
             this.ProcessImage();
 
-            this.pbxSrc.ZoomToImage();
-            this.pbxDst.ZoomToImage();
+            this.pbx0.ZoomToImage();
+            this.pbx1.ZoomToImage();
+            this.pbx2.ZoomToImage();
         }
 
         private void btnLoad_Click(object sender, EventArgs e) {
@@ -176,24 +174,25 @@ namespace OpenCVSharpTest {
 
             var oldTime = DateTime.Now;
 
-            if (this.matSrc != null)
-                this.matSrc.Dispose();
-            this.matSrc = new Mat(this.dlgOpen.FileName);
+            if (Glb.matSrc != null)
+                Glb.matSrc.Dispose();
+            Glb.matSrc = new Mat(this.dlgOpen.FileName);
             this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
             this.ProcessImage();
 
-            this.pbxSrc.ZoomToImage();
-            this.pbxDst.ZoomToImage();
+            this.pbx0.ZoomToImage();
+            this.pbx1.ZoomToImage();
+            this.pbx2.ZoomToImage();
         }
 
         private void timer1_Tick(object sender, EventArgs e) {
             var oldTime = DateTime.Now;
 
-            if (this.matSrc != null)
-                this.matSrc.Dispose();
-            this.matSrc = new Mat();
-            this.cap.Read(matSrc);
+            if (Glb.matSrc != null)
+                Glb.matSrc.Dispose();
+            Glb.matSrc = new Mat();
+            this.cap.Read(Glb.matSrc);
             this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
             this.ProcessImage();
@@ -213,8 +212,8 @@ namespace OpenCVSharpTest {
             this.cap = new VideoCapture(0);
             this.timer1.Enabled = true;
             this.btnLive.Text = "Live Stop";
-            this.pbxSrc.ZoomToRect(0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
-            this.pbxDst.ZoomToRect(0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
+            this.pbx0.ZoomToRect(0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
+            this.pbx1.ZoomToRect(0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
         }
 
         private void StopLive() {
@@ -226,13 +225,10 @@ namespace OpenCVSharpTest {
 
         // 이미지 처리
         private void ProcessImage() {
-            if (this.matSrc == null)
+            if (Glb.matSrc == null)
                 return;
 
             var oldTime = DateTime.Now;
-
-            DrawMat(matSrc.ToBitmap(), this.pbxSrc);
-            DrawHistogram(matSrc, this.chtSrc);
 
             var method = (this.cbxFunc.SelectedItem as MethodInfoItem)?.MethodInfo;
             var prmNameList = method.GetParameters().Select(prm => prm.Name);
@@ -243,12 +239,16 @@ namespace OpenCVSharpTest {
                     object r = method.Invoke(this, prms);
                     this.lblLog.Text = $"{method.Name} Succeed:";
                 } catch (TargetInvocationException ex) {
-                    DrawMat(null, this.pbxDst);
-                    DrawHistogram(null, this.chtDst);
+                    DrawMat(null, this.pbx1);
+                    DrawHistogram(null, this.cht1);
+                    DrawMat(null, this.pbx2);
+                    DrawHistogram(null, this.cht2);
                     this.lblLog.Text = $"{method.Name} Fail: {ex.InnerException.Message}";
                 } catch (Exception ex) {
-                    DrawMat(null, this.pbxDst);
-                    DrawHistogram(null, this.chtDst);
+                    DrawMat(null, this.pbx1);
+                    DrawHistogram(null, this.cht1);
+                    DrawMat(null, this.pbx2);
+                    DrawHistogram(null, this.cht2);
                     this.lblLog.Text = $"{method.Name} Fail: {ex.Message}";
                 }
             }
@@ -257,13 +257,15 @@ namespace OpenCVSharpTest {
         }
 
         private void btnZoomReset_Click(object sender, EventArgs e) {
-            this.pbxSrc.ZoomReset();
-            this.pbxDst.ZoomReset();
+            this.pbx0.ZoomReset();
+            this.pbx1.ZoomReset();
+            this.pbx2.ZoomReset();
         }
 
         private void btnFitZoom_Click(object sender, EventArgs e) {
-            this.pbxSrc.ZoomToImage();
-            this.pbxDst.ZoomToImage();
+            this.pbx0.ZoomToImage();
+            this.pbx1.ZoomToImage();
+            this.pbx2.ZoomToImage();
         }
 
         private void cbxTest_SelectedIndexChanged(object sender, EventArgs e) {
