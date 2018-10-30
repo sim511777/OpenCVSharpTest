@@ -17,7 +17,7 @@ namespace OpenCVSharpTest {
             var matDst = Glb.matSrc.CvtColor(code);
             Glb.DrawMatAndHist1(matDst);
 
-            Glb.DrawMatAndHist2(matDst);
+            Glb.DrawMatAndHist2(null);
 
             matDst.Dispose();
         }
@@ -51,6 +51,7 @@ namespace OpenCVSharpTest {
             // HSV to BGR변환
             matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
             Glb.DrawMatAndHist2(matDst);
+
             matHsv.Dispose();
             matDst.Dispose();
         }
@@ -187,6 +188,7 @@ namespace OpenCVSharpTest {
             // HSV to BGR변환
             matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
             Glb.DrawMatAndHist2(matDst);
+
             matHsv.Dispose();
             matDst.Dispose();
         }
@@ -206,7 +208,7 @@ namespace OpenCVSharpTest {
                     matDst.Set(row, col, color);
                 }
             }
-            Glb.DrawMatAndHist2(matDst);
+            Glb.DrawMatAndHist2(null);
 
             matDst.Dispose();
         }
@@ -326,7 +328,7 @@ namespace OpenCVSharpTest {
             Mat matDst = new Mat(Glb.matSrc, roi);
             Glb.DrawMatAndHist1(matDst);
 
-            Glb.DrawMatAndHist2(matDst);
+            Glb.DrawMatAndHist2(null);
 
             matDst.Dispose();
         }
@@ -386,7 +388,7 @@ namespace OpenCVSharpTest {
             Mat matDst = Glb.matSrc.Flip(flipCode);
             Glb.DrawMatAndHist1(matDst);
 
-            Glb.DrawMatAndHist2(matDst);
+            Glb.DrawMatAndHist2(null);
 
             matDst.Dispose();
         }
@@ -394,14 +396,12 @@ namespace OpenCVSharpTest {
         public static void Negative() {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
-            var matBgr = Glb.matSrc.CvtColor(ColorConversionCodes.BGRA2BGR);
-            Glb.DrawMatAndHist1(matBgr);
-            
             var matDst = new Mat();
-            Cv2.BitwiseNot(matBgr, matDst);
-            Glb.DrawMatAndHist2(matDst);
+            Cv2.BitwiseNot(Glb.matSrc.CvtColor(ColorConversionCodes.BGRA2BGR), matDst);
+            Glb.DrawMatAndHist1(matDst);
 
-            matBgr.Dispose();
+            Glb.DrawMatAndHist2(null);
+
             matDst.Dispose();
         }
     }
