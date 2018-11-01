@@ -10,7 +10,7 @@ using OpenCvSharp.Blob;
 using System.Runtime.InteropServices;
 
 namespace OpenCVSharpTest {
-    class ImageProcessing {
+    class TestIp {
         public static void CvtColor(ColorConversionCodes code = ColorConversionCodes.BGR2GRAY) {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
@@ -258,7 +258,7 @@ namespace OpenCVSharpTest {
             var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matDst);
 
-            Glb.Inverse(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+            IpUnsafe.Inverse(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
             Glb.DrawMatAndHist2(matDst);
 
             matDst.Dispose();
@@ -425,7 +425,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void MyBlob() {
+        public static void Blob_Unsafe() {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
@@ -433,14 +433,15 @@ namespace OpenCVSharpTest {
 
             var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC1);
             matDst.SetTo(0);
-            Glb.MyBlob(matThr.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
+
+            IpUnsafe.Blob(matThr.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
             Glb.DrawMatAndHist2(matDst);
 
             matThr.Dispose();
             matDst.Dispose();
         }
 
-        public static void MyBlobC() {
+        public static void Blob_DllC() {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
@@ -448,7 +449,7 @@ namespace OpenCVSharpTest {
 
             var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC1);
             matDst.SetTo(0);
-            IpDll.MyBlobC(matThr.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
+            IpDll.BlobC(matThr.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
             Glb.DrawMatAndHist2(matDst);
 
             matThr.Dispose();

@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Glb.cs" />
+    <Compile Include="IpUnsafe.cs" />
     <Compile Include="ShimLib\CustomClass.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
@@ -73,7 +74,7 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageProcessing.cs" />
+    <Compile Include="TestIp.cs" />
     <Compile Include="IpDll.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

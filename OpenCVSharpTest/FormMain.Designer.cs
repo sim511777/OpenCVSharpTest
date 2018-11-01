@@ -63,7 +63,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.grdParameter = new System.Windows.Forms.PropertyGrid();
-            this.cbxFunc = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnZoomReset = new System.Windows.Forms.Button();
@@ -88,10 +87,12 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.splitter3 = new System.Windows.Forms.Splitter();
             this.pbx0 = new ShimLib.ZoomPictureBox();
             this.pbx2 = new ShimLib.ZoomPictureBox();
             this.pbx1 = new ShimLib.ZoomPictureBox();
+            this.splitter3 = new System.Windows.Forms.Splitter();
+            this.lbxFunc = new System.Windows.Forms.ListBox();
+            this.splitter4 = new System.Windows.Forms.Splitter();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -121,8 +122,9 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.lbxFunc);
+            this.groupBox3.Controls.Add(this.splitter4);
             this.groupBox3.Controls.Add(this.grdParameter);
-            this.groupBox3.Controls.Add(this.cbxFunc);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 144);
             this.groupBox3.Name = "groupBox3";
@@ -133,25 +135,14 @@
             // 
             // grdParameter
             // 
-            this.grdParameter.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grdParameter.Location = new System.Drawing.Point(3, 37);
+            this.grdParameter.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.grdParameter.Location = new System.Drawing.Point(3, 426);
             this.grdParameter.Name = "grdParameter";
             this.grdParameter.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-            this.grdParameter.Size = new System.Drawing.Size(250, 315);
+            this.grdParameter.Size = new System.Drawing.Size(250, 196);
             this.grdParameter.TabIndex = 3;
             this.grdParameter.ToolbarVisible = false;
             this.grdParameter.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.grdParameter_PropertyValueChanged);
-            // 
-            // cbxFunc
-            // 
-            this.cbxFunc.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cbxFunc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxFunc.FormattingEnabled = true;
-            this.cbxFunc.Location = new System.Drawing.Point(3, 17);
-            this.cbxFunc.Name = "cbxFunc";
-            this.cbxFunc.Size = new System.Drawing.Size(250, 20);
-            this.cbxFunc.TabIndex = 2;
-            this.cbxFunc.SelectedIndexChanged += new System.EventHandler(this.cbxTest_SelectedIndexChanged);
             // 
             // panel2
             // 
@@ -637,15 +628,6 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(936, 355);
             this.tableLayoutPanel2.TabIndex = 6;
             // 
-            // splitter3
-            // 
-            this.splitter3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter3.Location = new System.Drawing.Point(261, 355);
-            this.splitter3.Name = "splitter3";
-            this.splitter3.Size = new System.Drawing.Size(936, 3);
-            this.splitter3.TabIndex = 7;
-            this.splitter3.TabStop = false;
-            // 
             // pbx0
             // 
             this.pbx0.AutoDrawCenterLine = true;
@@ -721,6 +703,35 @@
             this.pbx1.ZoomMin = 0.1F;
             this.pbx1.ZoomStep = 1.2F;
             // 
+            // splitter3
+            // 
+            this.splitter3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.splitter3.Location = new System.Drawing.Point(261, 355);
+            this.splitter3.Name = "splitter3";
+            this.splitter3.Size = new System.Drawing.Size(936, 3);
+            this.splitter3.TabIndex = 7;
+            this.splitter3.TabStop = false;
+            // 
+            // lbxFunc
+            // 
+            this.lbxFunc.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbxFunc.FormattingEnabled = true;
+            this.lbxFunc.ItemHeight = 12;
+            this.lbxFunc.Location = new System.Drawing.Point(3, 17);
+            this.lbxFunc.Name = "lbxFunc";
+            this.lbxFunc.Size = new System.Drawing.Size(250, 406);
+            this.lbxFunc.TabIndex = 4;
+            this.lbxFunc.SelectedIndexChanged += new System.EventHandler(this.lbxTest_SelectedIndexChanged);
+            // 
+            // splitter4
+            // 
+            this.splitter4.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.splitter4.Location = new System.Drawing.Point(3, 423);
+            this.splitter4.Name = "splitter4";
+            this.splitter4.Size = new System.Drawing.Size(250, 3);
+            this.splitter4.TabIndex = 5;
+            this.splitter4.TabStop = false;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -773,7 +784,6 @@
         private System.Windows.Forms.Button btnFitZoom;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.PropertyGrid grdParameter;
-        private System.Windows.Forms.ComboBox cbxFunc;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ToolStripStatusLabel lblLog;
@@ -790,6 +800,8 @@
         public ShimLib.ZoomPictureBox pbx2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Splitter splitter3;
+        private System.Windows.Forms.ListBox lbxFunc;
+        private System.Windows.Forms.Splitter splitter4;
     }
 }
 

@@ -99,14 +99,14 @@ namespace OpenCVSharpTest {
         }
 
         private void InitFunctionList() {
-            var type = typeof(ImageProcessing);
+            var type = typeof(TestIp);
             MethodInfo[] mis = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
             var list = mis.Select((m, i) => new MethodInfoItem(i, m)).ToArray();
-            this.cbxFunc.DisplayMember = "Display";
-            this.cbxFunc.ValueMember = "MethodInfo";
-            this.cbxFunc.Items.AddRange(list);
-            if (this.cbxFunc.Items.Count > 0)
-                this.cbxFunc.SelectedIndex = 0;
+            this.lbxFunc.DisplayMember = "Display";
+            this.lbxFunc.ValueMember = "MethodInfo";
+            this.lbxFunc.Items.AddRange(list);
+            if (this.lbxFunc.Items.Count > 0)
+                this.lbxFunc.SelectedIndex = 0;
         }
 
         private Tuple<string, Brush> GetDstPixelValue(int x, int y) {
@@ -230,7 +230,7 @@ namespace OpenCVSharpTest {
 
             var oldTime = DateTime.Now;
 
-            var method = (this.cbxFunc.SelectedItem as MethodInfoItem)?.MethodInfo;
+            var method = (this.lbxFunc.SelectedItem as MethodInfoItem)?.MethodInfo;
             var prmNameList = method.GetParameters().Select(prm => prm.Name);
             if (method != null) {
                 try {
@@ -268,8 +268,8 @@ namespace OpenCVSharpTest {
             this.pbx2.ZoomToImage();
         }
 
-        private void cbxTest_SelectedIndexChanged(object sender, EventArgs e) {
-            var mii = this.cbxFunc.SelectedItem as MethodInfoItem;
+        private void lbxTest_SelectedIndexChanged(object sender, EventArgs e) {
+            var mii = this.lbxFunc.SelectedItem as MethodInfoItem;
             var mi = mii.MethodInfo;
             var paramInfos = mi.GetParameters();
             CustomClass cs = new CustomClass();

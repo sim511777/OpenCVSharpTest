@@ -16,6 +16,10 @@ ok 8. 엣지 처리
 ok 9. 기본 파라미터 수정
 ok 10. Flip
 ok 11. Blur, MedianBlur
+ok Blob 알고리즘 구현
+11. Blob C 로 포팅
+11. Blob mmax 포팅
+11. Blob 3D로 확장
 12. ROI 좀더 : crop/copy가 아닌 버퍼에서 특정 ROI만 처리, 
 13. Erode PixelBuffer 제어 종류별로 테스트
 
