@@ -404,5 +404,64 @@ namespace OpenCVSharpTest {
 
             matDst.Dispose();
         }
+
+        public static void SetColor(System.Drawing.Color color) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+
+            var matDst = Glb.matSrc.Clone();
+            
+            var col = Scalar.FromRgb(color.R, color.G, color.B);
+            matDst.SetTo(col);
+            Glb.DrawMatAndHist1(matDst);
+
+            Glb.DrawMatAndHist2(null);
+
+            matDst.Dispose();
+        }
+
+        public static void SetGray(byte gray = 128) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matDst = matGray.Clone();
+            matDst.SetTo(gray);
+            Glb.DrawMatAndHist2(matDst);
+
+            matGray.Dispose();
+            matDst.Dispose();
+        }
+
+        public static void MyBlob() {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+            Glb.DrawMatAndHist1(matThr);
+
+            var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC1);
+            matDst.SetTo(0);
+            Glb.MyBlob(matThr.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
+            Glb.DrawMatAndHist2(matDst);
+
+            matThr.Dispose();
+            matDst.Dispose();
+        }
+
+        public static void MyBlobC() {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+            Glb.DrawMatAndHist1(matThr);
+
+            var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC1);
+            matDst.SetTo(0);
+            IpDll.MyBlobC(matThr.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
+            Glb.DrawMatAndHist2(matDst);
+
+            matThr.Dispose();
+            matDst.Dispose();
+        }
     }
 }
