@@ -252,22 +252,13 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        unsafe public static void PixelBuffer_By_Unsafe_Pointer() {
+        public static void PixelBuffer_By_Unsafe_Pointer() {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
             var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matDst);
 
-            byte* buf = matDst.DataPointer;
-            int bw = matDst.Width;
-            int bh = matDst.Height;
-            int stride = (int)matDst.Step();
-            for (int y = 0; y < bh; y++) {
-                byte* pp = buf + stride * y;
-                for (int x = 0; x < bw; x++, pp++) {
-                    *pp = (byte)~(*pp);
-                }
-            }
+            Glb.Inverse(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
             Glb.DrawMatAndHist2(matDst);
 
             matDst.Dispose();
