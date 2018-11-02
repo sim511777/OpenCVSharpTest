@@ -58,7 +58,7 @@ algorithm TwoPass(data)
    return labels
 */
         public static void BlobPass(byte *data, int *label, int bw, int bh, int stride) {
-            // 1pass
+            // 1 pass
             for (int i=0; i<bw*bh; i++) {
                 label[i] = 0;
             }
@@ -113,7 +113,7 @@ algorithm TwoPass(data)
                 }
             }
 
-            // 2pass
+            // 2 pass
             for (int y = 0; y < bh; y++) {
                 byte *ppsrc = data + stride * y;
                 int *pplbl = label + bw * y;
