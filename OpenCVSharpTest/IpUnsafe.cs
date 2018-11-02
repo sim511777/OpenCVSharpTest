@@ -57,57 +57,58 @@ algorithm TwoPass(data)
 
    return labels
 */
-        public static void BlobPass(byte *data, int *label, int bw, int bh, int stride) {
+        public static void BlobPass(byte *data, int *labels, int bw, int bh, int stride) {
             // 1 pass
             for (int i=0; i<bw*bh; i++) {
-                label[i] = 0;
+                labels[i] = 0;
             }
-            int nextLabel = 1;
+            int NextLabel = 1;
 
-            SortedSet<int> lblNeighbors = new SortedSet<int>();
+            SortedSet<int> neighborsLabels = new SortedSet<int>();
             Dictionary<int, SortedSet<int>> linked = new Dictionary<int, SortedSet<int>>();
 
             for (int y = 0; y < bh; y++) {
-                byte *ppsrc = data + stride * y;
-                int *pplbl = label + bw * y;
-                for (int x = 0; x < bw; x++, ppsrc = ppsrc + 1, pplbl = pplbl + 1) {
-                    if (*ppsrc == 0)
+                byte *pdata = data + stride * y;
+                int *plabel = labels + bw * y;
+                for (int x = 0; x < bw; x++, pdata = pdata + 1, plabel = plabel + 1) {
+                    if (*pdata == 0)
                         continue;
 
-                    lblNeighbors.Clear();
+                    neighborsLabels.Clear();
                     int neighbor = 0;
                     if (x != 0) {
-                        neighbor = *(pplbl - 1);
+                        neighbor = *(plabel - 1);
                         if (neighbor != 0)
-                            lblNeighbors.Add(neighbor);
+                            neighborsLabels.Add(neighbor);
                     }
                     if (y != 0) {
-                        neighbor = *(pplbl - stride);
+                        neighbor = *(plabel - stride);
                         if (neighbor != 0)
-                            lblNeighbors.Add(neighbor);
+                            neighborsLabels.Add(neighbor);
 
                         if (x != 0) {
-                            neighbor = *(pplbl - stride - 1);
+                            neighbor = *(plabel - stride - 1);
                             if (neighbor != 0)
-                                lblNeighbors.Add(neighbor);
+                                neighborsLabels.Add(neighbor);
                         }
                         if (x != bw-1) {
-                            neighbor = *(pplbl - stride + 1);
+                            neighbor = *(plabel - stride + 1);
                             if (neighbor != 0)
-                                lblNeighbors.Add(neighbor);
+                                neighborsLabels.Add(neighbor);
                         }
                     }
 
-                    if (lblNeighbors.Count == 0) {
+                    if (neighborsLabels.Count == 0) {
                         SortedSet<int> set = new SortedSet<int>();
-                        set.Add(nextLabel);
-                        linked.Add(nextLabel, set);
-                        *pplbl = nextLabel;
-                        nextLabel++;
+                        set.Add(NextLabel);
+                        linked[NextLabel] = set;
+                        *plabel = NextLabel;
+                        NextLabel += 1;
                     } else {
-                        *pplbl = lblNeighbors.Min;
-                        foreach (var lbl in lblNeighbors) {
-                            linked[lbl].UnionWith(lblNeighbors);
+                        var L = neighborsLabels;
+                        *plabel = L.Min;
+                        foreach (var label in L) {
+                            linked[label].UnionWith(L);
                         }
                     }
                 }
@@ -115,12 +116,19 @@ algorithm TwoPass(data)
 
             // 2 pass
             for (int y = 0; y < bh; y++) {
-                byte *ppsrc = data + stride * y;
-                int *pplbl = label + bw * y;
-                for (int x = 0; x < bw; x++, ppsrc = ppsrc + 1, pplbl = pplbl + 1) {
-                    if (*ppsrc == 0)
+                byte* pdata = data + stride * y;
+                int* plabel = labels + bw * y;
+                for (int x = 0; x < bw; x++, pdata = pdata + 1, plabel = plabel + 1) {
+                    if (*pdata == 0)
                         continue;
-                    *pplbl = linked[*pplbl].Min;                    
+                    var label = *plabel;
+                    var parent = linked[label].Min;
+                    var last = label;
+                    while (last != parent) {
+                        last = parent;
+                        parent = linked[parent].Min;
+                    }
+                    *plabel = parent;
                 }
             }
         }
@@ -137,7 +145,7 @@ algorithm TwoPass(data)
                 byte *ppdst = pdst + stride * y;
                 int *pplbl = plbl + bw * y;
                 for (int x = 0; x < bw; x++, ppdst = ppdst + 1, pplbl = pplbl + 1) {
-                    *ppdst = (byte)(*pplbl * 20);                   
+                    *ppdst = (byte)(*pplbl * 10);                   
                 }
             }
             
