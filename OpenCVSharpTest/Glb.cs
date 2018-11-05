@@ -12,10 +12,6 @@ namespace OpenCVSharpTest {
         public static FormMain form = null;
         public static Mat matSrc = null;
 
-        public static void Log(string msg) {
-            form.Log(msg);
-        }
-
         public static void DrawMatAndHist0(Mat mat) {
             form.DrawMat(mat?.ToBitmap(), form.pbx0);
             form.DrawHistogram(mat, form.cht0);

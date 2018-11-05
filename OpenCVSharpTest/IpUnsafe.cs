@@ -65,7 +65,8 @@ algorithm TwoPass(data)
             int NextLabel = 1;
 
             HashSet<int> neighborsLabels = new HashSet<int>();
-            Dictionary<int, HashSet<int>> linked = new Dictionary<int, HashSet<int>>();
+            //Dictionary<int, HashSet<int>> linked = new Dictionary<int, HashSet<int>>();
+            var link = new Dictionary<int,int>();
 
             for (int y = 0; y < bh; y++) {
                 byte *pdata = data + stride * y;
@@ -99,16 +100,15 @@ algorithm TwoPass(data)
                     }
 
                     if (neighborsLabels.Count == 0) {
-                        HashSet<int> set = new HashSet<int>();
-                        set.Add(NextLabel);
-                        linked[NextLabel] = set;
+                        link.Add(NextLabel, -1);
                         *plabel = NextLabel;
                         NextLabel += 1;
                     } else {
                         var L = neighborsLabels;
                         *plabel = L.Min();
                         foreach (var label in L) {
-                            linked[label].UnionWith(L);
+                            if (*plabel != label)
+                                link[label] = *plabel;
                         }
                     }
                 }
@@ -126,19 +126,15 @@ algorithm TwoPass(data)
 
             // 2 pass
             for (int y = 0; y < bh; y++) {
-                byte* pdata = data + stride * y;
                 int* plabel = labels + bw * y;
-                for (int x = 0; x < bw; x++, pdata = pdata + 1, plabel = plabel + 1) {
-                    if (*pdata == 0)
+                for (int x = 0; x < bw; x++, plabel = plabel + 1) {
+                    if (*plabel == 0)
                         continue;
                     var label = *plabel;
-                    var parent = linked[label].Min();
-                    var last = label;
-                    while (last != parent) {
-                        last = parent;
-                        parent = linked[parent].Min();
+                    while (link[label] != -1) {
+                        label = link[label];
                     }
-                    *plabel = parent;
+                    *plabel = label;
                 }
             }
 
@@ -163,7 +159,6 @@ algorithm TwoPass(data)
             BlobPass(psrc, plbl, bw, bh, stride, (byte *)tmp.ToPointer(), (byte *)dst.ToPointer());
                         
             Marshal.FreeHGlobal(lblBuf);
-
         }
     }
 }

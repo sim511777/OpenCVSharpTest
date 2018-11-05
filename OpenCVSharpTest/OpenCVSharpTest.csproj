@@ -74,6 +74,7 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="ShimLib\TextBoxWriter.cs" />
     <Compile Include="TestIp.cs" />
     <Compile Include="IpDll.cs" />
     <Compile Include="Program.cs" />

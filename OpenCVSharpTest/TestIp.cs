@@ -155,12 +155,12 @@ namespace OpenCVSharpTest {
 
             var blobs = new CvBlobs();
             blobs.Label(matThr);
-            Glb.Log("==== Blob List ====");
+            Console.WriteLine("==== Blob List ====");
             var pairList = blobs.OrderBy(blob => blob.Key);
             foreach (var pair in pairList) {
                 CvBlob blob = pair.Value;
                 string msg = $"{blob.Label} {blob.Area}";
-                Glb.Log(msg);
+                Console.WriteLine(msg);
             }
             var matDsp = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
             blobs.RenderBlobs(matDsp, matDsp);

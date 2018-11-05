@@ -30,10 +30,6 @@ namespace OpenCVSharpTest {
             series.Enabled = true;
         }
 
-      public void Log(string text) {
-         this.tbxLog.AppendText(text + Environment.NewLine);
-      }
-
         public void DrawHistogram(Mat mat, Chart cht) {
             if (mat == null) {
                 cht.Series[0].Enabled = false;
@@ -92,8 +88,9 @@ namespace OpenCVSharpTest {
         }
 
         public FormMain() {
-            Glb.form = this;
             InitializeComponent();
+            Glb.form = this;
+            Console.SetOut(new TextBoxWriter(this.tbxConsole));
             this.cbxExampleImage.SelectedIndex = 0;
             this.InitFunctionList();
         }
@@ -130,7 +127,6 @@ namespace OpenCVSharpTest {
             if (Glb.matSrc != null)
                 Glb.matSrc.Dispose();
             Glb.matSrc = ((Bitmap)Resources.ResourceManager.GetObject(this.cbxExampleImage.Text)).ToMat();
-            this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
             this.ProcessImage();
 
@@ -155,7 +151,6 @@ namespace OpenCVSharpTest {
             Bitmap bmp = new Bitmap(img);
             Glb.matSrc = bmp.ToMat();
             bmp.Dispose();
-            this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
             this.ProcessImage();
 
@@ -177,7 +172,6 @@ namespace OpenCVSharpTest {
             if (Glb.matSrc != null)
                 Glb.matSrc.Dispose();
             Glb.matSrc = new Mat(this.dlgOpen.FileName);
-            this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
             this.ProcessImage();
 
@@ -193,7 +187,6 @@ namespace OpenCVSharpTest {
                 Glb.matSrc.Dispose();
             Glb.matSrc = new Mat();
             this.cap.Read(Glb.matSrc);
-            this.lblGrabTime.Text = $"grab time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
 
             this.ProcessImage();
         }
@@ -233,27 +226,28 @@ namespace OpenCVSharpTest {
             var method = (this.lbxFunc.SelectedItem as MethodInfoItem)?.MethodInfo;
             var prmNameList = method.GetParameters().Select(prm => prm.Name);
             if (method != null) {
+                Console.WriteLine("==================================");
+                Console.WriteLine($" {method.Name} ");
                 try {
                     var cs = this.grdParameter.SelectedObject as CustomClass;
                     var prms = cs.Cast<CustomProperty>().Select(prop => prop.Value).ToArray();
                     object r = method.Invoke(this, prms);
-                    this.lblLog.Text = $"{method.Name} Succeed:";
+                    Console.WriteLine($"=> Time: {(DateTime.Now - oldTime).TotalMilliseconds}ms");
                 } catch (TargetInvocationException ex) {
                     DrawMat(null, this.pbx1);
                     DrawHistogram(null, this.cht1);
                     DrawMat(null, this.pbx2);
                     DrawHistogram(null, this.cht2);
-                    this.lblLog.Text = $"{method.Name} Fail: {ex.InnerException.Message}";
+                    Console.WriteLine($"=> Error: {ex.InnerException.Message}");
                 } catch (Exception ex) {
                     DrawMat(null, this.pbx1);
                     DrawHistogram(null, this.cht1);
                     DrawMat(null, this.pbx2);
                     DrawHistogram(null, this.cht2);
-                    this.lblLog.Text = $"{method.Name} Fail: {ex.Message}";
+                    Console.WriteLine($"=> Error: {ex.Message}");
                 }
+                Console.WriteLine();
             }
-
-            this.lblProcessingTime.Text = $"IP time: {(DateTime.Now - oldTime).TotalMilliseconds}ms";
         }
 
         private void btnZoomReset_Click(object sender, EventArgs e) {
