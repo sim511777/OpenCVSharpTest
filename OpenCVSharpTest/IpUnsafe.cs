@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace OpenCVSharpTest {
     unsafe class IpUnsafe {
@@ -21,6 +22,7 @@ namespace OpenCVSharpTest {
             byte *psrc = (byte *)src.ToPointer();
             byte *ptmp = (byte *)tmp.ToPointer();
             byte *pdst = (byte *)dst.ToPointer();
+            
             // 라벨버퍼
             IntPtr labelBuf = Marshal.AllocHGlobal(bw * bh * sizeof(int));
             int *plabel = (int *)labelBuf.ToPointer();
@@ -31,6 +33,7 @@ namespace OpenCVSharpTest {
             // disjoint set
             var link = new int[bw*bh];
             
+            int[] neighborLabels = new int[4];
             // 1 pass
             int NextLabel = 0;
             for (int y = 0; y < bh; y++) {
@@ -40,7 +43,6 @@ namespace OpenCVSharpTest {
                     if (*ppsrc == 0)
                         continue;
 
-                    int[] neighborLabels = new int[4];
                     int neighborCount = 0;
 
                     if (x != 0) {
@@ -70,20 +72,27 @@ namespace OpenCVSharpTest {
                     }
 
                     if (neighborCount == 0) {
-                        link[NextLabel] = -1;
-                        *pplabel = NextLabel;
+                        int label = NextLabel;
+                        *pplabel = label;
+                        link[label] = -1;
                         NextLabel++;
                     } else {
-                        int neighborMin = neighborLabels[0];
+                        int label = neighborLabels[0];
+                        while (link[label] != -1)
+                            label = link[label];
                         for (int i=1; i<neighborCount; i++) {
-                            if (neighborLabels[i] < neighborMin)
-                                neighborMin = neighborLabels[i];
+                            int neighborLabel = neighborLabels[i];
+                            while (link[neighborLabel] != -1) {
+                                neighborLabel = link[neighborLabel];
+                            }
+                            if (neighborLabel < label)
+                                label = neighborLabel;
                         }
-                        *pplabel = neighborMin;
+                        *pplabel = label;
                         for (int i=0; i<neighborCount; i++) {
                             // disjoint-set union
-                            if (neighborLabels[i] != neighborMin)
-                                link[neighborLabels[i]] = neighborMin;
+                            if (neighborLabels[i] != label)
+                                link[neighborLabels[i]] = label;
                         }
                     }
                 }
@@ -106,9 +115,13 @@ namespace OpenCVSharpTest {
                         continue;
                     // disjoint-set find
                     var label = *pplabel;
+                    int root = 0;
                     while (link[label] != -1) {
+                        root++;
                         label = link[label];
                     }
+                    //if (root > 1)
+                    //    Console.WriteLine($"{root}:{*pplabel}");
                     *pplabel = label;
                 }
             }
@@ -121,6 +134,14 @@ namespace OpenCVSharpTest {
                     *ppdst = (byte)((*pplabel+1) * 10); 
                 }
             }
+
+            int blobCount = 0;
+            for (int i=0; i<NextLabel; i++) {
+                if (link[i] == -1)
+                    blobCount++;
+            }
+
+            Console.WriteLine($"Blob Count:{blobCount}");
 
             Marshal.FreeHGlobal(labelBuf);
         }

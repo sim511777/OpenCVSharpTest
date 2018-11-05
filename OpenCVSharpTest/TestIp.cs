@@ -8,9 +8,12 @@ using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using OpenCvSharp.Blob;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace OpenCVSharpTest {
     class TestIp {
+        public static Stopwatch sw = new Stopwatch();
+
         public static void CvtColor(ColorConversionCodes code = ColorConversionCodes.BGR2GRAY) {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
@@ -154,16 +157,16 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist1(matThr);
 
             var blobs = new CvBlobs();
+            sw.Restart();
             blobs.Label(matThr);
-            Console.WriteLine("==== Blob List ====");
-            var pairList = blobs.OrderBy(blob => blob.Key);
-            foreach (var pair in pairList) {
-                CvBlob blob = pair.Value;
-                string msg = $"{blob.Label} {blob.Area}";
-                Console.WriteLine(msg);
-            }
+            sw.Stop();
+            Console.WriteLine($"Label Time:{sw.ElapsedMilliseconds}");
+
+            Console.WriteLine($"Blob Count:{blobs.Count}");
+
             var matDsp = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
-            blobs.RenderBlobs(matDsp, matDsp);
+            matDsp.SetTo(Scalar.Black);
+            blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
             Glb.DrawMatAndHist2(matDsp);
 
             matThr.Dispose();
@@ -426,7 +429,7 @@ namespace OpenCVSharpTest {
         }
 
         public enum MidDisplay { Binary, LabelTemp }
-        public static void Blob_Unsafe(MidDisplay MidDisp) {
+        public static void Blob_Unsafe(MidDisplay MidDisp = MidDisplay.LabelTemp) {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
@@ -435,7 +438,11 @@ namespace OpenCVSharpTest {
             var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC1);
             matDst.SetTo(0);
 
+            sw.Restart();
             IpUnsafe.Blob(matThr.Data, matTmp.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
+            sw.Stop();
+            Console.WriteLine($"Label Time:{sw.ElapsedMilliseconds}");
+            
             if (MidDisp == MidDisplay.Binary)
                 Glb.DrawMatAndHist1(matThr);
             else

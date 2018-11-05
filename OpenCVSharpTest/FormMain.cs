@@ -227,7 +227,7 @@ namespace OpenCVSharpTest {
             var prmNameList = method.GetParameters().Select(prm => prm.Name);
             if (method != null) {
                 Console.WriteLine("==================================");
-                Console.WriteLine($" {method.Name} ");
+                Console.WriteLine($"{method.Name}");
                 try {
                     var cs = this.grdParameter.SelectedObject as CustomClass;
                     var prms = cs.Cast<CustomProperty>().Select(prop => prop.Value).ToArray();
@@ -286,6 +286,11 @@ namespace OpenCVSharpTest {
 
         private void grdParameter_PropertyValueChanged(object s, PropertyValueChangedEventArgs e) {
             this.ProcessImage();
+        }
+
+        private void copyImageToClipboardToolStripMenuItem_Click(object sender, EventArgs e) {
+            Bitmap bmp = (this.popupPicture.SourceControl as ZoomPictureBox).DrawingImage;
+            Clipboard.SetImage(bmp);
         }
     }
 
