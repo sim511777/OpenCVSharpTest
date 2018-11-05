@@ -62,6 +62,8 @@
             System.Windows.Forms.DataVisualization.Charting.Series series30 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lbxFunc = new System.Windows.Forms.ListBox();
+            this.splitter4 = new System.Windows.Forms.Splitter();
             this.grdParameter = new System.Windows.Forms.PropertyGrid();
             this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -91,8 +93,6 @@
             this.pbx2 = new ShimLib.ZoomPictureBox();
             this.pbx1 = new ShimLib.ZoomPictureBox();
             this.splitter3 = new System.Windows.Forms.Splitter();
-            this.lbxFunc = new System.Windows.Forms.ListBox();
-            this.splitter4 = new System.Windows.Forms.Splitter();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -132,6 +132,26 @@
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Processing";
+            // 
+            // lbxFunc
+            // 
+            this.lbxFunc.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbxFunc.FormattingEnabled = true;
+            this.lbxFunc.ItemHeight = 12;
+            this.lbxFunc.Location = new System.Drawing.Point(3, 17);
+            this.lbxFunc.Name = "lbxFunc";
+            this.lbxFunc.Size = new System.Drawing.Size(250, 406);
+            this.lbxFunc.TabIndex = 4;
+            this.lbxFunc.SelectedIndexChanged += new System.EventHandler(this.lbxTest_SelectedIndexChanged);
+            // 
+            // splitter4
+            // 
+            this.splitter4.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.splitter4.Location = new System.Drawing.Point(3, 423);
+            this.splitter4.Name = "splitter4";
+            this.splitter4.Size = new System.Drawing.Size(250, 3);
+            this.splitter4.TabIndex = 5;
+            this.splitter4.TabStop = false;
             // 
             // grdParameter
             // 
@@ -213,7 +233,8 @@
             "Cross",
             "Diamond",
             "BlobTest",
-            "BlobTest2"});
+            "BlobTest2",
+            "BlobTest3"});
             this.cbxExampleImage.Location = new System.Drawing.Point(87, 22);
             this.cbxExampleImage.Name = "cbxExampleImage";
             this.cbxExampleImage.Size = new System.Drawing.Size(156, 20);
@@ -712,26 +733,6 @@
             this.splitter3.Size = new System.Drawing.Size(936, 3);
             this.splitter3.TabIndex = 7;
             this.splitter3.TabStop = false;
-            // 
-            // lbxFunc
-            // 
-            this.lbxFunc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbxFunc.FormattingEnabled = true;
-            this.lbxFunc.ItemHeight = 12;
-            this.lbxFunc.Location = new System.Drawing.Point(3, 17);
-            this.lbxFunc.Name = "lbxFunc";
-            this.lbxFunc.Size = new System.Drawing.Size(250, 406);
-            this.lbxFunc.TabIndex = 4;
-            this.lbxFunc.SelectedIndexChanged += new System.EventHandler(this.lbxTest_SelectedIndexChanged);
-            // 
-            // splitter4
-            // 
-            this.splitter4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter4.Location = new System.Drawing.Point(3, 423);
-            this.splitter4.Name = "splitter4";
-            this.splitter4.Size = new System.Drawing.Size(250, 3);
-            this.splitter4.TabIndex = 5;
-            this.splitter4.TabStop = false;
             // 
             // FormMain
             // 

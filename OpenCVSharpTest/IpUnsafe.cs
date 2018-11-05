@@ -57,15 +57,15 @@ algorithm TwoPass(data)
 
    return labels
 */
-        public static void BlobPass(byte *data, int *labels, int bw, int bh, int stride) {
+        public static void BlobPass(byte *data, int *labels, int bw, int bh, int stride, byte*tmp, byte*dst) {
             // 1 pass
             for (int i=0; i<bw*bh; i++) {
                 labels[i] = 0;
             }
             int NextLabel = 1;
 
-            SortedSet<int> neighborsLabels = new SortedSet<int>();
-            Dictionary<int, SortedSet<int>> linked = new Dictionary<int, SortedSet<int>>();
+            HashSet<int> neighborsLabels = new HashSet<int>();
+            Dictionary<int, HashSet<int>> linked = new Dictionary<int, HashSet<int>>();
 
             for (int y = 0; y < bh; y++) {
                 byte *pdata = data + stride * y;
@@ -99,18 +99,28 @@ algorithm TwoPass(data)
                     }
 
                     if (neighborsLabels.Count == 0) {
-                        SortedSet<int> set = new SortedSet<int>();
+                        HashSet<int> set = new HashSet<int>();
                         set.Add(NextLabel);
                         linked[NextLabel] = set;
                         *plabel = NextLabel;
                         NextLabel += 1;
                     } else {
                         var L = neighborsLabels;
-                        *plabel = L.Min;
+                        *plabel = L.Min();
                         foreach (var label in L) {
                             linked[label].UnionWith(L);
                         }
                     }
+                }
+            }
+
+            // display
+            for (int y = 0; y < bh; y++) {
+                int* plabel = labels + bw * y;
+                byte* ptmp = tmp + stride * y;
+                byte* pdst = dst + stride * y;
+                for (int x = 0; x < bw; x++, plabel++, ptmp++, pdst++) {
+                    *ptmp = (byte)(*plabel * 10); 
                 }
             }
 
@@ -122,33 +132,36 @@ algorithm TwoPass(data)
                     if (*pdata == 0)
                         continue;
                     var label = *plabel;
-                    var parent = linked[label].Min;
+                    var parent = linked[label].Min();
                     var last = label;
                     while (last != parent) {
                         last = parent;
-                        parent = linked[parent].Min;
+                        parent = linked[parent].Min();
                     }
                     *plabel = parent;
                 }
             }
+
+            // display
+            for (int y = 0; y < bh; y++) {
+                int* plabel = labels + bw * y;
+                byte* ptmp = tmp + stride * y;
+                byte* pdst = dst + stride * y;
+                for (int x = 0; x < bw; x++, plabel++, ptmp++, pdst++) {
+                    *pdst = (byte)(*plabel * 10); 
+                }
+            }
         }
 
-        public static void Blob(IntPtr src, IntPtr dst, int bw, int bh, int stride) {
+        public static void Blob(IntPtr src, IntPtr tmp, IntPtr dst, int bw, int bh, int stride) {
             byte *psrc = (byte *)src.ToPointer();
             byte *pdst = (byte *)dst.ToPointer();
             
             IntPtr lblBuf = Marshal.AllocHGlobal(bw * bh * sizeof(int));
             int *plbl = (int *)lblBuf.ToPointer();
             
-            BlobPass(psrc, plbl, bw, bh, stride);
-            for (int y = 0; y < bh; y++) {
-                byte *ppdst = pdst + stride * y;
-                int *pplbl = plbl + bw * y;
-                for (int x = 0; x < bw; x++, ppdst = ppdst + 1, pplbl = pplbl + 1) {
-                    *ppdst = (byte)(*pplbl * 10);                   
-                }
-            }
-            
+            BlobPass(psrc, plbl, bw, bh, stride, (byte *)tmp.ToPointer(), (byte *)dst.ToPointer());
+                        
             Marshal.FreeHGlobal(lblBuf);
 
         }

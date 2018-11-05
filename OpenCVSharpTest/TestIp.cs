@@ -429,15 +429,17 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
-            Glb.DrawMatAndHist1(matThr);
 
+            var matTmp = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC1);
             var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC1);
             matDst.SetTo(0);
 
-            IpUnsafe.Blob(matThr.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
+            IpUnsafe.Blob(matThr.Data, matTmp.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
+            Glb.DrawMatAndHist1(matTmp);
             Glb.DrawMatAndHist2(matDst);
 
             matThr.Dispose();
+            matTmp.Dispose();
             matDst.Dispose();
         }
 
@@ -449,6 +451,7 @@ namespace OpenCVSharpTest {
 
             var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC1);
             matDst.SetTo(0);
+
             IpDll.BlobC(matThr.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
             Glb.DrawMatAndHist2(matDst);
 
