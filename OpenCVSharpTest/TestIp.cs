@@ -208,7 +208,7 @@ namespace OpenCVSharpTest {
                     matDst.Set(row, col, color);
                 }
             }
-            Glb.DrawMatAndHist2(null);
+            Glb.DrawMatAndHist2(matDst);
 
             matDst.Dispose();
         }
