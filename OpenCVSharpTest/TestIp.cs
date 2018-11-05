@@ -425,7 +425,8 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void Blob_Unsafe() {
+        public enum MidDisplay { Binary, LabelTemp }
+        public static void Blob_Unsafe(MidDisplay MidDisp) {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
@@ -435,7 +436,10 @@ namespace OpenCVSharpTest {
             matDst.SetTo(0);
 
             IpUnsafe.Blob(matThr.Data, matTmp.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
-            Glb.DrawMatAndHist1(matTmp);
+            if (MidDisp == MidDisplay.Binary)
+                Glb.DrawMatAndHist1(matThr);
+            else
+                Glb.DrawMatAndHist1(matTmp);
             Glb.DrawMatAndHist2(matDst);
 
             matThr.Dispose();

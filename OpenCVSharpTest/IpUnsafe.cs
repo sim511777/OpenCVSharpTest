@@ -17,98 +17,73 @@ namespace OpenCVSharpTest {
             }
         }
 
-        // 현재 값이 255일때 라벨 버퍼의 주변 4개 조회
-        // 모두 0이면 새 label을 지정하고 lable table에 추가
-        // 하나라도 0이 아니면 그중 가장 작은 값을 label 로 지정 하고
-        // 큰 값들은 label tale에서 대응 값이 지정된 label 보다 크면 갱신
-/*
-algorithm TwoPass(data)
-   linked = []
-   labels = structure with dimensions of data, initialized with the value of Background
-
-   First pass
-
-   for row in data:
-       for column in row:
-           if data[row][column] is not Background
-
-               neighbors = connected elements with the current element's value
-
-               if neighbors is empty
-                   linked[NextLabel] = set containing NextLabel
-                   labels[row][column] = NextLabel
-                   NextLabel += 1
-
-               else
-
-                   Find the smallest label
-
-                   L = neighbors labels
-                   labels[row][column] = min(L)
-                   for label in L
-                       linked[label] = union(linked[label], L)
-
-   Second pass
-
-   for row in data
-       for column in row
-           if data[row][column] is not Background
-               labels[row][column] = find(labels[row][column])
-
-   return labels
-*/
-        public static void BlobPass(byte *data, int *labels, int bw, int bh, int stride, byte*tmp, byte*dst) {
-            // 1 pass
+        public static void Blob(IntPtr src, IntPtr tmp, IntPtr dst, int bw, int bh, int stride) {
+            byte *psrc = (byte *)src.ToPointer();
+            byte *ptmp = (byte *)tmp.ToPointer();
+            byte *pdst = (byte *)dst.ToPointer();
+            // 라벨버퍼
+            IntPtr labelBuf = Marshal.AllocHGlobal(bw * bh * sizeof(int));
+            int *plabel = (int *)labelBuf.ToPointer();
             for (int i=0; i<bw*bh; i++) {
-                labels[i] = 0;
+                plabel[i] = -1;
             }
-            int NextLabel = 1;
 
-            HashSet<int> neighborsLabels = new HashSet<int>();
-            //Dictionary<int, HashSet<int>> linked = new Dictionary<int, HashSet<int>>();
-            var link = new Dictionary<int,int>();
-
+            // disjoint set
+            var link = new int[bw*bh];
+            
+            // 1 pass
+            int NextLabel = 0;
             for (int y = 0; y < bh; y++) {
-                byte *pdata = data + stride * y;
-                int *plabel = labels + bw * y;
-                for (int x = 0; x < bw; x++, pdata = pdata + 1, plabel = plabel + 1) {
-                    if (*pdata == 0)
+                byte *ppsrc = psrc + stride * y;
+                int *pplabel = plabel + bw * y;
+                for (int x = 0; x < bw; x++, ppsrc = ppsrc + 1, pplabel = pplabel + 1) {
+                    if (*ppsrc == 0)
                         continue;
 
-                    neighborsLabels.Clear();
-                    int neighbor = 0;
+                    int[] neighborLabels = new int[4];
+                    int neighborCount = 0;
+
                     if (x != 0) {
-                        neighbor = *(plabel - 1);
-                        if (neighbor != 0)
-                            neighborsLabels.Add(neighbor);
+                        int labelLeft = *(pplabel - 1);
+                        if (labelLeft != -1) {
+                            neighborLabels[neighborCount++] = labelLeft;
+                        }
                     }
                     if (y != 0) {
-                        neighbor = *(plabel - stride);
-                        if (neighbor != 0)
-                            neighborsLabels.Add(neighbor);
+                        int labelTop = *(pplabel - stride);
+                        if (labelTop != -1) {
+                            neighborLabels[neighborCount++] = labelTop;
+                        }
 
                         if (x != 0) {
-                            neighbor = *(plabel - stride - 1);
-                            if (neighbor != 0)
-                                neighborsLabels.Add(neighbor);
+                            int labelLeftTop = *(pplabel - stride - 1);
+                            if (labelLeftTop != -1) {
+                                neighborLabels[neighborCount++] = labelLeftTop;
+                            }
                         }
                         if (x != bw-1) {
-                            neighbor = *(plabel - stride + 1);
-                            if (neighbor != 0)
-                                neighborsLabels.Add(neighbor);
+                            int labelRightTop = *(pplabel - stride + 1);
+                            if (labelRightTop != -1) {
+                                neighborLabels[neighborCount++] = labelRightTop;
+                            }
                         }
                     }
 
-                    if (neighborsLabels.Count == 0) {
-                        link.Add(NextLabel, -1);
-                        *plabel = NextLabel;
-                        NextLabel += 1;
+                    if (neighborCount == 0) {
+                        link[NextLabel] = -1;
+                        *pplabel = NextLabel;
+                        NextLabel++;
                     } else {
-                        var L = neighborsLabels;
-                        *plabel = L.Min();
-                        foreach (var label in L) {
-                            if (*plabel != label)
-                                link[label] = *plabel;
+                        int neighborMin = neighborLabels[0];
+                        for (int i=1; i<neighborCount; i++) {
+                            if (neighborLabels[i] < neighborMin)
+                                neighborMin = neighborLabels[i];
+                        }
+                        *pplabel = neighborMin;
+                        for (int i=0; i<neighborCount; i++) {
+                            // disjoint-set union
+                            if (neighborLabels[i] != neighborMin)
+                                link[neighborLabels[i]] = neighborMin;
                         }
                     }
                 }
@@ -116,49 +91,38 @@ algorithm TwoPass(data)
 
             // display
             for (int y = 0; y < bh; y++) {
-                int* plabel = labels + bw * y;
-                byte* ptmp = tmp + stride * y;
-                byte* pdst = dst + stride * y;
-                for (int x = 0; x < bw; x++, plabel++, ptmp++, pdst++) {
-                    *ptmp = (byte)(*plabel * 10); 
+                int* pplabel = plabel + bw * y;
+                byte* pptmp = ptmp + stride * y;
+                for (int x = 0; x < bw; x++, pplabel++, pptmp++) {
+                    *pptmp = (byte)((*pplabel+1) * 10); 
                 }
             }
 
             // 2 pass
             for (int y = 0; y < bh; y++) {
-                int* plabel = labels + bw * y;
-                for (int x = 0; x < bw; x++, plabel = plabel + 1) {
-                    if (*plabel == 0)
+                int* pplabel = plabel + bw * y;
+                for (int x = 0; x < bw; x++, pplabel++) {
+                    if (*pplabel == -1)
                         continue;
-                    var label = *plabel;
+                    // disjoint-set find
+                    var label = *pplabel;
                     while (link[label] != -1) {
                         label = link[label];
                     }
-                    *plabel = label;
+                    *pplabel = label;
                 }
             }
 
             // display
             for (int y = 0; y < bh; y++) {
-                int* plabel = labels + bw * y;
-                byte* ptmp = tmp + stride * y;
-                byte* pdst = dst + stride * y;
-                for (int x = 0; x < bw; x++, plabel++, ptmp++, pdst++) {
-                    *pdst = (byte)(*plabel * 10); 
+                int* pplabel = plabel + bw * y;
+                byte* ppdst = pdst + stride * y;
+                for (int x = 0; x < bw; x++, pplabel++, ppdst++) {
+                    *ppdst = (byte)((*pplabel+1) * 10); 
                 }
             }
-        }
 
-        public static void Blob(IntPtr src, IntPtr tmp, IntPtr dst, int bw, int bh, int stride) {
-            byte *psrc = (byte *)src.ToPointer();
-            byte *pdst = (byte *)dst.ToPointer();
-            
-            IntPtr lblBuf = Marshal.AllocHGlobal(bw * bh * sizeof(int));
-            int *plbl = (int *)lblBuf.ToPointer();
-            
-            BlobPass(psrc, plbl, bw, bh, stride, (byte *)tmp.ToPointer(), (byte *)dst.ToPointer());
-                        
-            Marshal.FreeHGlobal(lblBuf);
+            Marshal.FreeHGlobal(labelBuf);
         }
     }
 }
