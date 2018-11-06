@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using OpenCvSharp.Blob;
 using System.Diagnostics;
 
 namespace OpenCVSharpTest {
@@ -84,6 +85,24 @@ namespace OpenCVSharpTest {
                     break;
                 default:
                     throw new Exception();
+            }
+        }
+
+        public static void RenderBlobs(CvBlobs blobs, Mat matDst) {
+            int colorCount = 0;
+            foreach (var blob in blobs.Values) {
+                double r, g, b;
+                Hsv2Rgb((colorCount*77) % 360, 0.5, 1.0, out r, out g, out b);
+                colorCount++;
+                Vec3b color = new Vec3b((byte)b, (byte)g, (byte)r);
+                int label = blob.Label;
+                for (int y=blob.MinY; y<=blob.MaxY; y++) {
+                    for (int x=blob.MinX; x<=blob.MaxX; x++) {
+                        if (blobs.Labels[y, x] == label) {
+                            matDst.Set(y, x, color);
+                        }
+                    }
+                }
             }
         }
     }
