@@ -17,20 +17,26 @@ ok 9. 기본 파라미터 수정
 ok 10. Flip
 ok 11. Blur, MedianBlur
 ok Blob 알고리즘 구현
+11. label 인덱싱 수정
+dictionary<int, int> labelChangeLookup
+int newIndex = 0;
+for (int i=0; i<links.Count; i++) {
+    if (links[i] == 0)
+    labelChangeLookup.Add(i, newIndex++);
+}
 11. Blob 데이터 out
-- exists
-- blob count
-- blob size
-- coutour
-- direction
-- position(centroid)
-- circularity
-- convexity
-- inertia ratio
-11. Blob 데이터 perimeter, circularity, angle, convex
+- labellist로 blob배열 생성
+- label 버퍼 스캔
+- 데이터 추출, blob size, minXY/maxXY, blob pixellist, blob centroid
 11. Blob C 로 포팅
 11. Blob mmax 포팅
 11. Blob 3D로 확장
+11. Blob 기타 데이터 out
+- coutour
+- direction
+- circularity
+- convexity
+- inertia ratio
 12. ROI 좀더 : crop/copy가 아닌 버퍼에서 특정 ROI만 처리, 
 13. Erode PixelBuffer 제어 종류별로 테스트
 
