@@ -17,7 +17,16 @@ ok 9. 기본 파라미터 수정
 ok 10. Flip
 ok 11. Blur, MedianBlur
 ok Blob 알고리즘 구현
-11. Blob 데이터 out, blobCount, bolbPixels, boundarybox, centroid, contour
+11. Blob 데이터 out
+- exists
+- blob count
+- blob size
+- coutour
+- direction
+- position(centroid)
+- circularity
+- convexity
+- inertia ratio
 11. Blob 데이터 perimeter, circularity, angle, convex
 11. Blob C 로 포팅
 11. Blob mmax 포팅
