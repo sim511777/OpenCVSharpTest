@@ -18,7 +18,7 @@ namespace OpenCVSharpTest {
             }
         }
 
-        public static void Blob(IntPtr src, IntPtr tmp, IntPtr dst, int bw, int bh, int stride) {
+        public static int Blob(IntPtr src, IntPtr tmp, IntPtr dst, int bw, int bh, int stride) {
             byte *psrc = (byte *)src.ToPointer();
             byte *ptmp = (byte *)tmp.ToPointer();
             byte *pdst = (byte *)dst.ToPointer();
@@ -115,13 +115,9 @@ namespace OpenCVSharpTest {
                         continue;
                     // disjoint-set find
                     var label = *pplabel;
-                    int root = 0;
                     while (link[label] != -1) {
-                        root++;
                         label = link[label];
                     }
-                    //if (root > 1)
-                    //    Console.WriteLine($"{root}:{*pplabel}");
                     *pplabel = label;
                 }
             }
@@ -141,9 +137,9 @@ namespace OpenCVSharpTest {
                     blobCount++;
             }
 
-            Console.WriteLine($"Blob Count:{blobCount}");
-
             Marshal.FreeHGlobal(labelBuf);
+
+            return blobCount;
         }
     }
 }

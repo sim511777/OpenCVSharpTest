@@ -221,18 +221,16 @@ namespace OpenCVSharpTest {
             if (Glb.matSrc == null)
                 return;
 
-            var oldTime = DateTime.Now;
-
             var method = (this.lbxFunc.SelectedItem as MethodInfoItem)?.MethodInfo;
             var prmNameList = method.GetParameters().Select(prm => prm.Name);
             if (method != null) {
                 Console.WriteLine("==================================");
                 Console.WriteLine($"{method.Name}");
+                Glb.TimerStart();
                 try {
                     var cs = this.grdParameter.SelectedObject as CustomClass;
                     var prms = cs.Cast<CustomProperty>().Select(prop => prop.Value).ToArray();
                     object r = method.Invoke(this, prms);
-                    Console.WriteLine($"=> Time: {(DateTime.Now - oldTime).TotalMilliseconds}ms");
                 } catch (TargetInvocationException ex) {
                     DrawMat(null, this.pbx1);
                     DrawHistogram(null, this.cht1);
@@ -246,6 +244,7 @@ namespace OpenCVSharpTest {
                     DrawHistogram(null, this.cht2);
                     Console.WriteLine($"=> Error: {ex.Message}");
                 }
+                Console.WriteLine($"=>  Total Time: {Glb.TimerStop()}ms");
                 Console.WriteLine();
             }
         }

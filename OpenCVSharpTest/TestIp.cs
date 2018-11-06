@@ -12,14 +12,12 @@ using System.Diagnostics;
 
 namespace OpenCVSharpTest {
     class TestIp {
-        public static Stopwatch sw = new Stopwatch();
-
         public static void CvtColor(ColorConversionCodes code = ColorConversionCodes.BGR2GRAY) {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
             var matDst = Glb.matSrc.CvtColor(code);
-            Glb.DrawMatAndHist1(matDst);
 
+            Glb.DrawMatAndHist1(matDst);
             Glb.DrawMatAndHist2(null);
 
             matDst.Dispose();
@@ -27,11 +25,11 @@ namespace OpenCVSharpTest {
 
         public static void EqualizeHist() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
-            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matGray);
 
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             var matDst = matGray.EqualizeHist();
+
+            Glb.DrawMatAndHist1(matGray);
             Glb.DrawMatAndHist2(matDst);
 
             matGray.Dispose();
@@ -47,12 +45,13 @@ namespace OpenCVSharpTest {
             var hsvChannels = matHsv.Split();
             // 변환
             hsvChannels[2] = hsvChannels[2].EqualizeHist();
-            Glb.DrawMatAndHist1(hsvChannels[2]);
             // 채널 병합
             var matDst = new Mat();
             Cv2.Merge(hsvChannels, matDst);
             // HSV to BGR변환
             matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
+
+            Glb.DrawMatAndHist1(hsvChannels[2]);
             Glb.DrawMatAndHist2(matDst);
 
             matHsv.Dispose();
@@ -154,19 +153,23 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
-            Glb.DrawMatAndHist1(matThr);
 
             var blobs = new CvBlobs();
-            sw.Restart();
+            
+            Glb.TimerStart();
             blobs.Label(matThr);
-            sw.Stop();
-            Console.WriteLine($"Label Time:{sw.ElapsedMilliseconds}");
-
-            Console.WriteLine($"Blob Count:{blobs.Count}");
+            Console.WriteLine($"=> Label Time: {Glb.TimerStop()}ms");
 
             var matDsp = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
             matDsp.SetTo(Scalar.Black);
+
+            Glb.TimerStart();
             blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
+            Console.WriteLine($"=> Render Time: {Glb.TimerStop()}ms");
+            
+            Console.WriteLine($"=> Blob Count: {blobs.Count}");
+            
+            Glb.DrawMatAndHist1(matThr);
             Glb.DrawMatAndHist2(matDsp);
 
             matThr.Dispose();
@@ -433,15 +436,15 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
-
             var matTmp = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC1);
             var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC1);
+            matTmp.SetTo(0);
             matDst.SetTo(0);
 
-            sw.Restart();
-            IpUnsafe.Blob(matThr.Data, matTmp.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
-            sw.Stop();
-            Console.WriteLine($"Label Time:{sw.ElapsedMilliseconds}");
+            Glb.TimerStart();
+            int blobCount = IpUnsafe.Blob(matThr.Data, matTmp.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
+            Console.WriteLine($"=> Label Time: {Glb.TimerStop()}ms");
+            Console.WriteLine($"=> Blob Count: {blobCount}");
             
             if (MidDisp == MidDisplay.Binary)
                 Glb.DrawMatAndHist1(matThr);
