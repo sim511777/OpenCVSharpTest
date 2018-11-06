@@ -231,10 +231,11 @@
             "Circle",
             "Cross",
             "Diamond",
+            "BigImage",
             "BlobTest",
             "BlobTest2",
             "BlobTest3",
-            "BigImage"});
+            "BlobTest4"});
             this.cbxExampleImage.Location = new System.Drawing.Point(87, 22);
             this.cbxExampleImage.Name = "cbxExampleImage";
             this.cbxExampleImage.Size = new System.Drawing.Size(156, 20);
