@@ -18,128 +18,147 @@ namespace OpenCVSharpTest {
             }
         }
 
+        private static int GetNeighborLabels(int[] labels, int bw, int bh, int x, int y, int[] nbrs) {
+            int nbrCount = 0;
+            int label;
+            if (x != 0) {
+                // check left
+                label = labels[bw*y+x-1];
+                if (label != 0) {
+                    nbrs[nbrCount++] = label;
+                }
+            }
+            if (y != 0) {
+                // check top
+                label = labels[bw*(y-1)+x];
+                if (label != 0) {
+                    nbrs[nbrCount++] = label;
+                }
+                if (x != 0) {
+                    // check lt
+                    label = labels[bw*(y-1)+x-1];
+                    if (label != 0) {
+                        nbrs[nbrCount++] = label;
+                    }
+                }
+                if (x != bw - 1) {
+                    // check rt
+                    label = labels[bw*(y-1)+x+1];
+                    if (label != 0) {
+                        nbrs[nbrCount++] = label;
+                    }
+                }
+            }
+
+            return nbrCount;
+        }
+
+        private static int GetRootLabel(List<int> links, int label) {
+            int root = label;
+            while (links[root] != 0) {
+                root = links[root];
+            }
+
+            return root;
+        }
+
+        private static int GetMinRootLabel(List<int> links, int[] nbrs, int nbrCount) {
+            int minLabel = GetRootLabel(links, nbrs[0]);
+            for (int i=0; i<nbrCount; i++) {
+                var rootLabel = GetRootLabel(links, nbrs[i]);
+                if (rootLabel < minLabel) {
+                    minLabel = rootLabel;
+                }
+            }
+            return minLabel;
+        }
+
+        private static void DrawLabels(int[] labels, IntPtr draw, int bw, int bh, int stride) {
+            for (int y = 0; y < bh; y++) {
+                for (int x = 0; x < bw; x++) {
+                    int label = labels[bw*y+x];
+                    int color = (label);
+                    Marshal.WriteByte(draw+stride*y+x, (byte)color); 
+                }
+            }
+        }
+
         public static int Blob(IntPtr src, IntPtr tmp, IntPtr dst, int bw, int bh, int stride) {
             byte *psrc = (byte *)src.ToPointer();
-            byte *ptmp = (byte *)tmp.ToPointer();
-            byte *pdst = (byte *)dst.ToPointer();
             
-            // 라벨버퍼
-            IntPtr labelBuf = Marshal.AllocHGlobal(bw * bh * sizeof(int));
-            int *plabel = (int *)labelBuf.ToPointer();
-            for (int i=0; i<bw*bh; i++) {
-                plabel[i] = -1;
-            }
+            // label 버퍼
+            int[] labels = Enumerable.Repeat(0, bw*bh).ToArray();
 
-            // disjoint set
-            var link = new int[bw*bh];
+            // link 테이블
+            var links = new List<int>();
+            links.Add(0);
             
-            int[] neighborLabels = new int[4];
-            // 1 pass
-            int NextLabel = 0;
+            // 1st stage
+            int[] nbrs = new int[4];
             for (int y = 0; y < bh; y++) {
-                byte *ppsrc = psrc + stride * y;
-                int *pplabel = plabel + bw * y;
-                for (int x = 0; x < bw; x++, ppsrc = ppsrc + 1, pplabel = pplabel + 1) {
-                    if (*ppsrc == 0)
+                for (int x = 0; x < bw; x++) {
+                    // 배경이면 skip
+                    if (psrc[stride*y+x] == 0)
                         continue;
-
-                    int neighborCount = 0;
-
-                    if (x != 0) {
-                        int labelLeft = *(pplabel - 1);
-                        if (labelLeft != -1) {
-                            neighborLabels[neighborCount++] = labelLeft;
-                        }
-                    }
-                    if (y != 0) {
-                        int labelTop = *(pplabel - stride);
-                        if (labelTop != -1) {
-                            neighborLabels[neighborCount++] = labelTop;
-                        }
-
-                        if (x != 0) {
-                            int labelLeftTop = *(pplabel - stride - 1);
-                            if (labelLeftTop != -1) {
-                                neighborLabels[neighborCount++] = labelLeftTop;
-                            }
-                        }
-                        if (x != bw-1) {
-                            int labelRightTop = *(pplabel - stride + 1);
-                            if (labelRightTop != -1) {
-                                neighborLabels[neighborCount++] = labelRightTop;
-                            }
-                        }
-                    }
-
-                    if (neighborCount == 0) {
-                        int label = NextLabel;
-                        *pplabel = label;
-                        link[label] = -1;
-                        NextLabel++;
+                    
+                    // 주변 4개의 label버퍼 조사 (l, tl, t, tr)
+                    int nbrCount = GetNeighborLabels(labels, bw, bh, x, y, nbrs);
+                    if (nbrCount == 0) {
+                        // 주변에 없다면 새번호 생성하고 라벨링
+                        int newLabel = links.Count;
+                        labels[bw*y+x] = newLabel;
+                        // link 테이블에 새 루트 라벨 추가
+                        links.Add(0);
                     } else {
-                        int label = neighborLabels[0];
-                        while (link[label] != -1)
-                            label = link[label];
-                        for (int i=1; i<neighborCount; i++) {
-                            int neighborLabel = neighborLabels[i];
-                            while (link[neighborLabel] != -1) {
-                                neighborLabel = link[neighborLabel];
+                        // 주변에 있다면 주변 라벨들의 루트중 최소라벨
+                        int minLabel = GetMinRootLabel(links, nbrs, nbrCount);
+                        labels[bw*y+x] = minLabel;
+                        // link 테이블에서 주변 라벨의 parent 수정
+                        for (int i=0; i<nbrCount; i++) {
+                            int label = nbrs[i];
+                            // 라벨이 min라벨이 아니라면 라벨의 link를 minlabel로 바꿈
+                            // 이전 link가 0이 아니라면 이전 link의 link도 minlabel로 바꿈
+                            while (label != minLabel) {
+                                var oldLink = links[label];
+                                links[label] = minLabel;
+                                if (oldLink == 0)
+                                    break;
+                                label = oldLink;
                             }
-                            if (neighborLabel < label)
-                                label = neighborLabel;
-                        }
-                        *pplabel = label;
-                        for (int i=0; i<neighborCount; i++) {
-                            // disjoint-set union
-                            if (neighborLabels[i] != label)
-                                link[neighborLabels[i]] = label;
                         }
                     }
                 }
             }
 
             // display
-            for (int y = 0; y < bh; y++) {
-                int* pplabel = plabel + bw * y;
-                byte* pptmp = ptmp + stride * y;
-                for (int x = 0; x < bw; x++, pplabel++, pptmp++) {
-                    *pptmp = (byte)((*pplabel+1) * 10); 
-                }
+            DrawLabels(labels, tmp, bw, bh, stride);
+
+            // 2nd stage
+            // links 수정
+            for (int i=0; i<links.Count; i++) {
+                if (links[i] == 0)
+                    continue;
+                links[i] = GetRootLabel(links, links[i]);
             }
 
-            // 2 pass
+            // labels 수정
             for (int y = 0; y < bh; y++) {
-                int* pplabel = plabel + bw * y;
-                for (int x = 0; x < bw; x++, pplabel++) {
-                    if (*pplabel == -1)
+                for (int x = 0; x < bw; x++) {
+                    int label = labels[bw*y+x];
+                    if (label == 0)
                         continue;
-                    // disjoint-set find
-                    var label = *pplabel;
-                    while (link[label] != -1) {
-                        label = link[label];
-                    }
-                    *pplabel = label;
+                    var link = links[label];
+                    if (link == 0)
+                        continue;
+                    labels[bw*y+x] = link;
                 }
             }
+
 
             // display
-            for (int y = 0; y < bh; y++) {
-                int* pplabel = plabel + bw * y;
-                byte* ppdst = pdst + stride * y;
-                for (int x = 0; x < bw; x++, pplabel++, ppdst++) {
-                    *ppdst = (byte)((*pplabel+1) * 10); 
-                }
-            }
+            DrawLabels(labels, dst, bw, bh, stride);
 
-            int blobCount = 0;
-            for (int i=0; i<NextLabel; i++) {
-                if (link[i] == -1)
-                    blobCount++;
-            }
-
-            Marshal.FreeHGlobal(labelBuf);
-
-            return blobCount;
+            return links.Count(link => link == 0)-1;
         }
     }
 }
