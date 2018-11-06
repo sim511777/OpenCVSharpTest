@@ -41,5 +41,50 @@ namespace OpenCVSharpTest {
             sw.Stop();
             return sw.ElapsedMilliseconds;
         }
+
+
+        public static void Hsv2Rgb(double h, double s, double v, out double r, out double g, out double b) {
+            double d = h / 60.0;
+            int num1 = (int)Math.Floor(d);
+            int num2 = (int)d % 6;
+            double num3 = d - (double)num1;
+            double num4 = v * (1.0 - s);
+            double num5 = v * (1.0 - num3 * s);
+            double num6 = v * (1.0 - (1.0 - num3) * s);
+            switch (num2) {
+                case 0:
+                    r = (double)byte.MaxValue * v;
+                    g = (double)byte.MaxValue * num6;
+                    b = (double)byte.MaxValue * num4;
+                    break;
+                case 1:
+                    r = (double)byte.MaxValue * num5;
+                    g = (double)byte.MaxValue * v;
+                    b = (double)byte.MaxValue * num4;
+                    break;
+                case 2:
+                    r = (double)byte.MaxValue * num4;
+                    g = (double)byte.MaxValue * v;
+                    b = (double)byte.MaxValue * num6;
+                    break;
+                case 3:
+                    r = (double)byte.MaxValue * num4;
+                    g = (double)byte.MaxValue * num5;
+                    b = (double)byte.MaxValue * v;
+                    break;
+                case 4:
+                    r = (double)byte.MaxValue * num6;
+                    g = (double)byte.MaxValue * num4;
+                    b = (double)byte.MaxValue * v;
+                    break;
+                case 5:
+                    r = (double)byte.MaxValue * v;
+                    g = (double)byte.MaxValue * num4;
+                    b = (double)byte.MaxValue * num5;
+                    break;
+                default:
+                    throw new Exception();
+            }
+        }
     }
 }
