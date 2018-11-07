@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Collections;
 using ShimLib;
 using System.Diagnostics;
+using System.IO;
 
 namespace OpenCVSharpTest {
     public partial class FormMain : Form {
@@ -142,6 +143,7 @@ namespace OpenCVSharpTest {
             if (Glb.matSrc != null)
                 Glb.matSrc.Dispose();
             Glb.matSrc = ((Bitmap)Resources.ResourceManager.GetObject(this.cbxExampleImage.Text)).ToMat();
+            Console.WriteLine($"Image From Resource: {this.cbxExampleImage.Text} ({Glb.matSrc.Width}x{Glb.matSrc.Height})");
 
             this.ProcessImage();
 
@@ -165,6 +167,8 @@ namespace OpenCVSharpTest {
                 Glb.matSrc.Dispose();
             Bitmap bmp = new Bitmap(img);
             Glb.matSrc = bmp.ToMat();
+            Console.WriteLine($"Image From Clipboard: ({Glb.matSrc.Width}x{Glb.matSrc.Height})");
+
             bmp.Dispose();
 
             this.ProcessImage();
@@ -187,6 +191,7 @@ namespace OpenCVSharpTest {
             if (Glb.matSrc != null)
                 Glb.matSrc.Dispose();
             Glb.matSrc = new Mat(this.dlgOpen.FileName);
+            Console.WriteLine($"Image From File: {Path.GetFileName(dlgOpen.FileName)} ({Glb.matSrc.Width}x{Glb.matSrc.Height})");
 
             this.ProcessImage();
 
@@ -202,6 +207,7 @@ namespace OpenCVSharpTest {
                 Glb.matSrc.Dispose();
             Glb.matSrc = new Mat();
             this.cap.Read(Glb.matSrc);
+            Console.WriteLine($"Image From Camera: ({Glb.matSrc.Width}x{Glb.matSrc.Height})");
 
             this.ProcessImage();
         }

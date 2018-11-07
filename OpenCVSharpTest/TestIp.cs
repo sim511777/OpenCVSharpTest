@@ -489,7 +489,7 @@ namespace OpenCVSharpTest {
             matDsp.SetTo(Scalar.Black);
 
             Glb.TimerStart();
-            Cv2.DrawKeypoints(matDsp, keyPoints, matDsp, null, DrawMatchesFlags.DrawRichKeypoints);
+            Cv2.DrawKeypoints(matDsp, keyPoints, matDsp);
             Console.WriteLine($"=> Render Time: {Glb.TimerStop()}ms");
             
             Console.WriteLine($"=> Blob Count: {keyPoints.Length}");
