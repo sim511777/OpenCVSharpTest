@@ -7,36 +7,18 @@ using System.Drawing;
 
 namespace OpenCVSharpTest {
     class MyBlobs {
-        private int[] labels;
-        
         public void Label(IntPtr src, int bw, int bh, int stride) {
         }
     }
 
     class MyBlob {
+        public int label;
         public int area;
-        public Point[] GetPixels() {
-            return null;
-        }
-
+        public Point[] pixels;
         public Point centroid;
-        public double cricularity;
-        public bool converxity;
-        public double inertiaRatio;
-
-        public MyContour GetContour() {
-            return null;
-        }
-    }
-
-    enum ContourDir {
-        Rightl, RightDown, Down, LeftDown, Left, LeftUp, Up, RightUp
-    }
-
-    class MyContour {
-        public Point startPoint;
-        public int count;
-        public ContourDir[] dirs;
-
+        public int minX;
+        public int minY;
+        public int maxX;
+        public int maxY;
     }
 }
