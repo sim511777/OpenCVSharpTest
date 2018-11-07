@@ -31,6 +31,29 @@ namespace OpenCVSharpTest {
             form.DrawHistogram(mat, form.cht2);
         }
 
+        public static void DrawMat0(Mat mat) {
+            form.DrawMat(mat?.ToBitmap(), form.pbx0);
+        }
+
+        public static void DrawMat1(Mat mat) {
+            form.DrawMat(mat?.ToBitmap(), form.pbx1);
+        }
+
+        public static void DrawMat2(Mat mat) {
+            form.DrawMat(mat?.ToBitmap(), form.pbx2);
+        }
+
+        public static void DrawHist0(Mat mat, bool labelHsv = false) {
+            form.DrawHistogram(mat, form.cht0, labelHsv);
+        }
+
+        public static void DrawHist1(Mat mat, bool hsv = false) {
+            form.DrawHistogram(mat, form.cht1, hsv);
+        }
+
+        public static void DrawHist2(Mat mat, bool hsv = false) {
+            form.DrawHistogram(mat, form.cht2, hsv);
+        }
 
         private static Stopwatch sw = new Stopwatch();
 

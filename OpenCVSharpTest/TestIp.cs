@@ -38,9 +38,12 @@ namespace OpenCVSharpTest {
 
         public static void EqualizeHistHsv() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+            Glb.DrawMat0(Glb.matSrc);
+
             // BGR to HSV변환
             var matHsv = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
+            Glb.DrawHist0(matHsv, true);
+
             // 채널 분리
             var hsvChannels = matHsv.Split();
             // 변환
@@ -48,11 +51,14 @@ namespace OpenCVSharpTest {
             // 채널 병합
             var matDst = new Mat();
             Cv2.Merge(hsvChannels, matDst);
+            Glb.DrawHist1(matDst, true);
+
             // HSV to BGR변환
             matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
 
-            Glb.DrawMatAndHist1(hsvChannels[2]);
-            Glb.DrawMatAndHist2(matDst);
+            Glb.DrawMat1(matDst);
+            
+            Glb.DrawMatAndHist2(null);
 
             matHsv.Dispose();
             matDst.Dispose();
@@ -180,23 +186,29 @@ namespace OpenCVSharpTest {
         }
 
         public static void ContrastBrightness(double x1 = 64, double y1 = 0, double x2 = 192, double y2 = 255) {
-            Glb.DrawMatAndHist0(Glb.matSrc);
+            Glb.DrawMat0(Glb.matSrc);
             
             // BGR to HSV변환
             var matHsv = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
+            Glb.DrawHist0(matHsv, true);
+            
             // 채널 분리
             var hsvChannels = matHsv.Split();
             // 변환
             double scale = (y2 - y1) / (x2 - x1);
             double offset = (x2 * y1 - x1 * y2) / (x2 - x1);
             hsvChannels[2].ConvertTo(hsvChannels[2], MatType.CV_8UC1, scale, offset);
-            Glb.DrawMatAndHist1(hsvChannels[2]);
+            
             // 채널 병합
             var matDst = new Mat();
             Cv2.Merge(hsvChannels, matDst);
+            Glb.DrawHist1(matDst, true);
+            
             // HSV to BGR변환
             matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
-            Glb.DrawMatAndHist2(matDst);
+            Glb.DrawMat1(matDst);
+
+            Glb.DrawMatAndHist2(null);
 
             matHsv.Dispose();
             matDst.Dispose();

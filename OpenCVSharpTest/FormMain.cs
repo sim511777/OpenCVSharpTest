@@ -30,7 +30,7 @@ namespace OpenCVSharpTest {
             series.Enabled = true;
         }
 
-        public void DrawHistogram(Mat mat, Chart cht) {
+        public void DrawHistogram(Mat mat, Chart cht, bool labelHsv = false) {
             if (mat == null) {
                 cht.Series[0].Enabled = false;
                 cht.Series[1].Enabled = false;
@@ -52,9 +52,9 @@ namespace OpenCVSharpTest {
                 var histR = GetHistogram(mat, 2);
                 var histG = GetHistogram(mat, 1);
                 var histB = GetHistogram(mat, 0);
-                DrawHistogram(histR, cht.Series[0], "R", Color.Red);
-                DrawHistogram(histG, cht.Series[1], "G", Color.Green);
-                DrawHistogram(histB, cht.Series[2], "B", Color.Blue);
+                DrawHistogram(histR, cht.Series[0], labelHsv ? "H" : "R", Color.Red);
+                DrawHistogram(histG, cht.Series[1], labelHsv ? "S" : "G", Color.Green);
+                DrawHistogram(histB, cht.Series[2], labelHsv ? "V" : "B", Color.Blue);
                 cht.Series[0].Enabled = true;
                 cht.Series[1].Enabled = true;
                 cht.Series[2].Enabled = true;
