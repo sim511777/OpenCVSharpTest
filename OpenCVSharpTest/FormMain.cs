@@ -20,6 +20,19 @@ using System.Diagnostics;
 
 namespace OpenCVSharpTest {
     public partial class FormMain : Form {
+        public FormMain() {
+            InitializeComponent();
+            
+            var bmpNames = typeof(Properties.Resources).GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic).Where(pi => pi.PropertyType == typeof(Bitmap)).Select(pi => pi.Name);
+            this.cbxExampleImage.Items.AddRange(bmpNames.ToArray());
+            if (cbxExampleImage.Items.Count >= 1)
+                cbxExampleImage.SelectedIndex = 0;
+
+            Glb.form = this;
+            Console.SetOut(new TextBoxWriter(this.tbxConsole));
+            this.InitFunctionList();
+        }
+
         private void DrawHistogram(float[] histo, Series series, string name, Color color, AxisType yAxisTYpe = AxisType.Primary) {
             series.Name = name;
             series.Color = color;
@@ -95,14 +108,6 @@ namespace OpenCVSharpTest {
             pbx.Invalidate();
             if (bmpOld != null)
                 bmpOld.Dispose();
-        }
-
-        public FormMain() {
-            InitializeComponent();
-            Glb.form = this;
-            Console.SetOut(new TextBoxWriter(this.tbxConsole));
-            this.cbxExampleImage.SelectedIndex = 0;
-            this.InitFunctionList();
         }
 
         private void InitFunctionList() {

@@ -225,18 +225,6 @@
             // 
             this.cbxExampleImage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxExampleImage.FormattingEnabled = true;
-            this.cbxExampleImage.Items.AddRange(new object[] {
-            "Lenna",
-            "Rectangle",
-            "Circle",
-            "Cross",
-            "Diamond",
-            "BigImage",
-            "BlobTest",
-            "BlobTest2",
-            "BlobTest3",
-            "BlobTest4",
-            "BlobTest5"});
             this.cbxExampleImage.Location = new System.Drawing.Point(87, 22);
             this.cbxExampleImage.Name = "cbxExampleImage";
             this.cbxExampleImage.Size = new System.Drawing.Size(156, 20);
@@ -318,7 +306,7 @@
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 278F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 175F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1246, 176);
             this.tableLayoutPanel1.TabIndex = 1;
             // 

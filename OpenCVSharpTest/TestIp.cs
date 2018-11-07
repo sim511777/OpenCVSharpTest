@@ -155,36 +155,6 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void Blob(bool drawWithMyRenderer = true) {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-            
-            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
-
-            var blobs = new CvBlobs();
-            
-            Glb.TimerStart();
-            blobs.Label(matThr);
-            Console.WriteLine($"=> Label Time: {Glb.TimerStop()}ms");
-
-            var matDsp = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
-            matDsp.SetTo(Scalar.Black);
-
-            Glb.TimerStart();
-            if (drawWithMyRenderer)
-                IpUnsafe.RenderBlobs(blobs, matDsp);
-            else
-                blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
-            Console.WriteLine($"=> Render Time: {Glb.TimerStop()}ms");
-            
-            Console.WriteLine($"=> Blob Count: {blobs.Count}");
-            
-            Glb.DrawMatAndHist1(matThr);
-            Glb.DrawMatAndHist2(matDsp);
-
-            matThr.Dispose();
-            matDsp.Dispose();
-        }
-
         public static void ContrastBrightness(double x1 = 64, double y1 = 0, double x2 = 192, double y2 = 255) {
             Glb.DrawMat0(Glb.matSrc);
             
@@ -444,6 +414,36 @@ namespace OpenCVSharpTest {
 
             matGray.Dispose();
             matDst.Dispose();
+        }
+
+        public static void Blob_CvBlobs(bool drawWithMyRenderer = true) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+
+            var blobs = new CvBlobs();
+            
+            Glb.TimerStart();
+            blobs.Label(matThr);
+            Console.WriteLine($"=> Label Time: {Glb.TimerStop()}ms");
+
+            var matDsp = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
+            matDsp.SetTo(Scalar.Black);
+
+            Glb.TimerStart();
+            if (drawWithMyRenderer)
+                IpUnsafe.RenderBlobs(blobs, matDsp);
+            else
+                blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
+            Console.WriteLine($"=> Render Time: {Glb.TimerStop()}ms");
+            
+            Console.WriteLine($"=> Blob Count: {blobs.Count}");
+            
+            Glb.DrawMatAndHist1(matThr);
+            Glb.DrawMatAndHist2(matDsp);
+
+            matThr.Dispose();
+            matDsp.Dispose();
         }
 
         public static void Blob_Unsafe() {
