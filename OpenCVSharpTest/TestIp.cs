@@ -9,6 +9,7 @@ using OpenCvSharp.Extensions;
 using OpenCvSharp.Blob;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace OpenCVSharpTest {
     class TestIp {
@@ -414,6 +415,29 @@ namespace OpenCVSharpTest {
 
             matGray.Dispose();
             matDst.Dispose();
+        }
+
+        public static void FaceDetect() {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            string xmlPath = Application.StartupPath + "\\..\\haarcascades\\haarcascade_frontalface_alt2.xml";
+            var haarCascade = new CascadeClassifier(xmlPath);
+            Glb.TimerStart();
+            Rect[] faces = haarCascade.DetectMultiScale(matGray);
+            Console.WriteLine($"=> Detect Time: {Glb.TimerStop()}ms");
+            Console.WriteLine($"=> Face Count: {faces.Length}");
+
+            var matDsp = Glb.matSrc.Clone();
+            foreach (var face in faces) {
+                matDsp.Rectangle(face.TopLeft, face.BottomRight, Scalar.Lime, 4);
+            }
+
+            Glb.DrawMatAndHist1(matDsp);
+            Glb.DrawMatAndHist2(null);
+
+            matDsp.Dispose();
+            matGray.Dispose();
         }
 
         public static void Blob_CvBlobs(bool drawWithMyRenderer = true) {
