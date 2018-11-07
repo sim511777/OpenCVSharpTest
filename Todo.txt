@@ -16,19 +16,13 @@ ok 8. 엣지 처리
 ok 9. 기본 파라미터 수정
 ok 10. Flip
 ok 11. Blur, MedianBlur
-ok Blob 알고리즘 구현
-11. label 인덱싱 수정
-dictionary<int, int> labelChangeLookup
-int newIndex = 0;
-for (int i=0; i<links.Count; i++) {
-    if (links[i] == 0)
-    labelChangeLookup.Add(i, newIndex++);
-}
-11. Blob 데이터 out
-- labellist로 blob배열 생성
-- label 버퍼 스캔
-- 데이터 추출, blob size, minXY/maxXY, blob pixellist, blob centroid
-- pixel list 까지 구하고 나면 label버퍼 삭제 해도 됨
+ok 11. Blob 알고리즘 구현
+ok 11. label 인덱싱 수정
+ok 11. Blob 데이터 out
+ok - labellist로 blob배열 생성
+ok - label 버퍼 스캔
+ok - 데이터 추출, blob size, minXY/maxXY, blob pixellist, blob centroid
+ok - pixel list 까지 구하고 나면 label버퍼 삭제 해도 됨
 11. Blob C 로 포팅
 11. Blob mmax 포팅
 11. Blob 3D로 확장

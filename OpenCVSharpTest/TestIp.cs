@@ -446,29 +446,27 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public enum MidDisplay { Binary, LabelTemp }
-        public static void Blob_Unsafe(MidDisplay MidDisp = MidDisplay.LabelTemp) {
+        public static void Blob_Unsafe() {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
-            var matTmp = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC1);
-            var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC1);
-            matTmp.SetTo(0);
-            matDst.SetTo(0);
 
             Glb.TimerStart();
-            int blobCount = IpUnsafe.Blob(matThr.Data, matTmp.Data, matDst.Data, matThr.Width, matThr.Height, (int)matThr.Step());
+            var blobs = MyBlobs.Label(matThr.Data, matThr.Width, matThr.Height, (int)matThr.Step());
             Console.WriteLine($"=> Label Time: {Glb.TimerStop()}ms");
-            Console.WriteLine($"=> Blob Count: {blobCount}");
-            
-            if (MidDisp == MidDisplay.Binary)
-                Glb.DrawMatAndHist1(matThr);
-            else
-                Glb.DrawMatAndHist1(matTmp);
+
+            var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
+            matDst.SetTo(Scalar.Black);
+            Glb.TimerStart();
+            Glb.RenderBlobs(blobs, matDst);
+            Console.WriteLine($"=> Render Time: {Glb.TimerStop()}ms");
+
+            Console.WriteLine($"=> Blob Count: {blobs.Length}");
+
+            Glb.DrawMatAndHist1(matThr);
             Glb.DrawMatAndHist2(matDst);
 
             matThr.Dispose();
-            matTmp.Dispose();
             matDst.Dispose();
         }
 

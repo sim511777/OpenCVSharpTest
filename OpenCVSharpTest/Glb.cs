@@ -128,5 +128,18 @@ namespace OpenCVSharpTest {
                 }
             }
         }
+
+        public static void RenderBlobs(MyBlob[] blobs, Mat matDst) {
+            int colorCount = 0;
+            foreach (var blob in blobs) {
+                double r, g, b;
+                Hsv2Rgb((colorCount*77) % 360, 0.5, 1.0, out r, out g, out b);
+                colorCount++;
+                Vec3b color = new Vec3b((byte)b, (byte)g, (byte)r);
+                foreach (var pixel in blob.pixels) {
+                    matDst.Set(pixel.Y, pixel.X, color);
+                }
+            }
+        }
     }
 }
