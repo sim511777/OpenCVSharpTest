@@ -16,6 +16,7 @@ using OpenCvSharp.Blob;
 using System.Reflection;
 using System.Collections;
 using ShimLib;
+using System.Diagnostics;
 
 namespace OpenCVSharpTest {
     public partial class FormMain : Form {
@@ -49,12 +50,21 @@ namespace OpenCVSharpTest {
                 cht.Series[1].Enabled = true;
                 cht.Series[2].Enabled = false;
             } else if (matType == MatType.CV_8UC3 || matType == MatType.CV_8UC4) {
-                var histR = GetHistogram(mat, 2);
-                var histG = GetHistogram(mat, 1);
-                var histB = GetHistogram(mat, 0);
-                DrawHistogram(histR, cht.Series[0], labelHsv ? "H" : "R", Color.Red);
-                DrawHistogram(histG, cht.Series[1], labelHsv ? "S" : "G", Color.Green);
-                DrawHistogram(histB, cht.Series[2], labelHsv ? "V" : "B", Color.Blue);
+                if (labelHsv == false) {
+                    var histR = GetHistogram(mat, 2);
+                    var histG = GetHistogram(mat, 1);
+                    var histB = GetHistogram(mat, 0);
+                    DrawHistogram(histR, cht.Series[0], "R", Color.Red);
+                    DrawHistogram(histG, cht.Series[1], "G", Color.Green);
+                    DrawHistogram(histB, cht.Series[2], "B", Color.Blue); 
+                } else {
+                    var histH = GetHistogram(mat, 0);
+                    var histS = GetHistogram(mat, 1);
+                    var histV = GetHistogram(mat, 2);
+                    DrawHistogram(histH, cht.Series[0], "H", Color.Red);
+                    DrawHistogram(histS, cht.Series[1], "S", Color.Green);
+                    DrawHistogram(histV, cht.Series[2], "V", Color.Blue); 
+                }
                 cht.Series[0].Enabled = true;
                 cht.Series[1].Enabled = true;
                 cht.Series[2].Enabled = true;
@@ -217,6 +227,7 @@ namespace OpenCVSharpTest {
         }
 
         // 이미지 처리
+        Stopwatch sw = new Stopwatch();
         private void ProcessImage() {
             if (Glb.matSrc == null)
                 return;
@@ -226,7 +237,7 @@ namespace OpenCVSharpTest {
             if (method != null) {
                 Console.WriteLine("==================================");
                 Console.WriteLine($"{method.Name}");
-                Glb.TimerStart();
+                sw.Restart();
                 try {
                     var cs = this.grdParameter.SelectedObject as CustomClass;
                     var prms = cs.Cast<CustomProperty>().Select(prop => prop.Value).ToArray();
@@ -244,7 +255,8 @@ namespace OpenCVSharpTest {
                     DrawHistogram(null, this.cht2);
                     Console.WriteLine($"=> Error: {ex.Message}");
                 }
-                Console.WriteLine($"=>  Total Time: {Glb.TimerStop()}ms");
+                sw.Stop();
+                Console.WriteLine($"=>  Total Time: {sw.ElapsedMilliseconds}ms");
                 Console.WriteLine();
             }
         }

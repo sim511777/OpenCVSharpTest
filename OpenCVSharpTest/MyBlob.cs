@@ -85,27 +85,28 @@ namespace OpenCVSharpTest {
             
             // 1st stage
             // labeling with scan
+            Glb.TimerStart();
             int[] nbrs = new int[4];
             for (int y = 0; y < bh; y++) {
                 for (int x = 0; x < bw; x++) {
                     // 배경이면 skip
                     if (psrc[stride*y+x] == 0)
                         continue;
-                    
+
                     // 주변 4개의 label버퍼 조사 (l, tl, t, tr)
                     int nbrCount = GetNeighborLabels(labels, bw, bh, x, y, nbrs);
                     if (nbrCount == 0) {
                         // 주변에 없다면 새번호 생성하고 라벨링
                         int newLabel = links.Count;
-                        labels[bw*y+x] = newLabel;
+                        labels[bw * y + x] = newLabel;
                         // link 테이블에 새 루트 라벨 추가
                         links.Add(0);
                     } else {
                         // 주변에 있다면 주변 라벨들의 루트중 최소라벨
                         int minLabel = GetMinRootLabel(links, nbrs, nbrCount);
-                        labels[bw*y+x] = minLabel;
+                        labels[bw * y + x] = minLabel;
                         // link 테이블에서 주변 라벨의 parent 수정
-                        for (int i=0; i<nbrCount; i++) {
+                        for (int i = 0; i < nbrCount; i++) {
                             int label = nbrs[i];
                             // 라벨이 min라벨이 아니라면 라벨의 link를 minlabel로 바꿈
                             // 이전 link가 0이 아니라면 이전 link의 link도 minlabel로 바꿈
@@ -120,16 +121,20 @@ namespace OpenCVSharpTest {
                     }
                 }
             }
+            Console.WriteLine($"=> 1st labelling time: {Glb.TimerStop()}");
 
             // 2nd stage
             // links 수정
+            Glb.TimerStart();
             for (int i=0; i<links.Count; i++) {
                 if (links[i] == 0)
                     continue;
                 links[i] = GetRootLabel(links, links[i]);
             }
+            Console.WriteLine($"=> link 수정 time: {Glb.TimerStop()}");
 
             // labels 수정
+            Glb.TimerStart();
             for (int y = 0; y < bh; y++) {
                 for (int x = 0; x < bw; x++) {
                     int label = labels[bw*y+x];
@@ -141,9 +146,12 @@ namespace OpenCVSharpTest {
                     labels[bw*y+x] = link;
                 }
             }
+            Console.WriteLine($"=> labels 수정 time: {Glb.TimerStop()}");
+
 
             // 3. 후처리
             // link index 수정
+            Glb.TimerStart();
             Dictionary<int, int> relabelTable = new Dictionary<int, int>();
             int newIndex = 1;
             for (int i=1; i<links.Count; i++) {
@@ -152,7 +160,10 @@ namespace OpenCVSharpTest {
                     relabelTable.Add(i, newIndex++);
                 }
             }
+            Console.WriteLine($"=> link index 수정 time: {Glb.TimerStop()}");
+
             // labels 수정
+            Glb.TimerStart();
             for (int y = 0; y < bh; y++) {
                 for (int x = 0; x < bw; x++) {
                     var label = labels[bw*y+x];
@@ -161,6 +172,8 @@ namespace OpenCVSharpTest {
                     labels[bw*y+x] = relabelTable[label];
                 }
             }
+            Console.WriteLine($"=> labels index 수정 time: {Glb.TimerStop()}");
+
 
             // 4. 데이터 추출 (-1 : 0라벨을 제외 이므로)
             MyBlob[] blobs = new MyBlob[relabelTable.Count];
@@ -170,6 +183,7 @@ namespace OpenCVSharpTest {
                 pixels[i] = new List<Point>();
             }
 
+            Glb.TimerStart();
             for (int y = 0; y < bh; y++) {
                 for (int x = 0; x < bw; x++) {
                     var label = labels[bw*y+x];
@@ -186,13 +200,18 @@ namespace OpenCVSharpTest {
                     if (y > blob.maxY) blob.maxY = y;
                 }
             }
+            Console.WriteLine($"=> blob pixel 추출 time: {Glb.TimerStop()}");
 
+            Glb.TimerStart();
             for (int i=0; i<blobs.Length; i++) {
                 var blob = blobs[i];
                 blob.pixels = pixels[i].ToArray();
+                if (blob.pixels.Length == 0)
+                    continue;
                 blob.centroid.X /= blob.pixels.Length;
                 blob.centroid.Y /= blob.pixels.Length;
             }
+            Console.WriteLine($"=> centoid 나누기 time: {Glb.TimerStop()}");
 
             return blobs;
         }

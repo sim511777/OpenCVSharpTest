@@ -86,12 +86,12 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.pbx0 = new ShimLib.ZoomPictureBox();
             this.popupPicture = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyImageToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.splitter3 = new System.Windows.Forms.Splitter();
-            this.pbx0 = new ShimLib.ZoomPictureBox();
             this.pbx2 = new ShimLib.ZoomPictureBox();
             this.pbx1 = new ShimLib.ZoomPictureBox();
+            this.splitter3 = new System.Windows.Forms.Splitter();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -102,8 +102,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.cht1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cht2)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
-            this.popupPicture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbx0)).BeginInit();
+            this.popupPicture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbx2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbx1)).BeginInit();
             this.SuspendLayout();
@@ -285,11 +285,11 @@
             // tbxConsole
             // 
             this.tbxConsole.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tbxConsole.Location = new System.Drawing.Point(261, 640);
+            this.tbxConsole.Location = new System.Drawing.Point(261, 571);
             this.tbxConsole.Multiline = true;
             this.tbxConsole.Name = "tbxConsole";
             this.tbxConsole.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbxConsole.Size = new System.Drawing.Size(936, 131);
+            this.tbxConsole.Size = new System.Drawing.Size(1246, 200);
             this.tbxConsole.TabIndex = 4;
             // 
             // dlgOpen
@@ -313,13 +313,13 @@
             this.tableLayoutPanel1.Controls.Add(this.cht1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.cht2, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(261, 358);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(261, 392);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 278F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(936, 279);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1246, 176);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // cht0
@@ -405,7 +405,7 @@
             this.cht0.Series.Add(series8);
             this.cht0.Series.Add(series9);
             this.cht0.Series.Add(series10);
-            this.cht0.Size = new System.Drawing.Size(304, 271);
+            this.cht0.Size = new System.Drawing.Size(408, 168);
             this.cht0.TabIndex = 1;
             this.cht0.Text = "chart1";
             // 
@@ -430,7 +430,7 @@
             this.cht1.Dock = System.Windows.Forms.DockStyle.Fill;
             legend2.Name = "Legend1";
             this.cht1.Legends.Add(legend2);
-            this.cht1.Location = new System.Drawing.Point(315, 4);
+            this.cht1.Location = new System.Drawing.Point(419, 4);
             this.cht1.Name = "cht1";
             series11.ChartArea = "ChartArea1";
             series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
@@ -492,7 +492,7 @@
             this.cht1.Series.Add(series18);
             this.cht1.Series.Add(series19);
             this.cht1.Series.Add(series20);
-            this.cht1.Size = new System.Drawing.Size(304, 271);
+            this.cht1.Size = new System.Drawing.Size(408, 168);
             this.cht1.TabIndex = 0;
             this.cht1.Text = "chart1";
             // 
@@ -517,7 +517,7 @@
             this.cht2.Dock = System.Windows.Forms.DockStyle.Fill;
             legend3.Name = "Legend1";
             this.cht2.Legends.Add(legend3);
-            this.cht2.Location = new System.Drawing.Point(626, 4);
+            this.cht2.Location = new System.Drawing.Point(834, 4);
             this.cht2.Name = "cht2";
             series21.ChartArea = "ChartArea1";
             series21.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
@@ -579,7 +579,7 @@
             this.cht2.Series.Add(series28);
             this.cht2.Series.Add(series29);
             this.cht2.Series.Add(series30);
-            this.cht2.Size = new System.Drawing.Size(306, 271);
+            this.cht2.Size = new System.Drawing.Size(408, 168);
             this.cht2.TabIndex = 5;
             this.cht2.Text = "chart1";
             // 
@@ -587,7 +587,7 @@
             // 
             this.statusStrip1.Location = new System.Drawing.Point(0, 771);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1197, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1507, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -602,9 +602,9 @@
             // splitter2
             // 
             this.splitter2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter2.Location = new System.Drawing.Point(261, 637);
+            this.splitter2.Location = new System.Drawing.Point(261, 568);
             this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(936, 3);
+            this.splitter2.Size = new System.Drawing.Size(1246, 3);
             this.splitter2.TabIndex = 5;
             this.splitter2.TabStop = false;
             // 
@@ -623,31 +623,8 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(936, 355);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1246, 389);
             this.tableLayoutPanel2.TabIndex = 6;
-            // 
-            // popupPicture
-            // 
-            this.popupPicture.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyImageToClipboardToolStripMenuItem});
-            this.popupPicture.Name = "popupPicture";
-            this.popupPicture.Size = new System.Drawing.Size(211, 26);
-            // 
-            // copyImageToClipboardToolStripMenuItem
-            // 
-            this.copyImageToClipboardToolStripMenuItem.Name = "copyImageToClipboardToolStripMenuItem";
-            this.copyImageToClipboardToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.copyImageToClipboardToolStripMenuItem.Text = "Copy Image to Clipboard";
-            this.copyImageToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyImageToClipboardToolStripMenuItem_Click);
-            // 
-            // splitter3
-            // 
-            this.splitter3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter3.Location = new System.Drawing.Point(261, 355);
-            this.splitter3.Name = "splitter3";
-            this.splitter3.Size = new System.Drawing.Size(936, 3);
-            this.splitter3.TabIndex = 7;
-            this.splitter3.TabStop = false;
             // 
             // pbx0
             // 
@@ -666,7 +643,7 @@
             this.pbx0.Location = new System.Drawing.Point(4, 4);
             this.pbx0.Name = "pbx0";
             this.pbx0.Pan = new System.Drawing.SizeF(0F, 0F);
-            this.pbx0.Size = new System.Drawing.Size(304, 347);
+            this.pbx0.Size = new System.Drawing.Size(408, 381);
             this.pbx0.TabIndex = 2;
             this.pbx0.TabStop = false;
             this.pbx0.UseDrawPixelValue = true;
@@ -674,6 +651,20 @@
             this.pbx0.ZoomMax = 100F;
             this.pbx0.ZoomMin = 0.1F;
             this.pbx0.ZoomStep = 1.2F;
+            // 
+            // popupPicture
+            // 
+            this.popupPicture.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyImageToClipboardToolStripMenuItem});
+            this.popupPicture.Name = "popupPicture";
+            this.popupPicture.Size = new System.Drawing.Size(211, 26);
+            // 
+            // copyImageToClipboardToolStripMenuItem
+            // 
+            this.copyImageToClipboardToolStripMenuItem.Name = "copyImageToClipboardToolStripMenuItem";
+            this.copyImageToClipboardToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.copyImageToClipboardToolStripMenuItem.Text = "Copy Image to Clipboard";
+            this.copyImageToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyImageToClipboardToolStripMenuItem_Click);
             // 
             // pbx2
             // 
@@ -689,10 +680,10 @@
             this.pbx2.DrawPixelValueZoom = 20F;
             this.pbx2.EnableMousePan = true;
             this.pbx2.EnableWheelZoom = true;
-            this.pbx2.Location = new System.Drawing.Point(626, 4);
+            this.pbx2.Location = new System.Drawing.Point(834, 4);
             this.pbx2.Name = "pbx2";
             this.pbx2.Pan = new System.Drawing.SizeF(0F, 0F);
-            this.pbx2.Size = new System.Drawing.Size(306, 347);
+            this.pbx2.Size = new System.Drawing.Size(408, 381);
             this.pbx2.TabIndex = 4;
             this.pbx2.TabStop = false;
             this.pbx2.UseDrawPixelValue = true;
@@ -715,10 +706,10 @@
             this.pbx1.DrawPixelValueZoom = 20F;
             this.pbx1.EnableMousePan = true;
             this.pbx1.EnableWheelZoom = true;
-            this.pbx1.Location = new System.Drawing.Point(315, 4);
+            this.pbx1.Location = new System.Drawing.Point(419, 4);
             this.pbx1.Name = "pbx1";
             this.pbx1.Pan = new System.Drawing.SizeF(0F, 0F);
-            this.pbx1.Size = new System.Drawing.Size(304, 347);
+            this.pbx1.Size = new System.Drawing.Size(408, 381);
             this.pbx1.TabIndex = 3;
             this.pbx1.TabStop = false;
             this.pbx1.UseDrawPixelValue = true;
@@ -727,11 +718,20 @@
             this.pbx1.ZoomMin = 0.1F;
             this.pbx1.ZoomStep = 1.2F;
             // 
+            // splitter3
+            // 
+            this.splitter3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.splitter3.Location = new System.Drawing.Point(261, 389);
+            this.splitter3.Name = "splitter3";
+            this.splitter3.Size = new System.Drawing.Size(1246, 3);
+            this.splitter3.TabIndex = 7;
+            this.splitter3.TabStop = false;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1197, 793);
+            this.ClientSize = new System.Drawing.Size(1507, 793);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.splitter3);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -753,8 +753,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.cht1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cht2)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
-            this.popupPicture.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbx0)).EndInit();
+            this.popupPicture.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbx2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbx1)).EndInit();
             this.ResumeLayout(false);

@@ -171,7 +171,7 @@ namespace OpenCVSharpTest {
 
             Glb.TimerStart();
             if (drawWithMyRenderer)
-                Glb.RenderBlobs(blobs, matDsp);
+                IpUnsafe.RenderBlobs(blobs, matDsp);
             else
                 blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
             Console.WriteLine($"=> Render Time: {Glb.TimerStop()}ms");
@@ -451,14 +451,12 @@ namespace OpenCVSharpTest {
             
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
 
-            Glb.TimerStart();
             var blobs = MyBlobs.Label(matThr.Data, matThr.Width, matThr.Height, (int)matThr.Step());
-            Console.WriteLine($"=> Label Time: {Glb.TimerStop()}ms");
 
             var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
             matDst.SetTo(Scalar.Black);
             Glb.TimerStart();
-            Glb.RenderBlobs(blobs, matDst);
+            IpUnsafe.RenderBlobs(blobs, matDst);
             Console.WriteLine($"=> Render Time: {Glb.TimerStop()}ms");
 
             Console.WriteLine($"=> Blob Count: {blobs.Length}");
