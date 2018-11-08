@@ -86,12 +86,14 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.pbx0 = new ShimLib.ZoomPictureBox();
             this.popupPicture = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyImageToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitter3 = new System.Windows.Forms.Splitter();
+            this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dlgSave = new System.Windows.Forms.SaveFileDialog();
+            this.pbx0 = new ShimLib.ZoomPictureBox();
             this.pbx2 = new ShimLib.ZoomPictureBox();
             this.pbx1 = new ShimLib.ZoomPictureBox();
-            this.splitter3 = new System.Windows.Forms.Splitter();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -102,8 +104,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.cht1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cht2)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbx0)).BeginInit();
             this.popupPicture.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbx0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbx2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbx1)).BeginInit();
             this.SuspendLayout();
@@ -282,7 +284,6 @@
             // 
             // dlgOpen
             // 
-            this.dlgOpen.FileName = "openFileDialog1";
             this.dlgOpen.Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG";
             // 
             // timer1
@@ -614,6 +615,42 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1246, 389);
             this.tableLayoutPanel2.TabIndex = 6;
             // 
+            // popupPicture
+            // 
+            this.popupPicture.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyImageToClipboardToolStripMenuItem,
+            this.saveImageToolStripMenuItem});
+            this.popupPicture.Name = "popupPicture";
+            this.popupPicture.Size = new System.Drawing.Size(211, 48);
+            // 
+            // copyImageToClipboardToolStripMenuItem
+            // 
+            this.copyImageToClipboardToolStripMenuItem.Name = "copyImageToClipboardToolStripMenuItem";
+            this.copyImageToClipboardToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.copyImageToClipboardToolStripMenuItem.Text = "Copy Image to Clipboard";
+            this.copyImageToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyImageToClipboardToolStripMenuItem_Click);
+            // 
+            // splitter3
+            // 
+            this.splitter3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.splitter3.Location = new System.Drawing.Point(261, 389);
+            this.splitter3.Name = "splitter3";
+            this.splitter3.Size = new System.Drawing.Size(1246, 3);
+            this.splitter3.TabIndex = 7;
+            this.splitter3.TabStop = false;
+            // 
+            // saveImageToolStripMenuItem
+            // 
+            this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
+            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.saveImageToolStripMenuItem.Text = "Save Image";
+            this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
+            // 
+            // dlgSave
+            // 
+            this.dlgSave.DefaultExt = "bmp";
+            this.dlgSave.Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG";
+            // 
             // pbx0
             // 
             this.pbx0.AutoDrawCenterLine = true;
@@ -639,20 +676,6 @@
             this.pbx0.ZoomMax = 100F;
             this.pbx0.ZoomMin = 0.1F;
             this.pbx0.ZoomStep = 1.2F;
-            // 
-            // popupPicture
-            // 
-            this.popupPicture.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyImageToClipboardToolStripMenuItem});
-            this.popupPicture.Name = "popupPicture";
-            this.popupPicture.Size = new System.Drawing.Size(211, 26);
-            // 
-            // copyImageToClipboardToolStripMenuItem
-            // 
-            this.copyImageToClipboardToolStripMenuItem.Name = "copyImageToClipboardToolStripMenuItem";
-            this.copyImageToClipboardToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.copyImageToClipboardToolStripMenuItem.Text = "Copy Image to Clipboard";
-            this.copyImageToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyImageToClipboardToolStripMenuItem_Click);
             // 
             // pbx2
             // 
@@ -706,15 +729,6 @@
             this.pbx1.ZoomMin = 0.1F;
             this.pbx1.ZoomStep = 1.2F;
             // 
-            // splitter3
-            // 
-            this.splitter3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter3.Location = new System.Drawing.Point(261, 389);
-            this.splitter3.Name = "splitter3";
-            this.splitter3.Size = new System.Drawing.Size(1246, 3);
-            this.splitter3.TabIndex = 7;
-            this.splitter3.TabStop = false;
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -741,8 +755,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.cht1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cht2)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbx0)).EndInit();
             this.popupPicture.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbx0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbx2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbx1)).EndInit();
             this.ResumeLayout(false);
@@ -783,6 +797,8 @@
         private System.Windows.Forms.Splitter splitter4;
         private System.Windows.Forms.ContextMenuStrip popupPicture;
         private System.Windows.Forms.ToolStripMenuItem copyImageToClipboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveImageToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog dlgSave;
     }
 }
 

@@ -18,6 +18,7 @@ using System.Collections;
 using ShimLib;
 using System.Diagnostics;
 using System.IO;
+using System.Drawing.Imaging;
 
 namespace OpenCVSharpTest {
     public partial class FormMain : Form {
@@ -315,6 +316,46 @@ namespace OpenCVSharpTest {
             if (bmp == null)
                 return;
             Clipboard.SetImage(bmp);
+        }
+
+        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e) {
+            Bitmap bmp = (this.popupPicture.SourceControl as ZoomPictureBox).DrawingImage;
+            if (bmp == null) {
+                Console.WriteLine("No Image");
+                return;
+            }
+            if (this.dlgSave.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            ImageFormat fmt = null;
+            try {
+                string fileName = this.dlgSave.FileName;
+                string ext = Path.GetExtension(fileName).ToLower();
+                switch (ext) {
+                    case ".bmp":
+                        fmt = ImageFormat.Bmp;
+                        break;
+                    case ".jpg":
+                    case ".jpeg":
+                        fmt = ImageFormat.Jpeg;
+                        break;
+                    case ".png":
+                        fmt = ImageFormat.Png;
+                        break;
+                    case ".gif":
+                        fmt = ImageFormat.Gif;
+                        break;
+                    default:
+                        break;
+                }
+                if (fmt == null) {
+                    Console.WriteLine("Unsupported Format");
+                    return;
+                }
+                bmp.Save(this.dlgSave.FileName, fmt);
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
