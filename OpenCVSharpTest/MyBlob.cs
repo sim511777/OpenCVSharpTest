@@ -43,14 +43,6 @@ namespace OpenCVSharpTest {
             return nbrCount;
         }
 
-        private static int GetRootLabel(List<int> links, int label) {
-            while (links[label] != 0) {
-                label = links[label];
-            }
-
-            return label;
-        }
-
         public static MyBlob[] Label(IntPtr src, int bw, int bh, int stride) {
             byte *psrc = (byte *)src.ToPointer();
             
@@ -81,11 +73,17 @@ namespace OpenCVSharpTest {
                         links.Add(0);
                     } else {
                         // 주변에 있다면 주변 라벨들의 루트중 최소라벨
-                        int minLabel = GetRootLabel(links, nbrs[0]);
+                        int minLabel = nbrs[0];
+                        while (links[minLabel] != 0) {
+                            minLabel = links[minLabel];
+                        }
                         for (int i=0; i<nbrCount; i++) {
-                            var rootLabel = GetRootLabel(links, nbrs[i]);
-                            if (rootLabel < minLabel) {
-                                minLabel = rootLabel;
+                            var label = nbrs[i];
+                            while (links[label] != 0) {
+                                label = links[label];
+                            }
+                            if (label < minLabel) {
+                                minLabel = label;
                             }
                         }
                         labels[bw * y + x] = minLabel;
@@ -113,7 +111,12 @@ namespace OpenCVSharpTest {
             for (int i=0; i<links.Count; i++) {
                 if (links[i] == 0)
                     continue;
-                links[i] = GetRootLabel(links, links[i]);
+
+                int label = links[i];
+                while (links[label] != 0) {
+                    label = links[label];
+                }
+                links[i] = label;
             }
             Console.WriteLine($"=> link 수정 time: {Glb.TimerStop()}");
 
