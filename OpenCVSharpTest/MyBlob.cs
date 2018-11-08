@@ -15,6 +15,7 @@ namespace OpenCVSharpTest {
 
         public int Label(IntPtr src, int bw, int bh, int stride) {
             Glb.TimerStart();
+            // prepare
             byte *psrc = (byte *)src.ToPointer();
             
             // label 버퍼
@@ -26,8 +27,7 @@ namespace OpenCVSharpTest {
             int[] links = new int[bw*bh];
             int linkCount = 1;
             Console.WriteLine($"=> 1. Prepare buffer time: {Glb.TimerStop()}ms");
-
-
+            
             Glb.TimerStart();
             // 1st stage
             // labeling with scan
@@ -178,7 +178,6 @@ namespace OpenCVSharpTest {
                     
                     var blob = blobs[newLabel];
                     blob.area++;
-                    //blob.pixels.Add(new Point(x, y));
                     blob.centroidX += x;
                     blob.centroidY += y;
                     if (x < blob.MinX) blob.MinX = x;
@@ -186,6 +185,11 @@ namespace OpenCVSharpTest {
                     if (x > blob.MaxX) blob.MaxX = x;
                     if (y > blob.MaxY) blob.MaxY = y;
                 }
+            }
+
+            foreach (var blob in this.Blobs.Values) {
+                blob.centroidX /= blob.area;
+                blob.centroidY /= blob.area;
             }
             Console.WriteLine($"=> 6. 데이터 추출 time: {Glb.TimerStop()}ms");
 
@@ -199,8 +203,8 @@ namespace OpenCVSharpTest {
         }
         public int label = 0;
         public int area = 0;
-        public int centroidX = 0;
-        public int centroidY = 0;
+        public double centroidX = 0;
+        public double centroidY = 0;
         public int MinX = int.MaxValue-1;
         public int MinY = int.MaxValue-1;
         public int MaxX = -1;
