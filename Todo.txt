@@ -23,6 +23,7 @@ ok - labellist로 blob배열 생성
 ok - label 버퍼 스캔
 ok - 데이터 추출, blob size, minXY/maxXY, blob pixellist, blob centroid
 ok - pixel list 까지 구하고 나면 label버퍼 삭제 해도 됨
+11. Blob managed array 를 native array로 변경
 11. Blob C 로 포팅
 11. Blob mmax 포팅
 11. Blob 3D로 확장
