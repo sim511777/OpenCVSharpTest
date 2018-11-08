@@ -12,15 +12,15 @@ namespace OpenCVSharpTest {
             byte *psrc = (byte *)src.ToPointer();
             
             // label 버퍼
-            int[] labels = Enumerable.Repeat(0, bw*bh).ToArray();
+            int[] labels = new int[bw*bh];
 
             // link 테이블
-            int[] links = Enumerable.Repeat(0, bw*bh).ToArray();
+            int[] links = new int[bw*bh];
             int linkCount = 1;
             
+            Glb.TimerStart();
             // 1st stage
             // labeling with scan
-            Glb.TimerStart();
             int[] nbrs = new int[4];
             for (int y = 0; y < bh; y++) {
                 for (int x = 0; x < bw; x++) {
@@ -136,7 +136,7 @@ namespace OpenCVSharpTest {
             // link index 수정
             Glb.TimerStart();
             Dictionary<int, int> relabelTable = new Dictionary<int, int>();
-            int newIndex = 1;
+            int newIndex = 0;
             for (int i=1; i<linkCount; i++) {
                 var link = links[i];
                 if (link == 0) {
@@ -145,6 +145,12 @@ namespace OpenCVSharpTest {
             }
             Console.WriteLine($"=> link index 수정 time: {Glb.TimerStop()}");
 
+            // 4. 데이터 추출
+            MyBlob[] blobs = new MyBlob[relabelTable.Count];
+            for (int i=0; i<blobs.Length; i++) {
+                blobs[i] = new MyBlob();
+            }
+
             // labels 수정
             Glb.TimerStart();
             for (int y = 0; y < bh; y++) {
@@ -152,25 +158,7 @@ namespace OpenCVSharpTest {
                     var label = labels[bw*y+x];
                     if (label == 0)
                         continue;
-                    labels[bw*y+x] = relabelTable[label];
-                }
-            }
-            Console.WriteLine($"=> labels index 수정 time: {Glb.TimerStop()}");
-
-
-            // 4. 데이터 추출
-            MyBlob[] blobs = new MyBlob[relabelTable.Count];
-            for (int i=0; i<blobs.Length; i++) {
-                blobs[i] = new MyBlob();
-            }
-
-            Glb.TimerStart();
-            for (int y = 0; y < bh; y++) {
-                for (int x = 0; x < bw; x++) {
-                    var label = labels[bw*y+x];
-                    if (label == 0)
-                        continue;
-                    int idx = label-1;
+                    int idx = relabelTable[label];
                     var blob = blobs[idx];
                     blob.area++;
                     blob.pixels.Add(new Point(x, y));
