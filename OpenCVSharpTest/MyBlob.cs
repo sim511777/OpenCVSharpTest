@@ -139,7 +139,7 @@ namespace OpenCVSharpTest {
             // link index 수정
             Glb.TimerStart();
             Dictionary<int, int> relabelTable = new Dictionary<int, int>();
-            int newIndex = 0;
+            int newIndex = 1;
             for (int i=1; i<linkCount; i++) {
                 var link = links[i];
                 if (link == 0) {
@@ -161,8 +161,14 @@ namespace OpenCVSharpTest {
                     var label = labels[bw*y+x];
                     if (label == 0)
                         continue;
-                    int idx = relabelTable[label];
+
+                    int newLabel = relabelTable[label];
+                    labels[bw*y+x] = newLabel;
+                    
+                    int idx = newLabel-1;
                     var blob = blobs[idx];
+                    if (blob.area == 0)
+                        blob.label = newLabel;
                     blob.area++;
                     blob.pixels.Add(new Point(x, y));
                     blob.centroidX += x;
@@ -189,6 +195,7 @@ namespace OpenCVSharpTest {
     }
 
     class MyBlob {
+        public int label = 0;
         public int area = 0;
         public List<Point> pixels = new List<Point>();
         public int centroidX = 0;

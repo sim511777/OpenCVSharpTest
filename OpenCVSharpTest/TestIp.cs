@@ -448,7 +448,7 @@ namespace OpenCVSharpTest {
             var blobs = new CvBlobs();
             
             Glb.TimerStart();
-            blobs.Label(matThr);
+            int cnt = blobs.Label(matThr);
             Console.WriteLine($"=> Label Time: {Glb.TimerStop()}ms");
 
             var matDsp = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);

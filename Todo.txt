@@ -26,6 +26,7 @@ ok - pixel list 까지 구하고 나면 label버퍼 삭제 해도 됨
 11. pixel 버퍼 추출 안하고 CvBlobs 처럼 처리
 - CvBlobs에 label 버퍼 유지
 - size, minXY, maxXY, centroid만 추출
+11. MyBlob.cs => MyBlobs.cs로 파일명 변경
 11. Blob managed array 를 native array로 변경
 11. Blob C 로 포팅
 11. Blob mmax 포팅
