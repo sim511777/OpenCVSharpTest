@@ -470,61 +470,6 @@ namespace OpenCVSharpTest {
             matDsp.Dispose();
         }
 
-        public static void Blob_SimpleBlobDectector() {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
-            var detectorParams = new SimpleBlobDetector.Params
-            {
-                //MinDistBetweenBlobs = 10, // 10 pixels between blobs
-                //MinRepeatability = 1,
-
-                //MinThreshold = 100,
-                //MaxThreshold = 255,
-                //ThresholdStep = 5,
-                FilterByArea = false,
-                //FilterByArea = true,
-                //MinArea = 0.001f, // 10 pixels squared
-                //MaxArea = 500,
-
-                FilterByCircularity = false,
-                //FilterByCircularity = true,
-                //MinCircularity = 0.001f,
-
-                FilterByConvexity = false,
-                //FilterByConvexity = true,
-                //MinConvexity = 0.001f,
-                //MaxConvexity = 10,
-
-                FilterByInertia = false,
-                //FilterByInertia = true,
-                //MinInertiaRatio = 0.001f,
-
-                FilterByColor = false
-                //FilterByColor = true,
-                //BlobColor = 255 // to extract light blobs
-            };
-            SimpleBlobDetector blobDetector = SimpleBlobDetector.Create(detectorParams);
-            Glb.TimerStart();
-            var keyPoints = blobDetector.Detect(matThr);
-            Console.WriteLine($"=> Label Time: {Glb.TimerStop()}ms");
-
-            var matDsp = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
-            matDsp.SetTo(Scalar.Black);
-
-            Glb.TimerStart();
-            Cv2.DrawKeypoints(matDsp, keyPoints, matDsp);
-            Console.WriteLine($"=> Render Time: {Glb.TimerStop()}ms");
-            
-            Console.WriteLine($"=> Blob Count: {keyPoints.Length}");
-            
-            Glb.DrawMatAndHist1(matThr);
-            Glb.DrawMatAndHist2(matDsp);
-
-            matThr.Dispose();
-            matDsp.Dispose();
-        }
-
         public static void Blob_Unsafe() {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
