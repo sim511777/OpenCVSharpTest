@@ -63,16 +63,6 @@ namespace OpenCVSharpTest {
             return minLabel;
         }
 
-        private static void DrawLabels(int[] labels, IntPtr draw, int bw, int bh, int stride) {
-            for (int y = 0; y < bh; y++) {
-                for (int x = 0; x < bw; x++) {
-                    int label = labels[bw*y+x];
-                    int color = (label);
-                    Marshal.WriteByte(draw+stride*y+x, (byte)color); 
-                }
-            }
-        }
-
         public static MyBlob[] Label(IntPtr src, int bw, int bh, int stride) {
             byte *psrc = (byte *)src.ToPointer();
             
