@@ -175,7 +175,7 @@ namespace OpenCVSharpTest {
             Console.WriteLine($"=> labels index 수정 time: {Glb.TimerStop()}");
 
 
-            // 4. 데이터 추출 (-1 : 0라벨을 제외 이므로)
+            // 4. 데이터 추출
             MyBlob[] blobs = new MyBlob[relabelTable.Count];
             List<Point>[] pixels = new List<Point>[relabelTable.Count];
             for (int i=0; i<blobs.Length; i++) {
