@@ -177,10 +177,8 @@ namespace OpenCVSharpTest {
 
             // 4. 데이터 추출
             MyBlob[] blobs = new MyBlob[relabelTable.Count];
-            List<Point>[] pixels = new List<Point>[relabelTable.Count];
             for (int i=0; i<blobs.Length; i++) {
                 blobs[i] = new MyBlob();
-                pixels[i] = new List<Point>();
             }
 
             Glb.TimerStart();
@@ -190,10 +188,11 @@ namespace OpenCVSharpTest {
                     if (label == 0)
                         continue;
                     int idx = label-1;
-                    pixels[idx].Add(new Point(x, y));
                     var blob = blobs[idx];
-                    blob.centroid.X += x;
-                    blob.centroid.Y += y;
+                    blob.area++;
+                    blob.pixels.Add(new Point(x, y));
+                    blob.centroidX += x;
+                    blob.centroidY += y;
                     if (x < blob.minX) blob.minX = x;
                     if (y < blob.minY) blob.minY = y;
                     if (x > blob.maxX) blob.maxX = x;
@@ -203,13 +202,11 @@ namespace OpenCVSharpTest {
             Console.WriteLine($"=> blob pixel 추출 time: {Glb.TimerStop()}");
 
             Glb.TimerStart();
-            for (int i=0; i<blobs.Length; i++) {
-                var blob = blobs[i];
-                blob.pixels = pixels[i].ToArray();
-                if (blob.pixels.Length == 0)
+            foreach (var blob in blobs) {
+                if (blob.pixels.Count == 0)
                     continue;
-                blob.centroid.X /= blob.pixels.Length;
-                blob.centroid.Y /= blob.pixels.Length;
+                blob.centroidX /= blob.area;
+                blob.centroidY /= blob.area;
             }
             Console.WriteLine($"=> centoid 나누기 time: {Glb.TimerStop()}");
 
@@ -218,8 +215,10 @@ namespace OpenCVSharpTest {
     }
 
     class MyBlob {
-        public Point[] pixels;
-        public Point centroid = new Point(0,0);
+        public int area = 0;
+        public List<Point> pixels = new List<Point>();
+        public int centroidX = 0;
+        public int centroidY = 0;
         public int minX = int.MaxValue-1;
         public int minY = int.MaxValue-1;
         public int maxX = -1;
