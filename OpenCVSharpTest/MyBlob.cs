@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace OpenCVSharpTest {
     unsafe class MyBlobs {
-        public static MyBlob[] Label(IntPtr src, int bw, int bh, int stride) {
+        public static Dictionary<int, MyBlob> Label(IntPtr src, int bw, int bh, int stride) {
             Glb.TimerStart();
             byte *psrc = (byte *)src.ToPointer();
             
@@ -150,9 +150,9 @@ namespace OpenCVSharpTest {
 
             // 4. 데이터 추출
             Glb.TimerStart();
-            MyBlob[] blobs = new MyBlob[relabelTable.Count];
-            for (int i=0; i<blobs.Length; i++) {
-                blobs[i] = new MyBlob();
+            Dictionary<int, MyBlob> blobs = new Dictionary<int, MyBlob>();
+            foreach (var newLable in relabelTable.Values) {
+                blobs[newLable]  = new MyBlob(newLable);
             }
 
             // labels 수정
@@ -165,10 +165,7 @@ namespace OpenCVSharpTest {
                     int newLabel = relabelTable[label];
                     labels[bw*y+x] = newLabel;
                     
-                    int idx = newLabel-1;
-                    var blob = blobs[idx];
-                    if (blob.area == 0)
-                        blob.label = newLabel;
+                    var blob = blobs[newLabel];
                     blob.area++;
                     blob.pixels.Add(new Point(x, y));
                     blob.centroidX += x;
@@ -182,7 +179,7 @@ namespace OpenCVSharpTest {
             Console.WriteLine($"=> blob pixel 추출 time: {Glb.TimerStop()}ms");
 
             Glb.TimerStart();
-            foreach (var blob in blobs) {
+            foreach (var blob in blobs.Values) {
                 if (blob.pixels.Count == 0)
                     continue;
                 blob.centroidX /= blob.area;
@@ -195,6 +192,9 @@ namespace OpenCVSharpTest {
     }
 
     class MyBlob {
+        public MyBlob(int label) {
+            this.label = label;
+        }
         public int label = 0;
         public int area = 0;
         public List<Point> pixels = new List<Point>();

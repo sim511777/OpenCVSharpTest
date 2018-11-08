@@ -47,13 +47,13 @@ namespace OpenCVSharpTest {
             }
         }
 
-        public static void RenderBlobs(MyBlob[] blobs, Mat matDst) {
+        public static void RenderBlobs(Dictionary<int, MyBlob> blobs, Mat matDst) {
             byte *pdst = matDst.DataPointer;
             int bw = matDst.Width;
             int bh = matDst.Height;
             int stride = (int)matDst.Step();
             int colorCount = 0;
-            foreach (var blob in blobs) {
+            foreach (var blob in blobs.Values) {
                 double r, g, b;
                 Glb.Hsv2Rgb((colorCount*77) % 360, 0.5, 1.0, out r, out g, out b);
                 colorCount++;

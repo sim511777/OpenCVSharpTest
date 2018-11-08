@@ -483,7 +483,7 @@ namespace OpenCVSharpTest {
             IpUnsafe.RenderBlobs(blobs, matDst);
             Console.WriteLine($"=> Render Time: {Glb.TimerStop()}ms");
 
-            Console.WriteLine($"=> Blob Count: {blobs.Length}");
+            Console.WriteLine($"=> Blob Count: {blobs.Count}");
 
             Glb.DrawMatAndHist1(matThr);
             Glb.DrawMatAndHist2(matDst);
