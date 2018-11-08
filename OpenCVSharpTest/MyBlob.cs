@@ -44,12 +44,11 @@ namespace OpenCVSharpTest {
         }
 
         private static int GetRootLabel(List<int> links, int label) {
-            int root = label;
-            while (links[root] != 0) {
-                root = links[root];
+            while (links[label] != 0) {
+                label = links[label];
             }
 
-            return root;
+            return label;
         }
 
         private static int GetMinRootLabel(List<int> links, int[] nbrs, int nbrCount) {
