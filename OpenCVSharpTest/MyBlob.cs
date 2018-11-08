@@ -8,17 +8,24 @@ using System.Runtime.InteropServices;
 
 namespace OpenCVSharpTest {
     unsafe class MyBlobs {
-        public static Dictionary<int, MyBlob> Label(IntPtr src, int bw, int bh, int stride) {
+        public Dictionary<int, MyBlob> Blobs = new Dictionary<int, MyBlob>();
+        public int bw = 0;
+        public int bh = 0;
+        public int[] Labels = null;
+
+        public int Label(IntPtr src, int bw, int bh, int stride) {
             Glb.TimerStart();
             byte *psrc = (byte *)src.ToPointer();
             
             // label 버퍼
-            int[] labels = new int[bw*bh];
+            this.Labels = new int[bw*bh];
+            this.bw = bw;
+            this.bh = bh;
 
             // link 테이블
             int[] links = new int[bw*bh];
             int linkCount = 1;
-            Console.WriteLine($"=> Prepare buffer time: {Glb.TimerStop()}ms");
+            Console.WriteLine($"=> 1. Prepare buffer time: {Glb.TimerStop()}ms");
 
 
             Glb.TimerStart();
@@ -36,27 +43,27 @@ namespace OpenCVSharpTest {
                     int checkLabel;
                     if (x != 0) {
                         // check left
-                        checkLabel = labels[bw*y+x-1];
+                        checkLabel = Labels[bw*y+x-1];
                         if (checkLabel != 0) {
                             nbrs[nbrCount++] = checkLabel;
                         }
                     }
                     if (y != 0) {
                         // check top
-                        checkLabel = labels[bw*(y-1)+x];
+                        checkLabel = Labels[bw*(y-1)+x];
                         if (checkLabel != 0) {
                             nbrs[nbrCount++] = checkLabel;
                         }
                         if (x != 0) {
                             // check lt
-                            checkLabel = labels[bw*(y-1)+x-1];
+                            checkLabel = Labels[bw*(y-1)+x-1];
                             if (checkLabel != 0) {
                                 nbrs[nbrCount++] = checkLabel;
                             }
                         }
                         if (x != bw - 1) {
                             // check rt
-                            checkLabel = labels[bw*(y-1)+x+1];
+                            checkLabel = Labels[bw*(y-1)+x+1];
                             if (checkLabel != 0) {
                                 nbrs[nbrCount++] = checkLabel;
                             }
@@ -66,7 +73,7 @@ namespace OpenCVSharpTest {
                     if (nbrCount == 0) {
                         // 주변에 없다면 새번호 생성하고 라벨링
                         int newLabel = linkCount;
-                        labels[bw * y + x] = newLabel;
+                        Labels[bw * y + x] = newLabel;
                         // link 테이블에 새 루트 라벨 추가
                         links[linkCount] = 0;
                         linkCount++;
@@ -85,7 +92,7 @@ namespace OpenCVSharpTest {
                                 minLabel = label;
                             }
                         }
-                        labels[bw * y + x] = minLabel;
+                        Labels[bw * y + x] = minLabel;
                         // link 테이블에서 주변 라벨의 parent 수정
                         for (int i = 0; i < nbrCount; i++) {
                             int label = nbrs[i];
@@ -102,7 +109,7 @@ namespace OpenCVSharpTest {
                     }
                 }
             }
-            Console.WriteLine($"=> 1st labelling time: {Glb.TimerStop()}ms");
+            Console.WriteLine($"=> 2. 1st labelling time: {Glb.TimerStop()}ms");
 
             // 2nd stage
             // links 수정
@@ -117,22 +124,22 @@ namespace OpenCVSharpTest {
                 }
                 links[i] = label;
             }
-            Console.WriteLine($"=> link 수정 time: {Glb.TimerStop()}ms");
+            Console.WriteLine($"=> 3. link 수정 time: {Glb.TimerStop()}ms");
 
             // labels 수정
             Glb.TimerStart();
             for (int y = 0; y < bh; y++) {
                 for (int x = 0; x < bw; x++) {
-                    int label = labels[bw*y+x];
+                    int label = Labels[bw*y+x];
                     if (label == 0)
                         continue;
                     var link = links[label];
                     if (link == 0)
                         continue;
-                    labels[bw*y+x] = link;
+                    Labels[bw*y+x] = link;
                 }
             }
-            Console.WriteLine($"=> labels 수정 time: {Glb.TimerStop()}ms");
+            Console.WriteLine($"=> 4. labels 수정 time: {Glb.TimerStop()}ms");
 
 
             // 3. 후처리
@@ -146,48 +153,43 @@ namespace OpenCVSharpTest {
                     relabelTable.Add(i, newIndex++);
                 }
             }
-            Console.WriteLine($"=> link index 수정 time: {Glb.TimerStop()}ms");
+            Console.WriteLine($"=> 5. link index 수정 time: {Glb.TimerStop()}ms");
 
             // 4. 데이터 추출
             Glb.TimerStart();
-            Dictionary<int, MyBlob> blobs = new Dictionary<int, MyBlob>();
+            var blobs = this.Blobs;
+            blobs.Clear();
             foreach (var newLable in relabelTable.Values) {
                 blobs[newLable]  = new MyBlob(newLable);
             }
+            int labeledCount = 0;
 
             // labels 수정
             for (int y = 0; y < bh; y++) {
                 for (int x = 0; x < bw; x++) {
-                    var label = labels[bw*y+x];
+                    var label = Labels[bw*y+x];
                     if (label == 0)
                         continue;
 
+                    labeledCount++;
+
                     int newLabel = relabelTable[label];
-                    labels[bw*y+x] = newLabel;
+                    Labels[bw*y+x] = newLabel;
                     
                     var blob = blobs[newLabel];
                     blob.area++;
-                    blob.pixels.Add(new Point(x, y));
+                    //blob.pixels.Add(new Point(x, y));
                     blob.centroidX += x;
                     blob.centroidY += y;
-                    if (x < blob.minX) blob.minX = x;
-                    if (y < blob.minY) blob.minY = y;
-                    if (x > blob.maxX) blob.maxX = x;
-                    if (y > blob.maxY) blob.maxY = y;
+                    if (x < blob.MinX) blob.MinX = x;
+                    if (y < blob.MinY) blob.MinY = y;
+                    if (x > blob.MaxX) blob.MaxX = x;
+                    if (y > blob.MaxY) blob.MaxY = y;
                 }
             }
-            Console.WriteLine($"=> blob pixel 추출 time: {Glb.TimerStop()}ms");
+            Console.WriteLine($"=> 6. 데이터 추출 time: {Glb.TimerStop()}ms");
 
-            Glb.TimerStart();
-            foreach (var blob in blobs.Values) {
-                if (blob.pixels.Count == 0)
-                    continue;
-                blob.centroidX /= blob.area;
-                blob.centroidY /= blob.area;
-            }
-            Console.WriteLine($"=> centoid 나누기 time: {Glb.TimerStop()}ms");
-
-            return blobs;
+            return labeledCount;
         }
     }
 
@@ -197,12 +199,11 @@ namespace OpenCVSharpTest {
         }
         public int label = 0;
         public int area = 0;
-        public List<Point> pixels = new List<Point>();
         public int centroidX = 0;
         public int centroidY = 0;
-        public int minX = int.MaxValue-1;
-        public int minY = int.MaxValue-1;
-        public int maxX = -1;
-        public int maxY = -1;
+        public int MinX = int.MaxValue-1;
+        public int MinY = int.MaxValue-1;
+        public int MaxX = -1;
+        public int MaxY = -1;
     }
 }

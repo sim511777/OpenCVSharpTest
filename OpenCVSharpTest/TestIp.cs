@@ -475,7 +475,12 @@ namespace OpenCVSharpTest {
             
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
 
-            var blobs = MyBlobs.Label(matThr.Data, matThr.Width, matThr.Height, (int)matThr.Step());
+            MyBlobs blobs = new MyBlobs();
+
+            Stopwatch sw = Stopwatch.StartNew();
+            blobs.Label(matThr.Data, matThr.Width, matThr.Height, (int)matThr.Step());
+            sw.Stop();
+            Console.WriteLine($"=> Label Time: {sw.ElapsedMilliseconds}ms");
 
             var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
             matDst.SetTo(Scalar.Black);
@@ -483,7 +488,7 @@ namespace OpenCVSharpTest {
             IpUnsafe.RenderBlobs(blobs, matDst);
             Console.WriteLine($"=> Render Time: {Glb.TimerStop()}ms");
 
-            Console.WriteLine($"=> Blob Count: {blobs.Count}");
+            Console.WriteLine($"=> Blob Count: {blobs.Blobs.Count}");
 
             Glb.DrawMatAndHist1(matThr);
             Glb.DrawMatAndHist2(matDst);
