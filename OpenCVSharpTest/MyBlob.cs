@@ -15,8 +15,8 @@ namespace OpenCVSharpTest {
             int[] labels = Enumerable.Repeat(0, bw*bh).ToArray();
 
             // link 테이블
-            var links = new List<int>();
-            links.Add(0);
+            int[] links = Enumerable.Repeat(0, bw*bh).ToArray();
+            int linkCount = 1;
             
             // 1st stage
             // labeling with scan
@@ -62,10 +62,11 @@ namespace OpenCVSharpTest {
                     
                     if (nbrCount == 0) {
                         // 주변에 없다면 새번호 생성하고 라벨링
-                        int newLabel = links.Count;
+                        int newLabel = linkCount;
                         labels[bw * y + x] = newLabel;
                         // link 테이블에 새 루트 라벨 추가
-                        links.Add(0);
+                        links[linkCount] = 0;
+                        linkCount++;
                     } else {
                         // 주변에 있다면 주변 라벨들의 루트중 최소라벨
                         int minLabel = nbrs[0];
@@ -103,7 +104,7 @@ namespace OpenCVSharpTest {
             // 2nd stage
             // links 수정
             Glb.TimerStart();
-            for (int i=0; i<links.Count; i++) {
+            for (int i=0; i<linkCount; i++) {
                 if (links[i] == 0)
                     continue;
 
@@ -136,7 +137,7 @@ namespace OpenCVSharpTest {
             Glb.TimerStart();
             Dictionary<int, int> relabelTable = new Dictionary<int, int>();
             int newIndex = 1;
-            for (int i=1; i<links.Count; i++) {
+            for (int i=1; i<linkCount; i++) {
                 var link = links[i];
                 if (link == 0) {
                     relabelTable.Add(i, newIndex++);
