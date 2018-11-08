@@ -67,7 +67,7 @@
   <ItemGroup>
     <Compile Include="Glb.cs" />
     <Compile Include="IpUnsafe.cs" />
-    <Compile Include="MyBlob.cs" />
+    <Compile Include="MyBlobs.cs" />
     <Compile Include="ShimLib\CustomClass.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
