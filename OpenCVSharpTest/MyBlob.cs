@@ -8,41 +8,6 @@ using System.Runtime.InteropServices;
 
 namespace OpenCVSharpTest {
     unsafe class MyBlobs {
-        private static int GetNeighborLabels(int[] labels, int bw, int bh, int x, int y, int[] nbrs) {
-            int nbrCount = 0;
-            int label;
-            if (x != 0) {
-                // check left
-                label = labels[bw*y+x-1];
-                if (label != 0) {
-                    nbrs[nbrCount++] = label;
-                }
-            }
-            if (y != 0) {
-                // check top
-                label = labels[bw*(y-1)+x];
-                if (label != 0) {
-                    nbrs[nbrCount++] = label;
-                }
-                if (x != 0) {
-                    // check lt
-                    label = labels[bw*(y-1)+x-1];
-                    if (label != 0) {
-                        nbrs[nbrCount++] = label;
-                    }
-                }
-                if (x != bw - 1) {
-                    // check rt
-                    label = labels[bw*(y-1)+x+1];
-                    if (label != 0) {
-                        nbrs[nbrCount++] = label;
-                    }
-                }
-            }
-
-            return nbrCount;
-        }
-
         public static MyBlob[] Label(IntPtr src, int bw, int bh, int stride) {
             byte *psrc = (byte *)src.ToPointer();
             
@@ -64,7 +29,37 @@ namespace OpenCVSharpTest {
                         continue;
 
                     // 주변 4개의 label버퍼 조사 (l, tl, t, tr)
-                    int nbrCount = GetNeighborLabels(labels, bw, bh, x, y, nbrs);
+                    int nbrCount = 0;
+                    int checkLabel;
+                    if (x != 0) {
+                        // check left
+                        checkLabel = labels[bw*y+x-1];
+                        if (checkLabel != 0) {
+                            nbrs[nbrCount++] = checkLabel;
+                        }
+                    }
+                    if (y != 0) {
+                        // check top
+                        checkLabel = labels[bw*(y-1)+x];
+                        if (checkLabel != 0) {
+                            nbrs[nbrCount++] = checkLabel;
+                        }
+                        if (x != 0) {
+                            // check lt
+                            checkLabel = labels[bw*(y-1)+x-1];
+                            if (checkLabel != 0) {
+                                nbrs[nbrCount++] = checkLabel;
+                            }
+                        }
+                        if (x != bw - 1) {
+                            // check rt
+                            checkLabel = labels[bw*(y-1)+x+1];
+                            if (checkLabel != 0) {
+                                nbrs[nbrCount++] = checkLabel;
+                            }
+                        }
+                    }
+                    
                     if (nbrCount == 0) {
                         // 주변에 없다면 새번호 생성하고 라벨링
                         int newLabel = links.Count;
