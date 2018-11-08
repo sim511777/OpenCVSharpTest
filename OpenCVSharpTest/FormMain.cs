@@ -312,6 +312,8 @@ namespace OpenCVSharpTest {
 
         private void copyImageToClipboardToolStripMenuItem_Click(object sender, EventArgs e) {
             Bitmap bmp = (this.popupPicture.SourceControl as ZoomPictureBox).DrawingImage;
+            if (bmp == null)
+                return;
             Clipboard.SetImage(bmp);
         }
     }
