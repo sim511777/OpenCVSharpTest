@@ -51,17 +51,6 @@ namespace OpenCVSharpTest {
             return label;
         }
 
-        private static int GetMinRootLabel(List<int> links, int[] nbrs, int nbrCount) {
-            int minLabel = GetRootLabel(links, nbrs[0]);
-            for (int i=0; i<nbrCount; i++) {
-                var rootLabel = GetRootLabel(links, nbrs[i]);
-                if (rootLabel < minLabel) {
-                    minLabel = rootLabel;
-                }
-            }
-            return minLabel;
-        }
-
         public static MyBlob[] Label(IntPtr src, int bw, int bh, int stride) {
             byte *psrc = (byte *)src.ToPointer();
             
@@ -92,7 +81,13 @@ namespace OpenCVSharpTest {
                         links.Add(0);
                     } else {
                         // 주변에 있다면 주변 라벨들의 루트중 최소라벨
-                        int minLabel = GetMinRootLabel(links, nbrs, nbrCount);
+                        int minLabel = GetRootLabel(links, nbrs[0]);
+                        for (int i=0; i<nbrCount; i++) {
+                            var rootLabel = GetRootLabel(links, nbrs[i]);
+                            if (rootLabel < minLabel) {
+                                minLabel = rootLabel;
+                            }
+                        }
                         labels[bw * y + x] = minLabel;
                         // link 테이블에서 주변 라벨의 parent 수정
                         for (int i = 0; i < nbrCount; i++) {
