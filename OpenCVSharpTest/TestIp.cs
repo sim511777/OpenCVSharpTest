@@ -91,6 +91,32 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
+        public static void Sobel(int xorder = 1, int yorder = 1, int ksize = 3, double scale = 1, double delta = 0, BorderTypes borderType = BorderTypes.Default) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+            
+            var matDst = matGray.Sobel(matGray.Type(), xorder, yorder, ksize, scale, delta, borderType);
+            Glb.DrawMatAndHist2(matDst);
+            
+            matGray.Dispose();
+            matDst.Dispose();
+        }
+
+        public static void Laplacian(int ksize = 1, double scale = 1, double delta = 0, BorderTypes borderType = BorderTypes.Default) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+            
+            var matDst = matGray.Laplacian(matGray.Type(), ksize, scale, delta, borderType);
+            Glb.DrawMatAndHist2(matDst);
+            
+            matGray.Dispose();
+            matDst.Dispose();
+        }
+
         public static void Blur(double ksize = 5, BorderTypes borderType = BorderTypes.Reflect101) {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
