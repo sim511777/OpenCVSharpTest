@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using OpenCvSharp.Blob;
 using System.Diagnostics;
+using System.Drawing.Imaging;
+using System.Drawing;
+using System.IO;
 
 namespace OpenCVSharpTest {
     class Glb {
@@ -109,6 +111,28 @@ namespace OpenCVSharpTest {
                 default:
                     throw new Exception();
             }
+        }
+
+        public static ImageCodecInfo GetImageCodecInfo(ImageFormat format) {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs) {
+                if (codec.FormatID == format.Guid) {
+                    return codec;
+                }
+            }
+            return null;
+        }
+
+        public static Image BitmapToJpg(Bitmap bmp, int quality) {
+            var buff = new byte[bmp.Width*bmp.Height*4];
+            var ms = new MemoryStream(buff);
+            
+            var codecInfo = Glb.GetImageCodecInfo(ImageFormat.Jpeg);
+            var encoderParams = new EncoderParameters();
+            encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, quality);
+            bmp.Save(ms, codecInfo, encoderParams);
+            
+            return System.Drawing.Image.FromStream(ms);
         }
     }
 }

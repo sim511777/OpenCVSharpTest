@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+//using System.Text;
 using System.Threading.Tasks;
 using OpenCVSharpTest.Properties;
 using OpenCvSharp;
@@ -10,6 +10,8 @@ using OpenCvSharp.Blob;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.IO;
+using System.Drawing.Imaging;
 
 namespace OpenCVSharpTest {
     class TestIp {
@@ -464,6 +466,20 @@ namespace OpenCVSharpTest {
 
             matDsp.Dispose();
             matGray.Dispose();
+        }
+
+        public static void JpegCompress(int quality = 50) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            
+            var bmp = Glb.matSrc.ToBitmap();
+            var jpg = Glb.BitmapToJpg(bmp, quality);
+            var bmpNew = new System.Drawing.Bitmap(jpg);
+            var matDsp = bmpNew.ToMat();
+
+            Glb.DrawMatAndHist1(matDsp);
+            Glb.DrawMatAndHist2(null);
+
+            matDsp.Dispose();            
         }
 
         public static void Blob_CvBlobs(bool drawWithMyRenderer = true) {
