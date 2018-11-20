@@ -148,13 +148,10 @@ namespace OpenCVSharpTest {
         public static void MedianBlur(int ksize = 3) {
             Glb.DrawMatAndHist0(Glb.matSrc);
             
-            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matGray);
+            var matDst = Glb.matSrc.MedianBlur(ksize);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
 
-            var matDst = matGray.MedianBlur(ksize);
-            Glb.DrawMatAndHist2(matDst);
-
-            matGray.Dispose();
             matDst.Dispose();
         }
 
