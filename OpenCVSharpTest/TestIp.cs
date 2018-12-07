@@ -551,5 +551,37 @@ namespace OpenCVSharpTest {
             matThr.Dispose();
             matDst.Dispose();
         }
+
+        public static void AddSaltAndPepperNoise(int percent = 10, int medianK = 5) {
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist0(matGray);
+
+            var matNoise = matGray.Clone();
+
+            Random rnd = new Random();
+            IntPtr buf = matNoise.Data;
+            int bw = matNoise.Width;
+            int bh = matNoise.Height;
+            int stride = (int)matNoise.Step();
+            for (int y = 0; y < bh; y++) {
+                IntPtr pp = buf + stride * y;
+                for (int x = 0; x < bw; x++, pp = pp + 1) {
+                    var val = rnd.Next() % (100/percent);
+                    if (val == 0)
+                        Marshal.WriteByte(pp, 255);
+                    else if (val == 1)
+                        Marshal.WriteByte(pp, 0);
+                }
+            }
+            
+            Glb.DrawMatAndHist1(matNoise);
+
+            var matMedian = matNoise.MedianBlur(medianK);
+            Glb.DrawMatAndHist2(matMedian);
+
+            matGray.Dispose();
+            matNoise.Dispose();
+            matMedian.Dispose();
+        }
     }
 }
