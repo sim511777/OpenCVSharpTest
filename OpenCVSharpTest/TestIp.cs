@@ -583,5 +583,21 @@ namespace OpenCVSharpTest {
             matNoise.Dispose();
             matMedian.Dispose();
         }
+
+      public static void DistanceTransform(DistanceTypes distanceType = DistanceTypes.L2, DistanceMaskSize distanceMaskSize = DistanceMaskSize.Mask3) {
+         Glb.DrawMatAndHist0(Glb.matSrc);
+
+         var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+         Glb.DrawMatAndHist1(matThr);
+
+         var matDist = matThr.DistanceTransform(distanceType, distanceMaskSize);
+         var matDistColor = new Mat();
+         matDist.ConvertTo(matDistColor, MatType.CV_8UC1);
+         Glb.DrawMatAndHist2(matDistColor);
+
+         matThr.Dispose();
+         matDist.Dispose();
+         matDistColor.Dispose();
+      }
     }
 }
