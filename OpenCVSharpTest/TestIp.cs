@@ -17,7 +17,7 @@ namespace OpenCVSharpTest {
     class TestIp {
         public static void CvtColor(ColorConversionCodes code = ColorConversionCodes.BGR2GRAY) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matDst = Glb.matSrc.CvtColor(code);
 
             Glb.DrawMatAndHist1(matDst);
@@ -60,7 +60,7 @@ namespace OpenCVSharpTest {
             matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
 
             Glb.DrawMat1(matDst);
-            
+
             Glb.DrawMatAndHist2(null);
 
             matHsv.Dispose();
@@ -69,10 +69,10 @@ namespace OpenCVSharpTest {
 
         public static void Threshold(double thresh = 128, double maxvalue = 255, ThresholdTypes type = ThresholdTypes.Binary) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matGray);
-            
+
             var matDst = matGray.Threshold(thresh, maxvalue, type);
             Glb.DrawMatAndHist2(matDst);
 
@@ -82,50 +82,50 @@ namespace OpenCVSharpTest {
 
         public static void Canny(double threshold1 = 50, double threshold2 = 200, int apertureSize = 3, bool L2gradient = false) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matGray);
-            
+
             var matDst = matGray.Canny(threshold1, threshold2, apertureSize, L2gradient);
             Glb.DrawMatAndHist2(matDst);
-            
+
             matGray.Dispose();
             matDst.Dispose();
         }
 
         public static void Sobel(int xorder = 1, int yorder = 1, int ksize = 3, double scale = 1, double delta = 0, BorderTypes borderType = BorderTypes.Default) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matGray);
-            
+
             var matDst = matGray.Sobel(matGray.Type(), xorder, yorder, ksize, scale, delta, borderType);
             Glb.DrawMatAndHist2(matDst);
-            
+
             matGray.Dispose();
             matDst.Dispose();
         }
 
         public static void Laplacian(int ksize = 1, double scale = 1, double delta = 0, BorderTypes borderType = BorderTypes.Default) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matGray);
-            
+
             var matDst = matGray.Laplacian(matGray.Type(), ksize, scale, delta, borderType);
             Glb.DrawMatAndHist2(matDst);
-            
+
             matGray.Dispose();
             matDst.Dispose();
         }
 
         public static void Blur(double ksize = 5, BorderTypes borderType = BorderTypes.Reflect101) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matGray);
-            
-            var matDst = matGray.Blur(new Size(ksize, ksize), borderType:borderType);
+
+            var matDst = matGray.Blur(new Size(ksize, ksize), borderType: borderType);
             Glb.DrawMatAndHist2(matDst);
 
             matGray.Dispose();
@@ -134,10 +134,10 @@ namespace OpenCVSharpTest {
 
         public static void GaussianBlur(double ksize = 5, double sigmaX = 5, double sigmaY = 5, BorderTypes borderType = BorderTypes.Reflect101) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matGray);
-            
+
             var matDst = matGray.GaussianBlur(new Size(ksize, ksize), sigmaX, sigmaY, borderType);
             Glb.DrawMatAndHist2(matDst);
 
@@ -147,7 +147,7 @@ namespace OpenCVSharpTest {
 
         public static void MedianBlur(int ksize = 3) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matDst = Glb.matSrc.MedianBlur(ksize);
             Glb.DrawMatAndHist1(matDst);
             Glb.DrawMatAndHist2(null);
@@ -157,7 +157,7 @@ namespace OpenCVSharpTest {
 
         public static void Erode(int iterations = 1) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
             Glb.DrawMatAndHist1(matThr);
 
@@ -170,7 +170,7 @@ namespace OpenCVSharpTest {
 
         public static void Dilate(int iterations = 1) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
             Glb.DrawMatAndHist1(matThr);
 
@@ -183,23 +183,23 @@ namespace OpenCVSharpTest {
 
         public static void ContrastBrightness(double x1 = 64, double y1 = 0, double x2 = 192, double y2 = 255) {
             Glb.DrawMat0(Glb.matSrc);
-            
+
             // BGR to HSV변환
             var matHsv = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
             Glb.DrawHist0(matHsv, true);
-            
+
             // 채널 분리
             var hsvChannels = matHsv.Split();
             // 변환
             double scale = (y2 - y1) / (x2 - x1);
             double offset = (x2 * y1 - x1 * y2) / (x2 - x1);
             hsvChannels[2].ConvertTo(hsvChannels[2], MatType.CV_8UC1, scale, offset);
-            
+
             // 채널 병합
             var matDst = new Mat();
             Cv2.Merge(hsvChannels, matDst);
             Glb.DrawHist1(matDst, true);
-            
+
             // HSV to BGR변환
             matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
             Glb.DrawMat1(matDst);
@@ -212,7 +212,7 @@ namespace OpenCVSharpTest {
 
         public static void PixelBuffer_By_Api_Rgb() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matDst = Glb.matSrc.Clone();
             Glb.DrawMatAndHist1(matDst);
 
@@ -232,7 +232,7 @@ namespace OpenCVSharpTest {
 
         public static void PixelBuffer_By_Api() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matDst);
 
@@ -250,7 +250,7 @@ namespace OpenCVSharpTest {
 
         public static void PixelBuffer_By_Marshalling() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matDst);
 
@@ -261,7 +261,7 @@ namespace OpenCVSharpTest {
             for (int y = 0; y < bh; y++) {
                 IntPtr pp = buf + stride * y;
                 for (int x = 0; x < bw; x++, pp = pp + 1) {
-                   Marshal.WriteByte(pp, (byte)~Marshal.ReadByte(pp));
+                    Marshal.WriteByte(pp, (byte)~Marshal.ReadByte(pp));
                 }
             }
             Glb.DrawMatAndHist2(matDst);
@@ -271,7 +271,7 @@ namespace OpenCVSharpTest {
 
         public static void PixelBuffer_By_Unsafe_Pointer() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matDst);
 
@@ -283,7 +283,7 @@ namespace OpenCVSharpTest {
 
         public static void PixelBuffer_By_Dll_C() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matDst);
 
@@ -295,7 +295,7 @@ namespace OpenCVSharpTest {
 
         public static void PixelBuffer_By_Dll_Sse() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matDst);
 
@@ -307,7 +307,7 @@ namespace OpenCVSharpTest {
 
         public static void PixelBuffer_By_Dll_VectorClass() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matDst);
 
@@ -319,7 +319,7 @@ namespace OpenCVSharpTest {
 
         public static void PixelBuffer_By_Dll_Avx() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matDst);
 
@@ -331,7 +331,7 @@ namespace OpenCVSharpTest {
 
         public static void Crop(int x = 10, int y = 10, int width = 100, int height = 100) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             Rect roi = new Rect(x, y, width, height);
             Mat matDst = new Mat(Glb.matSrc, roi);
             Glb.DrawMatAndHist1(matDst);
@@ -343,7 +343,7 @@ namespace OpenCVSharpTest {
 
         public static void CropAndCopy(int x = 100, int y = 100, int width = 100, int height = 100) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             Rect roi = new Rect(x, y, width, height);
             Mat matCrop = new Mat(Glb.matSrc, roi)  // 크롭 이미지 생성 하여 수정
                .CvtColor(ColorConversionCodes.BGR2GRAY)
@@ -366,7 +366,7 @@ namespace OpenCVSharpTest {
             float w10 = 1, float w11 = 1, float w12 = 1,
             float w20 = 1, float w21 = 1, float w22 = 1,
             bool normalize = true) {
-            
+
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             float[] data = new float[] {
@@ -392,7 +392,7 @@ namespace OpenCVSharpTest {
 
         public static void Flip(FlipMode flipCode = FlipMode.X) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             Mat matDst = Glb.matSrc.Flip(flipCode);
             Glb.DrawMatAndHist1(matDst);
 
@@ -403,7 +403,7 @@ namespace OpenCVSharpTest {
 
         public static void Negative() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matDst = new Mat();
             Cv2.BitwiseNot(Glb.matSrc.CvtColor(ColorConversionCodes.BGRA2BGR), matDst);
             Glb.DrawMatAndHist1(matDst);
@@ -415,10 +415,10 @@ namespace OpenCVSharpTest {
 
         public static void SetColor(System.Drawing.Color color) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
 
             var matDst = Glb.matSrc.Clone();
-            
+
             var col = Scalar.FromRgb(color.R, color.G, color.B);
             matDst.SetTo(col);
             Glb.DrawMatAndHist1(matDst);
@@ -430,7 +430,7 @@ namespace OpenCVSharpTest {
 
         public static void SetGray(byte gray = 128) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matGray);
 
@@ -444,7 +444,7 @@ namespace OpenCVSharpTest {
 
         public static void FaceDetect() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             string xmlPath = Application.StartupPath + "\\..\\haarcascades\\haarcascade_frontalface_alt2.xml";
             var haarCascade = new CascadeClassifier(xmlPath);
@@ -467,7 +467,7 @@ namespace OpenCVSharpTest {
 
         public static void JpegCompress(int quality = 50) {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var bmp = Glb.matSrc.ToBitmap();
             var jpg = Glb.BitmapToJpg(bmp, quality);
             var bmpNew = new System.Drawing.Bitmap(jpg);
@@ -476,7 +476,7 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist1(matDsp);
             Glb.DrawMatAndHist2(null);
 
-            matDsp.Dispose();            
+            matDsp.Dispose();
         }
 
         public static void Blob_CvBlobs(bool drawWithMyRenderer = true) {
@@ -485,7 +485,7 @@ namespace OpenCVSharpTest {
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
 
             var blobs = new CvBlobs();
-            
+
             Glb.TimerStart();
             int cnt = blobs.Label(matThr);
             Console.WriteLine($"=> Label Time: {Glb.TimerStop()}ms");
@@ -499,9 +499,9 @@ namespace OpenCVSharpTest {
             else
                 blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
             Console.WriteLine($"=> Render Time: {Glb.TimerStop()}ms");
-            
+
             Console.WriteLine($"=> Blob Count: {blobs.Count}");
-            
+
             Glb.DrawMatAndHist1(matThr);
             Glb.DrawMatAndHist2(matDsp);
 
@@ -511,7 +511,7 @@ namespace OpenCVSharpTest {
 
         public static void Blob_Unsafe() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
 
             MyBlobs blobs = new MyBlobs();
@@ -538,7 +538,7 @@ namespace OpenCVSharpTest {
 
         public static void Blob_DllC() {
             Glb.DrawMatAndHist0(Glb.matSrc);
-            
+
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
             Glb.DrawMatAndHist1(matThr);
 
@@ -566,14 +566,14 @@ namespace OpenCVSharpTest {
             for (int y = 0; y < bh; y++) {
                 IntPtr pp = buf + stride * y;
                 for (int x = 0; x < bw; x++, pp = pp + 1) {
-                    var val = rnd.Next() % (100/percent);
+                    var val = rnd.Next() % (100 / percent);
                     if (val == 0)
                         Marshal.WriteByte(pp, 255);
                     else if (val == 1)
                         Marshal.WriteByte(pp, 0);
                 }
             }
-            
+
             Glb.DrawMatAndHist1(matNoise);
 
             var matMedian = matNoise.MedianBlur(medianK);
@@ -584,20 +584,34 @@ namespace OpenCVSharpTest {
             matMedian.Dispose();
         }
 
-      public static void DistanceTransform(DistanceTypes distanceType = DistanceTypes.L2, DistanceMaskSize distanceMaskSize = DistanceMaskSize.Mask3) {
-         Glb.DrawMatAndHist0(Glb.matSrc);
+        public static void DistanceTransform(DistanceTypes distanceType = DistanceTypes.L2, DistanceMaskSize distanceMaskSize = DistanceMaskSize.Mask3) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
 
-         var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
-         Glb.DrawMatAndHist1(matThr);
+            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+            Glb.DrawMatAndHist1(matThr);
 
-         var matDist = matThr.DistanceTransform(distanceType, distanceMaskSize);
-         var matDistColor = new Mat();
-         matDist.ConvertTo(matDistColor, MatType.CV_8UC1);
-         Glb.DrawMatAndHist2(matDistColor);
+            var matDist = matThr.DistanceTransform(distanceType, distanceMaskSize);
+            var matDistColor = new Mat();
+            matDist.ConvertTo(matDistColor, MatType.CV_8UC1);
+            Glb.DrawMatAndHist2(matDistColor);
 
-         matThr.Dispose();
-         matDist.Dispose();
-         matDistColor.Dispose();
-      }
+            matThr.Dispose();
+            matDist.Dispose();
+            matDistColor.Dispose();
+        }
+
+        public static void Morpology(MorphTypes morphTypes = MorphTypes.Erode, int iterations = 1) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            
+            var matMorpology = matGray.MorphologyEx(morphTypes, new Mat(), iterations: iterations);
+            Glb.DrawMatAndHist1(matMorpology);
+
+            Glb.DrawMatAndHist2(null);
+            
+            matGray.Dispose();
+            matMorpology.Dispose();
+        }
     }
 }
