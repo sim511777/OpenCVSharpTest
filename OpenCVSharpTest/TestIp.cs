@@ -613,5 +613,15 @@ namespace OpenCVSharpTest {
             matGray.Dispose();
             matMorpology.Dispose();
         }
+
+        public static void LabColorSpace(int channel1 = 0, int channel2 = 1) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matLab = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2Lab);
+            var hsvChannels = matLab.Split();
+            Glb.DrawMatAndHist1(hsvChannels[channel1]);
+            Glb.DrawMatAndHist2(hsvChannels[channel2]);
+            matLab.Dispose();
+        }
     }
 }
