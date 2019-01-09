@@ -163,6 +163,16 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap Insect {
+            get {
+                object obj = ResourceManager.GetObject("Insect", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap Lenna {
             get {
                 object obj = ResourceManager.GetObject("Lenna", resourceCulture);

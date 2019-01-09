@@ -623,5 +623,9 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist2(hsvChannels[channel2]);
             matLab.Dispose();
         }
+
+        public static void TopHat() {
+
+        }
     }
 }
