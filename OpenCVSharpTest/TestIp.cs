@@ -155,19 +155,6 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void Erode(int iterations = 1) {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
-            Glb.DrawMatAndHist1(matThr);
-
-            var matDst = matThr.Erode(new Mat(), iterations: iterations);
-            Glb.DrawMatAndHist2(matDst);
-
-            matThr.Dispose();
-            matDst.Dispose();
-        }
-
         public static void Dilate(int iterations = 1) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
@@ -623,6 +610,54 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist2(hsvChannels[channel2]);
             matLab.Dispose();
         }
+
+        public static void ErodeOpenCv(int iterations = 20) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matThr);
+
+            var matDst = matThr.Erode(new Mat(), iterations: iterations, borderType: BorderTypes.Replicate);
+            Glb.DrawMatAndHist2(matDst);
+
+            matThr.Dispose();
+            matDst.Dispose();
+        }
+
+        public static void ErodeUnsafe(int iteration = 20) {
+            Glb.DrawMat0(Glb.matSrc);
+            
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMat1(matGray);
+            
+            var matTemp = matGray.Clone();
+            for (int i=0; i<iteration; i++) {
+                IpUnsafe.Erode(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                matTemp.CopyTo(matGray);
+            }
+            Glb.DrawMat2(matGray);
+
+            matGray.Dispose();
+            matTemp.Dispose();
+        }
+
+        public static void ErodeDll(int iteration = 20) {
+            Glb.DrawMat0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMat1(matGray);
+
+            var matTemp = matGray.Clone();
+            for (int i = 0; i < iteration; i++) {
+                IpDll.Erode(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                matTemp.CopyTo(matGray);
+            }
+            Glb.DrawMat2(matGray);
+
+            matGray.Dispose();
+            matTemp.Dispose();
+        }
+
 
         public static void TopHat() {
 
