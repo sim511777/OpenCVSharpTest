@@ -74,56 +74,27 @@ namespace OpenCVSharpTest {
             }
         }
 
-        public static void Erode(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step) {
-            byte* srcPtr = (byte*)srcBuf.ToPointer();
-            byte* dstPtr = (byte*)dstBuf.ToPointer();
-            for (int y=1; y<bh-1; y++) {
-                for (int x=1; x<bw-1; x++) {
-                    byte* sp = srcPtr + y*step+x;
-                    byte* dp = dstPtr + y*step+x;
-                    byte s0 = *(sp - step - 1);
-                    byte s1 = *(sp - step);
-                    byte s2 = *(sp - step + 1);
-                    byte s3 = *(sp - 1);
-                    byte s4 = *(sp);
-                    byte s5 = *(sp + 1);
-                    byte s6 = *(sp + step - 1);
-                    byte s7 = *(sp + step);
-                    byte s8 = *(sp + step + 1);
-                    byte min = s0;
-                    if (s1 < min) min = s1;
-                    if (s2 < min) min = s2;
-                    if (s3 < min) min = s3;
-                    if (s4 < min) min = s4;
-                    if (s5 < min) min = s5;
-                    if (s6 < min) min = s6;
-                    if (s7 < min) min = s7;
-                    if (s8 < min) min = s8;
-                    *dp = min;
-                }
-            }
+        public static byte GetPixelEdgeReplicate(byte* ptr, int bw, int bh, int step, int x, int y) {
+            if (x < 0) x = 0;
+            else if (x > bw - 1) x = bw - 1;
 
-            // edge pixel process
-            for (int x = 0; x < bw; x++) {
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, x, 0);
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, x, bh - 1);
-            }
-            for (int y = 1; y < bh - 1; y++) {
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, 0, y);
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, bw - 1, y);
-            }
+            if (y < 0) y = 0;
+            else if (y > bh - 1) y = bh - 1;
+
+            return *(ptr + step * y + x);
         }
 
         public static void ErodeEdge(byte* srcPtr, byte* dstPtr, int bw, int bh, int step, int x, int y) {
-            byte s0 = *(srcPtr + step * IntRange(y - 1, 0, bh-1) + IntRange(x - 1, 0, bw-1));
-            byte s1 = *(srcPtr + step * IntRange(y - 1, 0, bh-1) + IntRange(x    , 0, bw-1));
-            byte s2 = *(srcPtr + step * IntRange(y - 1, 0, bh-1) + IntRange(x + 1, 0, bw-1));
-            byte s3 = *(srcPtr + step * IntRange(y    , 0, bh-1) + IntRange(x - 1, 0, bw-1));
-            byte s4 = *(srcPtr + step * IntRange(y    , 0, bh-1) + IntRange(x    , 0, bw-1));
-            byte s5 = *(srcPtr + step * IntRange(y    , 0, bh-1) + IntRange(x + 1, 0, bw-1));
-            byte s6 = *(srcPtr + step * IntRange(y + 1, 0, bh-1) + IntRange(x - 1, 0, bw-1));
-            byte s7 = *(srcPtr + step * IntRange(y + 1, 0, bh-1) + IntRange(x    , 0, bw-1));
-            byte s8 = *(srcPtr + step * IntRange(y + 1, 0, bh-1) + IntRange(x + 1, 0, bw-1));
+            byte s0 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x - 1, y - 1);
+            byte s1 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x, y - 1);
+            byte s2 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x + 1, y - 1);
+            byte s3 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x - 1, y);
+            byte s4 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x, y);
+            byte s5 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x + 1, y);
+            byte s6 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x - 1, y + 1);
+            byte s7 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x, y + 1);
+            byte s8 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x + 1, y + 1);
+
             byte min = s0;
             if (s1 < min) min = s1;
             if (s2 < min) min = s2;
@@ -133,15 +104,122 @@ namespace OpenCVSharpTest {
             if (s6 < min) min = s6;
             if (s7 < min) min = s7;
             if (s8 < min) min = s8;
+
             *(dstPtr + step * y + x) = min;
         }
 
-        public static int IntRange(int val, int min, int max) {
-            if (val < min)
-                return min;
-            if (val > max)
-                return max;
-            return val;
+        public static void Erode(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step) {
+            byte* srcPtr = (byte*)srcBuf.ToPointer();
+            byte* dstPtr = (byte*)dstBuf.ToPointer();
+            for (int y=1; y<bh-1; y++) {
+                for (int x=1; x<bw-1; x++) {
+                    byte* sp = srcPtr + y*step+x;
+                    byte s0 = *(sp - step - 1);
+                    byte s1 = *(sp - step);
+                    byte s2 = *(sp - step + 1);
+                    byte s3 = *(sp - 1);
+                    byte s4 = *(sp);
+                    byte s5 = *(sp + 1);
+                    byte s6 = *(sp + step - 1);
+                    byte s7 = *(sp + step);
+                    byte s8 = *(sp + step + 1);
+
+                    byte min = s0;
+                    if (s1 < min) min = s1;
+                    if (s2 < min) min = s2;
+                    if (s3 < min) min = s3;
+                    if (s4 < min) min = s4;
+                    if (s5 < min) min = s5;
+                    if (s6 < min) min = s6;
+                    if (s7 < min) min = s7;
+                    if (s8 < min) min = s8;
+
+                    *(dstPtr + y * step + x) = min;
+                }
+            }
+
+            // edge pixel process
+            for (int x = 0; x < bw; x++) {
+                int yTop = 0;
+                int yBottom = bh-1;
+                ErodeEdge(srcPtr, dstPtr, bw, bh, step, x, yTop);
+                ErodeEdge(srcPtr, dstPtr, bw, bh, step, x, yBottom);
+            }
+            for (int y = 1; y < bh - 1; y++) {
+                int xLeft = 0;
+                int xRight = bw-1;
+                ErodeEdge(srcPtr, dstPtr, bw, bh, step, xLeft, y);
+                ErodeEdge(srcPtr, dstPtr, bw, bh, step, xRight, y);
+            }
+        }
+
+        public static void DilateEdge(byte* srcPtr, byte* dstPtr, int bw, int bh, int step, int x, int y) {
+            byte s0 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x - 1, y - 1);
+            byte s1 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x, y - 1);
+            byte s2 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x + 1, y - 1);
+            byte s3 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x - 1, y);
+            byte s4 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x, y);
+            byte s5 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x + 1, y);
+            byte s6 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x - 1, y + 1);
+            byte s7 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x, y + 1);
+            byte s8 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x + 1, y + 1);
+
+            byte max = s0;
+            if (s1 > max) max = s1;
+            if (s2 > max) max = s2;
+            if (s3 > max) max = s3;
+            if (s4 > max) max = s4;
+            if (s5 > max) max = s5;
+            if (s6 > max) max = s6;
+            if (s7 > max) max = s7;
+            if (s8 > max) max = s8;
+
+            *(dstPtr + step * y + x) = max;
+        }
+
+        public static void Dilate(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step) {
+            byte* srcPtr = (byte*)srcBuf.ToPointer();
+            byte* dstPtr = (byte*)dstBuf.ToPointer();
+            for (int y = 1; y < bh - 1; y++) {
+                for (int x = 1; x < bw - 1; x++) {
+                    byte* sp = srcPtr + y * step + x;
+                    byte s0 = *(sp - step - 1);
+                    byte s1 = *(sp - step);
+                    byte s2 = *(sp - step + 1);
+                    byte s3 = *(sp - 1);
+                    byte s4 = *(sp);
+                    byte s5 = *(sp + 1);
+                    byte s6 = *(sp + step - 1);
+                    byte s7 = *(sp + step);
+                    byte s8 = *(sp + step + 1);
+
+                    byte max = s0;
+                    if (s1 > max) max = s1;
+                    if (s2 > max) max = s2;
+                    if (s3 > max) max = s3;
+                    if (s4 > max) max = s4;
+                    if (s5 > max) max = s5;
+                    if (s6 > max) max = s6;
+                    if (s7 > max) max = s7;
+                    if (s8 > max) max = s8;
+
+                    *(dstPtr + y * step + x) = max;
+                }
+            }
+
+            // edge pixel process
+            for (int x = 0; x < bw; x++) {
+                int yTop = 0;
+                int yBottom = bh - 1;
+                DilateEdge(srcPtr, dstPtr, bw, bh, step, x, yTop);
+                DilateEdge(srcPtr, dstPtr, bw, bh, step, x, yBottom);
+            }
+            for (int y = 1; y < bh - 1; y++) {
+                int xLeft = 0;
+                int xRight = bw - 1;
+                DilateEdge(srcPtr, dstPtr, bw, bh, step, xLeft, y);
+                DilateEdge(srcPtr, dstPtr, bw, bh, step, xRight, y);
+            }
         }
     }
 }
