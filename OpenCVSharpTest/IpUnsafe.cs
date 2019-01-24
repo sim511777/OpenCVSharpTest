@@ -109,32 +109,33 @@ namespace OpenCVSharpTest {
         }
 
         public static void Erode(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step) {
-            byte* srcPtr = (byte*)srcBuf.ToPointer();
-            byte* dstPtr = (byte*)dstBuf.ToPointer();
-            for (int y=1; y<bh-1; y++) {
-                for (int x=1; x<bw-1; x++) {
-                    byte* sp = srcPtr + y*step+x;
-                    byte s0 = *(sp - step - 1);
-                    byte s1 = *(sp - step);
-                    byte s2 = *(sp - step + 1);
-                    byte s3 = *(sp - 1);
-                    byte s4 = *(sp);
-                    byte s5 = *(sp + 1);
-                    byte s6 = *(sp + step - 1);
-                    byte s7 = *(sp + step);
-                    byte s8 = *(sp + step + 1);
+            byte *srcPtr = (byte*)srcBuf.ToPointer();
+            byte *dstPtr = (byte*)dstBuf.ToPointer();
+            int x1 = 1, x2 = bw - 2;
+            int y1 = 1, y2 = bh - 2;
+            for (int y = y1; y <= y2; y++) {
+                byte* sp = &srcPtr[y * step + x1];
+                byte* dp = &dstPtr[y * step + x1];
+                byte* s0 = (sp - step - 1);
+                byte* s1 = (sp - step);
+                byte* s2 = (sp - step + 1);
+                byte* s3 = (sp - 1);
+                byte* s5 = (sp + 1);
+                byte* s6 = (sp + step - 1);
+                byte* s7 = (sp + step);
+                byte* s8 = (sp + step + 1);
+                for (int x = x1; x <= x2; x++, sp++, dp++, s0++, s1++, s2++, s3++, s5++, s6++, s7++, s8++) {
+                    byte min = *s0;
+                    if (*s1 < min) min = *s1;
+                    if (*s2 < min) min = *s2;
+                    if (*s3 < min) min = *s3;
+                    if (*sp < min) min = *sp;
+                    if (*s5 < min) min = *s5;
+                    if (*s6 < min) min = *s6;
+                    if (*s7 < min) min = *s7;
+                    if (*s8 < min) min = *s8;
 
-                    byte min = s0;
-                    if (s1 < min) min = s1;
-                    if (s2 < min) min = s2;
-                    if (s3 < min) min = s3;
-                    if (s4 < min) min = s4;
-                    if (s5 < min) min = s5;
-                    if (s6 < min) min = s6;
-                    if (s7 < min) min = s7;
-                    if (s8 < min) min = s8;
-
-                    *(dstPtr + y * step + x) = min;
+                    *(dp) = min;
                 }
             }
 
@@ -150,75 +151,6 @@ namespace OpenCVSharpTest {
                 int xRight = bw-1;
                 ErodeEdge(srcPtr, dstPtr, bw, bh, step, xLeft, y);
                 ErodeEdge(srcPtr, dstPtr, bw, bh, step, xRight, y);
-            }
-        }
-
-        public static void DilateEdge(byte* srcPtr, byte* dstPtr, int bw, int bh, int step, int x, int y) {
-            byte s0 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x - 1, y - 1);
-            byte s1 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x, y - 1);
-            byte s2 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x + 1, y - 1);
-            byte s3 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x - 1, y);
-            byte s4 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x, y);
-            byte s5 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x + 1, y);
-            byte s6 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x - 1, y + 1);
-            byte s7 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x, y + 1);
-            byte s8 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x + 1, y + 1);
-
-            byte max = s0;
-            if (s1 > max) max = s1;
-            if (s2 > max) max = s2;
-            if (s3 > max) max = s3;
-            if (s4 > max) max = s4;
-            if (s5 > max) max = s5;
-            if (s6 > max) max = s6;
-            if (s7 > max) max = s7;
-            if (s8 > max) max = s8;
-
-            *(dstPtr + step * y + x) = max;
-        }
-
-        public static void Dilate(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step) {
-            byte* srcPtr = (byte*)srcBuf.ToPointer();
-            byte* dstPtr = (byte*)dstBuf.ToPointer();
-            for (int y = 1; y < bh - 1; y++) {
-                for (int x = 1; x < bw - 1; x++) {
-                    byte* sp = srcPtr + y * step + x;
-                    byte s0 = *(sp - step - 1);
-                    byte s1 = *(sp - step);
-                    byte s2 = *(sp - step + 1);
-                    byte s3 = *(sp - 1);
-                    byte s4 = *(sp);
-                    byte s5 = *(sp + 1);
-                    byte s6 = *(sp + step - 1);
-                    byte s7 = *(sp + step);
-                    byte s8 = *(sp + step + 1);
-
-                    byte max = s0;
-                    if (s1 > max) max = s1;
-                    if (s2 > max) max = s2;
-                    if (s3 > max) max = s3;
-                    if (s4 > max) max = s4;
-                    if (s5 > max) max = s5;
-                    if (s6 > max) max = s6;
-                    if (s7 > max) max = s7;
-                    if (s8 > max) max = s8;
-
-                    *(dstPtr + y * step + x) = max;
-                }
-            }
-
-            // edge pixel process
-            for (int x = 0; x < bw; x++) {
-                int yTop = 0;
-                int yBottom = bh - 1;
-                DilateEdge(srcPtr, dstPtr, bw, bh, step, x, yTop);
-                DilateEdge(srcPtr, dstPtr, bw, bh, step, x, yBottom);
-            }
-            for (int y = 1; y < bh - 1; y++) {
-                int xLeft = 0;
-                int xRight = bw - 1;
-                DilateEdge(srcPtr, dstPtr, bw, bh, step, xLeft, y);
-                DilateEdge(srcPtr, dstPtr, bw, bh, step, xRight, y);
             }
         }
     }

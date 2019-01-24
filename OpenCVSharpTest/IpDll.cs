@@ -12,7 +12,7 @@ namespace OpenCVSharpTest {
         [DllImport("IP.dll")] extern public static void InverseImageVec(IntPtr buf, int bw, int bh, int stride);
         [DllImport("IP.dll")] extern public static void InverseImageAvx(IntPtr buf, int bw, int bh, int stride);
         [DllImport("IP.dll")] extern public static void Erode(IntPtr srcPtr, IntPtr dstPtr, int bw, int bh, int step);
-        [DllImport("IP.dll")] extern public static void Dilate(IntPtr srcPtr, IntPtr dstPtr, int bw, int bh, int step);
+        [DllImport("IP.dll")] extern public static void ErodeMmx(IntPtr srcPtr, IntPtr dstPtr, int bw, int bh, int step);
         [DllImport("IP.dll")] extern public static void BlobC(IntPtr psrc, IntPtr pdst, int bw, int bh, int stride);
     }
 }

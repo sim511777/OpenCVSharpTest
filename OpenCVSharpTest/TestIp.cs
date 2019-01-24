@@ -658,7 +658,7 @@ namespace OpenCVSharpTest {
             matTemp.Dispose();
         }
 
-        public static void DilateUnsafe(int iteration = 20) {
+        public static void ErodeMmx(int iteration = 20) {
             Glb.DrawMat0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
@@ -666,24 +666,7 @@ namespace OpenCVSharpTest {
 
             var matTemp = matGray.Clone();
             for (int i = 0; i < iteration; i++) {
-                IpUnsafe.Dilate(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
-                matTemp.CopyTo(matGray);
-            }
-            Glb.DrawMat2(matGray);
-
-            matGray.Dispose();
-            matTemp.Dispose();
-        }
-
-        public static void DilateDll(int iteration = 20) {
-            Glb.DrawMat0(Glb.matSrc);
-
-            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMat1(matGray);
-
-            var matTemp = matGray.Clone();
-            for (int i = 0; i < iteration; i++) {
-                IpDll.Dilate(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                IpDll.ErodeMmx(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
                 matTemp.CopyTo(matGray);
             }
             Glb.DrawMat2(matGray);
