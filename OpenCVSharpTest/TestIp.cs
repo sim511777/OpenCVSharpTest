@@ -155,19 +155,6 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void Dilate(int iterations = 1) {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
-            Glb.DrawMatAndHist1(matThr);
-
-            var matDst = matThr.Dilate(new Mat(), iterations: iterations);
-            Glb.DrawMatAndHist2(matDst);
-
-            matThr.Dispose();
-            matDst.Dispose();
-        }
-
         public static void ContrastBrightness(double x1 = 64, double y1 = 0, double x2 = 192, double y2 = 255) {
             Glb.DrawMat0(Glb.matSrc);
 
