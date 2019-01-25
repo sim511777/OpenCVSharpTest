@@ -28,6 +28,12 @@ ok - CvBlobs에 label 버퍼 유지
 ok - size, minXY, maxXY, centroid만 추출
 ok 11. MyBlob.cs => MyBlobs.cs로 파일명 변경
 ok 11. Release로 빌드하면 Label시간 차이가 250ms로 줄어듬
+
+11. C,MMX 속도 차이가 안나는 이유?
+- 1. 내가 MMX를 잘못짜서?
+- 2. 컴파일러라 최적화를 잘해서?
+- 3. EdgePixel 처리가 오래 걸려서?
+
 11. OpenCvSharp.Blob 소스코드 디버깅 해볼것 (디버그와 릴리즈의 속도차이가 엄청나다)
 11. Countour 어떻게 바로 구해지는지 분석
 11. 1Pass알고리즘으로 어떻게 구현 했는지 분석

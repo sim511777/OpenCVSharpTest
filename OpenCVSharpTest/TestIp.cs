@@ -598,51 +598,68 @@ namespace OpenCVSharpTest {
         }
 
         public static void ErodeUnsafe(int iteration = 20) {
-            Glb.DrawMat0(Glb.matSrc);
+            Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMat1(matGray);
+            Glb.DrawMatAndHist1(matGray);
 
             var matTemp = matGray.Clone();
             for (int i = 0; i < iteration; i++) {
                 IpUnsafe.Erode(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
                 matTemp.CopyTo(matGray);
             }
-            Glb.DrawMat2(matGray);
+            Glb.DrawMatAndHist2(matGray);
 
             matGray.Dispose();
             matTemp.Dispose();
         }
 
         public static void ErodeC(int iteration = 20) {
-            Glb.DrawMat0(Glb.matSrc);
+            Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMat1(matGray);
+            Glb.DrawMatAndHist1(matGray);
 
             var matTemp = matGray.Clone();
             for (int i = 0; i < iteration; i++) {
                 IpDll.ErodeC(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
                 matTemp.CopyTo(matGray);
             }
-            Glb.DrawMat2(matGray);
+            Glb.DrawMatAndHist2(matGray);
+
+            matGray.Dispose();
+            matTemp.Dispose();
+        }
+
+        public static void ErodeC2(int iteration = 20) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matTemp = matGray.Clone();
+            for (int i = 0; i < iteration; i++) {
+                IpDll.ErodeC(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                matTemp.CopyTo(matGray);
+            }
+            Glb.DrawMatAndHist2(matGray);
 
             matGray.Dispose();
             matTemp.Dispose();
         }
 
         public static void ErodeSse(int iteration = 20) {
-            Glb.DrawMat0(Glb.matSrc);
+            Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMat1(matGray);
+            Glb.DrawMatAndHist1(matGray);
 
             var matTemp = matGray.Clone();
             for (int i = 0; i < iteration; i++) {
                 IpDll.ErodeSse(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
                 matTemp.CopyTo(matGray);
             }
-            Glb.DrawMat2(matGray);
+            Glb.DrawMatAndHist2(matGray);
 
             matGray.Dispose();
             matTemp.Dispose();
