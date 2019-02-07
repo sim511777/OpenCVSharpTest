@@ -12,6 +12,8 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Imaging;
+using System.Text;
+using System.IO;
 
 namespace OpenCVSharpTest {
     class TestIp {
@@ -663,6 +665,43 @@ namespace OpenCVSharpTest {
 
             matGray.Dispose();
             matTemp.Dispose();
+        }
+
+        public static void CarbonPaper(int x1 = 100, int y1 = 300, int x2 = 1100, int y2 = 1600, ThresholdTypes thrType = ThresholdTypes.Binary, int thr = 128, int filterArea = 30) {
+            // 1. convert to grayscale
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+
+            // 2. roi crop
+            Rect roi = new Rect(x1, y1, x2-x1+1, y2-y1+1);
+            var matGrayDrawRoi = Glb.matSrc.Clone();
+            matGrayDrawRoi.Rectangle(roi, Scalar.Yellow);
+            Glb.DrawMat0(matGrayDrawRoi);
+            
+            var matRoi = new Mat(matGray, roi);
+            Glb.DrawHist0(matRoi);
+
+            // 3. threshold
+            var matThr = matRoi.Threshold(thr, 255, thrType);
+            Glb.DrawMatAndHist1(matThr);
+
+            // 4. blob with area filter
+            CvBlobs blobs = new CvBlobs();
+            blobs.Label(matThr);
+            blobs.FilterByArea(filterArea, 30000);
+
+            // 5. display blob
+            var matDsp = new Mat(matRoi.Rows, matRoi.Cols, MatType.CV_8UC3);
+            matDsp.SetTo(Scalar.Black);
+            blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
+            Glb.DrawMatAndHist2(matDsp);
+
+            Console.WriteLine("blobs.cnt = {0}", blobs.Count);
+
+            matGray.Dispose();
+            matGrayDrawRoi.Dispose();
+            matRoi.Dispose();
+            matThr.Dispose();
+            matDsp.Dispose();
         }
     }
 }
