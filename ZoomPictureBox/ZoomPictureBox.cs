@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -11,7 +10,7 @@ using System.Drawing.Text;
 
 namespace ShimLib {
    public class ZoomPictureBox : PictureBox {
-      private Func<int, int, Tuple<string, Brush>> FuncGetPixelValueDisp = null;
+      private Func<int, int, StringBrush> FuncGetPixelValueDisp = null;
 
       // 이미지
       public Bitmap DrawingImage { get; set; }
@@ -135,7 +134,7 @@ namespace ShimLib {
       }
 
       // 픽셀 값 표시 함수 지정
-      public void SetFuncGetPixelValueDisp(Func<int, int, Tuple<string, Brush>> FuncGetPixelValueDisp) {
+      public void SetFuncGetPixelValueDisp(Func<int, int, StringBrush> FuncGetPixelValueDisp) {
          this.FuncGetPixelValueDisp = FuncGetPixelValueDisp;
       }
 
@@ -153,14 +152,14 @@ namespace ShimLib {
         };
 
       // 픽셀 값 표시 내장 함수
-      private Tuple<string, Brush> GetBuiltinDispPixelValue(int x, int y) {
+      private StringBrush GetBuiltinDispPixelValue(int x, int y) {
          if (this.DrawingImage == null)
-            return Tuple.Create("0", Brushes.Black);
+            return StringBrush.Create("0", Brushes.Black);
          if (x < 0 || x >= this.DrawingImage.Width || y < 0 || y >= this.DrawingImage.Height) {
             if (this.DrawingImage.PixelFormat == PixelFormat.Format8bppIndexed)
-               return Tuple.Create("0", Brushes.Black);
+               return StringBrush.Create("0", Brushes.Black);
             else
-               return Tuple.Create("0,0,0", Brushes.Black);
+               return StringBrush.Create("0,0,0", Brushes.Black);
          }
 
          Color col = this.DrawingImage.GetPixel(x, y);
@@ -169,7 +168,7 @@ namespace ShimLib {
             ? string.Format("{0}", (col.R + col.G + col.B) / 3)
             : string.Format("{0},{1},{2}", col.R, col.G, col.B);
          var br = pseudo[(col.R + col.G + col.B) / 3 / pseudo_div];
-         return Tuple.Create(text, br);
+         return StringBrush.Create(text, br);
       }
 
       // 이미지 표시
@@ -179,7 +178,7 @@ namespace ShimLib {
          // 이미지 개별 픽셀 값 표시
          if (this.UseDrawPixelValue && this.Zoom >= this.DrawPixelValueZoom) {
             FontFamily ff = SystemFonts.MessageBoxFont.FontFamily;
-            float fs = SystemFonts.MessageBoxFont.Size * this.Zoom / 70  * ((this.DrawingImage.PixelFormat == PixelFormat.Format8bppIndexed) ? 3f : 1);
+            float fs = SystemFonts.MessageBoxFont.Size * this.Zoom / 70 * ((this.DrawingImage.PixelFormat == PixelFormat.Format8bppIndexed) ? 3f : 1);
             Font font = new Font(ff, fs);
             PointF ptMin = this.DrawToReal(new Point(0, 0));
             PointF ptMax = this.DrawToReal(new Point(this.ClientSize.Width, this.ClientSize.Height));
@@ -189,7 +188,7 @@ namespace ShimLib {
             int y2 = ValueClamp((int)Math.Floor(ptMax.Y), 0, this.DrawingImage.Height - 1);
             for (int y = y1; y <= y2; y++) {
                for (int x = x1; x <= x2; x++) {
-                  Tuple<string, Brush> dispPixel;
+                  StringBrush dispPixel;
                   if (this.FuncGetPixelValueDisp != null) {
                      dispPixel = this.FuncGetPixelValueDisp(x, y);
                   } else {
@@ -229,7 +228,7 @@ namespace ShimLib {
                col = this.DrawingImage.GetPixel(ptRealInt.X, ptRealInt.Y);
             }
          }
-         Tuple<string, Brush> dispPixel;
+         StringBrush dispPixel;
          if (this.FuncGetPixelValueDisp != null) {
             dispPixel = this.FuncGetPixelValueDisp(ptRealInt.X, ptRealInt.Y);
          } else {
@@ -322,6 +321,18 @@ namespace ShimLib {
             this.ptOld = e.Location;
          }
          this.Invalidate();
+      }
+   }
+
+   public class StringBrush {
+      public string Item1 { get; set; }
+      public Brush Item2 { get; set; }
+      private StringBrush(string Item1, Brush Item2) {
+         this.Item1 = Item1;
+         this.Item2 = Item2;
+      }
+      public static StringBrush Create(string Item1, Brush Item2) {
+         return new StringBrush(Item1, Item2);
       }
    }
 }
