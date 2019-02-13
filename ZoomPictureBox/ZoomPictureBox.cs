@@ -27,6 +27,7 @@ namespace ShimLib {
       public float DrawPixelValueZoom { get; set; }
       public bool AutoDrawCenterLine { get; set; }
       public Color CenterLineColor { get; set; }
+      public DashStyle CenterLineDotStyle { get; set; }
 
       public bool AxisXInvert { get; set; }
       public bool AxisYInvert { get; set; }
@@ -48,6 +49,7 @@ namespace ShimLib {
          this.DrawPixelValueZoom = 20f;
          this.AutoDrawCenterLine = true;
          this.CenterLineColor = Color.Yellow;
+         this.CenterLineDotStyle = DashStyle.Dot;
          this.AxisXInvert = false;
          this.AxisYInvert = false;
          this.AxisXYFlip = false;
@@ -205,7 +207,7 @@ namespace ShimLib {
       public void DrawCenterLine(Graphics g) {
          if (this.DrawingImage != null) {
             Pen pen = new Pen(this.CenterLineColor);
-            pen.DashStyle = DashStyle.Dot;
+            pen.DashStyle = this.CenterLineDotStyle;
             Point ptH1 = new Point(0, this.DrawingImage.Height / 2);
             Point ptH2 = new Point(this.DrawingImage.Width, this.DrawingImage.Height / 2);
             Point ptV1 = new Point(this.DrawingImage.Width / 2, 0);
