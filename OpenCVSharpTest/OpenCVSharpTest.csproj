@@ -111,12 +111,6 @@
     <None Include="Resources\Lenna.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ZoomPictureBox\ZoomPictureBox.csproj">
-      <Project>{3aa5fcf0-a958-4d09-8a59-3b630aa50ae2}</Project>
-      <Name>ZoomPictureBox</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Circle.png" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +148,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shapes.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZoomPictureBox\ZoomPictureBox.csproj">
+      <Project>{3aa5fcf0-a958-4d09-8a59-3b630aa50ae2}</Project>
+      <Name>ZoomPictureBox</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
