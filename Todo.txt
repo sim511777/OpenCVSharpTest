@@ -66,6 +66,7 @@ ok 112. Paint 이벤트 함수 분리
 ok 113. DrawCenterLine 외부에서 호출 할 수 있도록 수정
 ok 114. DrawCursorPixelInfo 외부에서 호출 할 수 있도록 수정
 ok 115. PixelValue 표시 zoom에 따라 컬러여부에 따라 크기 다르게 표시
+ok 116. exe에 통합했던것을 다시 분리
 106. InvertX,Y/FlipXY 기능 구현
 107. 이미지 축소시 기능
 

@@ -10,6 +10,13 @@ using System.Drawing.Text;
 
 namespace ShimLib {
    public class ZoomPictureBox : PictureBox {
+      public static string ReleaseNote =
+@"
+v1.0.0.0
+- 20190213
+1. VS2008 호환
+2. ReleaseNote 추가
+";
       private Func<int, int, StringBrush> FuncGetPixelValueDisp = null;
 
       // 이미지
