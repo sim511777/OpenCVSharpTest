@@ -63,12 +63,12 @@ namespace ShimLib {
 
       // 줌인
       public void ZoomIn() {
-         this.Zoom = (this.Zoom * this.ZoomStep).Range(this.ZoomMin, this.ZoomMax);
+         this.Zoom = ValueClamp(this.Zoom * this.ZoomStep, this.ZoomMin, this.ZoomMax);
       }
 
       // 줌아웃
       public void ZoomOut() {
-         this.Zoom = (this.Zoom / this.ZoomStep).Range(this.ZoomMin, this.ZoomMax);
+         this.Zoom = ValueClamp(this.Zoom / this.ZoomStep, this.ZoomMin, this.ZoomMax);
       }
 
       // 줌리셋
@@ -97,7 +97,7 @@ namespace ShimLib {
       public void ZoomToRect(float x, float y, float width, float height) {
          float scale1 = (float)this.ClientRectangle.Width / width;
          float scale2 = (float)this.ClientRectangle.Height / height;
-         this.Zoom = Math.Min(scale1, scale2).Range(this.ZoomMin, this.ZoomMax);
+         this.Zoom = ValueClamp(Math.Min(scale1, scale2), this.ZoomMin, this.ZoomMax);
          float panX = (this.ClientRectangle.Width - width * this.Zoom) / 2 - x * this.Zoom;
          float panY = (this.ClientRectangle.Height - height * this.Zoom) / 2 - y * this.Zoom;
          this.Pan = new SizeF(panX, panY);
@@ -183,10 +183,10 @@ namespace ShimLib {
             Font font = new Font(ff, fs);
             PointF ptMin = this.DrawToReal(new Point(0, 0));
             PointF ptMax = this.DrawToReal(new Point(this.ClientSize.Width, this.ClientSize.Height));
-            int x1 = ((int)Math.Floor(ptMin.X)).Range(0, this.DrawingImage.Width - 1);
-            int x2 = ((int)Math.Floor(ptMax.X)).Range(0, this.DrawingImage.Width - 1);
-            int y1 = ((int)Math.Floor(ptMin.Y)).Range(0, this.DrawingImage.Height - 1);
-            int y2 = ((int)Math.Floor(ptMax.Y)).Range(0, this.DrawingImage.Height - 1);
+            int x1 = ValueClamp((int)Math.Floor(ptMin.X), 0, this.DrawingImage.Width - 1);
+            int x2 = ValueClamp((int)Math.Floor(ptMax.X), 0, this.DrawingImage.Width - 1);
+            int y1 = ValueClamp((int)Math.Floor(ptMin.Y), 0, this.DrawingImage.Height - 1);
+            int y2 = ValueClamp((int)Math.Floor(ptMax.Y), 0, this.DrawingImage.Height - 1);
             for (int y = y1; y <= y2; y++) {
                for (int x = x1; x <= x2; x++) {
                   Tuple<string, Brush> dispPixel;
@@ -241,6 +241,15 @@ namespace ShimLib {
          g.DrawString(pixelInfo, SystemFonts.DefaultFont, Brushes.Black, 0, 0);
       }
 
+      // Range 함수
+      public static T ValueClamp<T>(T value, T min, T max) where T : IComparable {
+         if (value.CompareTo(min) < 0)
+            return min;
+         if (value.CompareTo(max) > 0)
+            return max;
+         return value;
+      }
+
       // 페인트
       private void ZoomPictureBox_Paint(object sender, PaintEventArgs e) {
          var g = e.Graphics;
@@ -271,7 +280,7 @@ namespace ShimLib {
          if (this.EnableWheelZoom == false)
             return;
          float factor = ((e.Delta > 0) ? this.ZoomStep : (1 / this.ZoomStep));
-         var zoomTemp = (this.Zoom * factor).Range(this.ZoomMin, this.ZoomMax);
+         var zoomTemp = ValueClamp(this.Zoom * factor, this.ZoomMin, this.ZoomMax);
          factor = zoomTemp / this.Zoom;
          SizeF vM = new SizeF(e.Location);
          SizeF vI = this.Pan;
@@ -313,16 +322,6 @@ namespace ShimLib {
             this.ptOld = e.Location;
          }
          this.Invalidate();
-      }
-   }
-
-   public static class ExtensionMethods {
-      public static T Range<T>(this T value, T min, T max) where T : IComparable {
-         if (value.CompareTo(min) < 0)
-            return min;
-         if (value.CompareTo(max) > 0)
-            return max;
-         return value;
       }
    }
 }
