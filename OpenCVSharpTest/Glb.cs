@@ -18,6 +18,10 @@ namespace OpenCVSharpTest {
 
         public static FormMain form = null;
 
+        public static void DrawIntHist(int[] data) {
+            form.DrawIntHistogram(data, form.chtDataHistogram);
+        }
+
         public static void DrawMatAndHist0(Mat mat) {
             form.DrawMat(mat?.ToBitmap(), form.pbx0);
             form.DrawHistogram(mat, form.cht0);

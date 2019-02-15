@@ -133,6 +133,26 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap CarbonNG {
+            get {
+                object obj = ResourceManager.GetObject("CarbonNG", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap CarbonOK {
+            get {
+                object obj = ResourceManager.GetObject("CarbonOK", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap Circle {
             get {
                 object obj = ResourceManager.GetObject("Circle", resourceCulture);

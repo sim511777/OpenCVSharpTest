@@ -668,7 +668,11 @@ namespace OpenCVSharpTest {
 
         public static void CarbonPaper(int x1 = 100, int y1 = 300, int x2 = 1100, int y2 = 1600, ThresholdTypes thrType = ThresholdTypes.Binary, int thr = 128, int filterArea = 30) {
             // 1. convert to grayscale
-            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Mat matGray = null;
+            if (Glb.matSrc.Channels() == 1)
+                matGray = Glb.matSrc.Clone();
+            else
+                Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
 
             // 2. roi crop
             Rect roi = new Rect(x1, y1, x2-x1+1, y2-y1+1);
@@ -693,6 +697,10 @@ namespace OpenCVSharpTest {
             matDsp.SetTo(Scalar.Black);
             blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
             Glb.DrawMatAndHist2(matDsp);
+
+            // 6. display blob size histogram
+            var areas = blobs.Values.Select(blob => blob.Area).ToArray();
+            Glb.DrawIntHist(areas);
 
             Console.WriteLine("blobs.cnt = {0}", blobs.Count);
 

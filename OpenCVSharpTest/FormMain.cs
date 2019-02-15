@@ -57,8 +57,9 @@ namespace OpenCVSharpTest {
             MatType matType = mat.Type();
             if (matType == MatType.CV_8UC1) {
                 var histo = GetHistogram(mat, 0);
+                int totalcount = (int)histo.Sum();
                 float acc = 0;
-                var histoAccum = histo.Select(val => acc += val).ToArray();
+                var histoAccum = histo.Select(val => acc += val).Select(val => val*100/totalcount).ToArray();
                 DrawHistogram(histo, cht.Series[0], "Gray", Color.Black);
                 DrawHistogram(histoAccum, cht.Series[1], "Accum", Color.Red, AxisType.Secondary);
                 cht.Series[0].Enabled = true;
@@ -84,6 +85,18 @@ namespace OpenCVSharpTest {
                 cht.Series[1].Enabled = true;
                 cht.Series[2].Enabled = true;
             }
+        }
+
+        public void DrawIntHistogram(int[] data, Chart cht) {
+            var histo = data.GroupBy(val=>val).OrderBy(group=>group.Key).Select(group=>(float)group.Count()).ToArray();
+            int totalCount = (int)histo.Sum();
+            float acc = 0;
+            var histoAccum = histo.Select(val => acc += val).Select(val => val * 100 / totalCount).ToArray();
+            DrawHistogram(histo, cht.Series[0], "분포", Color.Black);
+            DrawHistogram(histoAccum, cht.Series[1], "누적", Color.Red, AxisType.Secondary);
+            cht.Series[0].Enabled = true;
+            cht.Series[1].Enabled = true;
+            cht.Series[2].Enabled = false;
         }
 
         public float[] GetHistogram(Mat matSrc, int channel) {
@@ -135,10 +148,14 @@ namespace OpenCVSharpTest {
         }
 
         private void btnExample_Click(object sender, EventArgs e) {
+            this.ChangeExample();
+        }
+
+        private void ChangeExample() {
             if (this.cap != null) {
                 this.StopLive();
             }
-            
+
             var oldTime = DateTime.Now;
 
             if (Glb.matSrc != null)
@@ -245,6 +262,8 @@ namespace OpenCVSharpTest {
                 return;
 
             var method = (this.lbxFunc.SelectedItem as MethodInfoItem)?.MethodInfo;
+            if (method == null)
+                return;
             var prmNameList = method.GetParameters().Select(prm => prm.Name);
             if (method != null) {
                 Console.WriteLine("==================================");
@@ -356,6 +375,10 @@ namespace OpenCVSharpTest {
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        private void cbxExampleImage_SelectedIndexChanged(object sender, EventArgs e) {
+            this.ChangeExample();
         }
     }
 
