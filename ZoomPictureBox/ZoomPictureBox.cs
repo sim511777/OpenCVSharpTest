@@ -12,6 +12,10 @@ namespace ShimLib {
    public class ZoomPictureBox : PictureBox {
       public static string ReleaseNote =
 @"
+v1.0.0.1
+- 20190215
+1. ZoomPictureBox event처리에서 override로 변경
+
 v1.0.0.0
 - 20190213
 1. VS2008 호환
@@ -59,12 +63,6 @@ v1.0.0.0
          this.AxisXInvert = false;
          this.AxisYInvert = false;
          this.AxisXYFlip = false;
-
-         this.MouseWheel += new MouseEventHandler(this.ZoomPictureBox_MouseWheel);
-         this.MouseDown += new MouseEventHandler(this.ZoomPictureBox_MouseDown);
-         this.MouseUp += new MouseEventHandler(this.ZoomPictureBox_MouseUp);
-         this.MouseMove += new MouseEventHandler(this.ZoomPictureBox_MouseMove);
-         this.Paint += new PaintEventHandler(this.ZoomPictureBox_Paint);
       }
 
       // 줌인
@@ -146,7 +144,7 @@ v1.0.0.0
       }
 
       // 의사 컬러
-      int pseudo_div = 32;
+      int pseudoDiv = 32;
       Brush[] pseudo = {
             Brushes.White,      // 0~31
             Brushes.LightCyan,  // 32~63           // blue
@@ -174,7 +172,7 @@ v1.0.0.0
             (this.DrawingImage.PixelFormat == PixelFormat.Format8bppIndexed)
             ? string.Format("{0}", (col.R + col.G + col.B) / 3)
             : string.Format("{0},{1},{2}", col.R, col.G, col.B);
-         var br = pseudo[(col.R + col.G + col.B) / 3 / pseudo_div];
+         var br = pseudo[(col.R + col.G + col.B) / 3 / pseudoDiv];
          return StringBrush.Create(text, br);
       }
 
@@ -257,8 +255,8 @@ v1.0.0.0
       }
 
       // 페인트
-      private void ZoomPictureBox_Paint(object sender, PaintEventArgs e) {
-         var g = e.Graphics;
+      protected override void OnPaint(PaintEventArgs pe) {
+         var g = pe.Graphics;
 
          g.InterpolationMode = InterpolationMode.NearestNeighbor;    // 이미지 필터링
          g.PixelOffsetMode = PixelOffsetMode.Half;                   // 이미지 픽셀 옵셋
@@ -275,6 +273,9 @@ v1.0.0.0
             this.DrawCenterLine(g);
          }
 
+         // 마우스 커서 위치 픽셀 정보 표시 전에 사용자 Paint이벤트를 처리 한다.
+         base.OnPaint(pe);
+
          // 마우스 커서 위치의 픽셀 정보 표시
          if (this.AutoDrawCursorPixelInfo) {
             this.DrawCursorPixelInfo(g);
@@ -282,7 +283,7 @@ v1.0.0.0
       }
 
       // 마우스 줌
-      private void ZoomPictureBox_MouseWheel(object sender, MouseEventArgs e) {
+      protected override void OnMouseWheel(MouseEventArgs e) {
          if (this.EnableWheelZoom == false)
             return;
          float factor = ((e.Delta > 0) ? this.ZoomStep : (1 / this.ZoomStep));
@@ -297,12 +298,14 @@ v1.0.0.0
          this.Pan = vI2;
          this.Zoom *= factor;
          this.Invalidate();
+
+         base.OnMouseWheel(e);
       }
 
       // 마우스로 이미지 이동
       private bool mousePan = false;
       private Point ptOld = new Point();
-      private void ZoomPictureBox_MouseDown(object sender, MouseEventArgs e) {
+      protected override void OnMouseDown(MouseEventArgs e) {
          if (this.EnableMousePan == false)
             return;
 
@@ -310,9 +313,11 @@ v1.0.0.0
             return;
          this.mousePan = true;
          this.ptOld = e.Location;
+
+         base.OnMouseDown(e);
       }
 
-      private void ZoomPictureBox_MouseUp(object sender, MouseEventArgs e) {
+      protected override void OnMouseUp(MouseEventArgs e) {
          this.mousePan = false;
 
          if (this.EnableMousePan == false)
@@ -320,14 +325,18 @@ v1.0.0.0
 
          if (e.Button != MouseButtons.Left)
             return;
+
+         base.OnMouseUp(e);
       }
 
-      private void ZoomPictureBox_MouseMove(object sender, MouseEventArgs e) {
+      protected override void OnMouseMove(MouseEventArgs e) {
          if (this.EnableMousePan && this.mousePan) {
             this.Pan += (Size)e.Location - (Size)this.ptOld;
             this.ptOld = e.Location;
          }
          this.Invalidate();
+
+         base.OnMouseMove(e);
       }
    }
 
