@@ -591,7 +591,10 @@ namespace OpenCVSharpTest {
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matThr);
 
+            Glb.TimerStart();
             var matDst = matThr.Erode(new Mat(), iterations: iterations, borderType: BorderTypes.Replicate);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+
             Glb.DrawMatAndHist2(matDst);
 
             matThr.Dispose();
@@ -605,10 +608,12 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist1(matGray);
 
             var matTemp = matGray.Clone();
+            Glb.TimerStart();
             for (int i = 0; i < iteration; i++) {
                 IpUnsafe.Erode(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
                 matTemp.CopyTo(matGray);
             }
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
             Glb.DrawMatAndHist2(matGray);
 
             matGray.Dispose();
@@ -622,10 +627,12 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist1(matGray);
 
             var matTemp = matGray.Clone();
+            Glb.TimerStart();
             for (int i = 0; i < iteration; i++) {
                 IpDll.ErodeC(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
                 matTemp.CopyTo(matGray);
             }
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
             Glb.DrawMatAndHist2(matGray);
 
             matGray.Dispose();
@@ -639,10 +646,12 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist1(matGray);
 
             var matTemp = matGray.Clone();
+            Glb.TimerStart();
             for (int i = 0; i < iteration; i++) {
                 IpDll.ErodeC(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
                 matTemp.CopyTo(matGray);
             }
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
             Glb.DrawMatAndHist2(matGray);
 
             matGray.Dispose();
@@ -656,10 +665,12 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist1(matGray);
 
             var matTemp = matGray.Clone();
+            Glb.TimerStart();
             for (int i = 0; i < iteration; i++) {
                 IpDll.ErodeSse(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
                 matTemp.CopyTo(matGray);
             }
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
             Glb.DrawMatAndHist2(matGray);
 
             matGray.Dispose();
