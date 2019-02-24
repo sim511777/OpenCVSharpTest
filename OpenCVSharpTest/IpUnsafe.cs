@@ -153,5 +153,37 @@ namespace OpenCVSharpTest {
                 ErodeEdge(srcPtr, dstPtr, bw, bh, step, xRight, y);
             }
         }
+
+        public static void MemcpyMarshal1(IntPtr dst, IntPtr src, int nbytes) {
+            for (int i = 0; i < nbytes; i++) {
+                Marshal.WriteByte(dst, i, Marshal.ReadByte(src, i));
+            }
+        }
+
+        public static void MemcpyMarshal2(IntPtr dst, IntPtr src, int nbytes) {
+            byte[] temp = new byte[nbytes];
+            Marshal.Copy(src, temp, 0, nbytes);
+            Marshal.Copy(temp, 0, dst, nbytes);
+        }
+
+        public static void MemcpyUnsafe(IntPtr dst, IntPtr src, int nbytes) {
+            byte* pdst = (byte*)dst.ToPointer();
+            byte* psrc = (byte*)src.ToPointer();
+            for (int i = 0; i < nbytes; i++) {
+                pdst[i] = psrc[i];
+            }
+        }
+
+        [DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
+        public static extern IntPtr memcpy(IntPtr dest, IntPtr src, ulong count);
+        public static void MemcpyCrt(IntPtr dst, IntPtr src, int nbytes) {
+            memcpy(dst, src, (ulong)nbytes);
+        }
+
+        public static void MemcpyBufferClass(IntPtr dst, IntPtr src, int nbytes) {
+            byte* pdst = (byte*)dst.ToPointer();
+            byte* psrc = (byte*)src.ToPointer();
+            Buffer.MemoryCopy(psrc, pdst, nbytes, nbytes);
+        }
     }
 }

@@ -702,5 +702,75 @@ namespace OpenCVSharpTest {
             matThr.Dispose();
             matDsp.Dispose();
         }
+
+        public static void ImageCopyMarshal1() {
+            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
+            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
+
+            Glb.TimerStart();
+            IpUnsafe.MemcpyMarshal1(matDst.Data, Glb.matSrc.Data, nbytes);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+            
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
+            matDst.Dispose();
+        }
+
+        public static void ImageCopyMarshal2() {
+            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
+            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
+
+            Glb.TimerStart();
+            IpUnsafe.MemcpyMarshal2(matDst.Data, Glb.matSrc.Data, nbytes);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
+            matDst.Dispose();
+        }
+
+        public static void ImageCopyUnsafe() {
+            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
+            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
+
+            Glb.TimerStart();
+            IpUnsafe.MemcpyUnsafe(matDst.Data, Glb.matSrc.Data, nbytes);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
+            matDst.Dispose();
+        }
+
+        public static void ImageCopyCrt() {
+            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
+            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
+
+            Glb.TimerStart();
+            IpUnsafe.MemcpyCrt(matDst.Data, Glb.matSrc.Data, nbytes);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
+            matDst.Dispose();
+        }
+
+        public static void ImageCopyBufferClass() {
+            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
+            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
+
+            Glb.TimerStart();
+            IpUnsafe.MemcpyBufferClass(matDst.Data, Glb.matSrc.Data, nbytes);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
+            matDst.Dispose();
+        }
     }
 }
