@@ -783,5 +783,18 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist2(null);
             matDst.Dispose();
         }
+
+        public static void ImageCopyOpenCV() {
+            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
+
+            Glb.TimerStart();
+            Glb.matSrc.CopyTo(matDst);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
+            matDst.Dispose();
+        }
     }
 }
