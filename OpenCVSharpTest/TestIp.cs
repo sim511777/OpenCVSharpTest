@@ -452,6 +452,126 @@ namespace OpenCVSharpTest {
             matLab.Dispose();
         }
 
+        public static void CarbonPaper(int x1 = 100, int y1 = 300, int x2 = 1100, int y2 = 1600, ThresholdTypes thrType = ThresholdTypes.Binary, int thr = 128, int filterArea = 30) {
+            // 1. convert to grayscale
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+
+            // 2. roi crop
+            Rect roi = new Rect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+            var matGrayDrawRoi = Glb.matSrc.Clone();
+            matGrayDrawRoi.Rectangle(roi, Scalar.Yellow);
+            Glb.DrawMat0(matGrayDrawRoi);
+
+            var matRoi = new Mat(matGray, roi);
+            Glb.DrawHist0(matRoi);
+
+            // 3. threshold
+            var matThr = matRoi.Threshold(thr, 255, thrType);
+            Glb.DrawMatAndHist1(matThr);
+
+            // 4. blob with area filter
+            CvBlobs blobs = new CvBlobs();
+            blobs.Label(matThr);
+            blobs.FilterByArea(filterArea, 30000);
+
+            // 5. display blob
+            var matDsp = new Mat(matRoi.Rows, matRoi.Cols, MatType.CV_8UC3);
+            matDsp.SetTo(Scalar.Black);
+            blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
+            Glb.DrawMatAndHist2(matDsp);
+
+            Console.WriteLine("blobs.cnt = {0}", blobs.Count);
+
+            matGray.Dispose();
+            matGrayDrawRoi.Dispose();
+            matRoi.Dispose();
+            matThr.Dispose();
+            matDsp.Dispose();
+        }
+
+        public static void ImageCopyMarshal1() {
+            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
+            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
+
+            Glb.TimerStart();
+            IpUnsafe.MemcpyMarshal1(matDst.Data, Glb.matSrc.Data, nbytes);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
+            matDst.Dispose();
+        }
+
+        public static void ImageCopyMarshal2() {
+            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
+            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
+
+            Glb.TimerStart();
+            IpUnsafe.MemcpyMarshal2(matDst.Data, Glb.matSrc.Data, nbytes);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
+            matDst.Dispose();
+        }
+
+        public static void ImageCopyUnsafe() {
+            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
+            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
+
+            Glb.TimerStart();
+            IpUnsafe.MemcpyUnsafe(matDst.Data, Glb.matSrc.Data, nbytes);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
+            matDst.Dispose();
+        }
+
+        public static void ImageCopyCrt() {
+            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
+            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
+
+            Glb.TimerStart();
+            IpUnsafe.MemcpyCrt(matDst.Data, Glb.matSrc.Data, nbytes);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
+            matDst.Dispose();
+        }
+
+        public static void ImageCopyBufferClass() {
+            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
+            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
+
+            Glb.TimerStart();
+            IpUnsafe.MemcpyBufferClass(matDst.Data, Glb.matSrc.Data, nbytes);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
+            matDst.Dispose();
+        }
+
+        public static void ImageCopyOpenCV() {
+            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
+
+            Glb.TimerStart();
+            Glb.matSrc.CopyTo(matDst);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
+            matDst.Dispose();
+        }
+
         public static void InverseApi_RGB() {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
@@ -639,6 +759,25 @@ namespace OpenCVSharpTest {
             matTemp.Dispose();
         }
 
+        public static void ErodeCParallel(int iteration = 20) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matTemp = matGray.Clone();
+            Glb.TimerStart();
+            for (int i = 0; i < iteration; i++) {
+                IpDll.ErodeCParallel(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                matTemp.CopyTo(matGray);
+            }
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+            Glb.DrawMatAndHist2(matGray);
+
+            matGray.Dispose();
+            matTemp.Dispose();
+        }
+
         public static void ErodeC2(int iteration = 20) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
@@ -649,6 +788,25 @@ namespace OpenCVSharpTest {
             Glb.TimerStart();
             for (int i = 0; i < iteration; i++) {
                 IpDll.ErodeC2(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                matTemp.CopyTo(matGray);
+            }
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+            Glb.DrawMatAndHist2(matGray);
+
+            matGray.Dispose();
+            matTemp.Dispose();
+        }
+
+        public static void ErodeC2Parallel(int iteration = 20) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matTemp = matGray.Clone();
+            Glb.TimerStart();
+            for (int i = 0; i < iteration; i++) {
+                IpDll.ErodeC2Parallel(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
                 matTemp.CopyTo(matGray);
             }
             Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
@@ -694,126 +852,6 @@ namespace OpenCVSharpTest {
 
             matGray.Dispose();
             matTemp.Dispose();
-        }
-
-        public static void CarbonPaper(int x1 = 100, int y1 = 300, int x2 = 1100, int y2 = 1600, ThresholdTypes thrType = ThresholdTypes.Binary, int thr = 128, int filterArea = 30) {
-            // 1. convert to grayscale
-            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-
-            // 2. roi crop
-            Rect roi = new Rect(x1, y1, x2-x1+1, y2-y1+1);
-            var matGrayDrawRoi = Glb.matSrc.Clone();
-            matGrayDrawRoi.Rectangle(roi, Scalar.Yellow);
-            Glb.DrawMat0(matGrayDrawRoi);
-            
-            var matRoi = new Mat(matGray, roi);
-            Glb.DrawHist0(matRoi);
-
-            // 3. threshold
-            var matThr = matRoi.Threshold(thr, 255, thrType);
-            Glb.DrawMatAndHist1(matThr);
-
-            // 4. blob with area filter
-            CvBlobs blobs = new CvBlobs();
-            blobs.Label(matThr);
-            blobs.FilterByArea(filterArea, 30000);
-
-            // 5. display blob
-            var matDsp = new Mat(matRoi.Rows, matRoi.Cols, MatType.CV_8UC3);
-            matDsp.SetTo(Scalar.Black);
-            blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
-            Glb.DrawMatAndHist2(matDsp);
-
-            Console.WriteLine("blobs.cnt = {0}", blobs.Count);
-
-            matGray.Dispose();
-            matGrayDrawRoi.Dispose();
-            matRoi.Dispose();
-            matThr.Dispose();
-            matDsp.Dispose();
-        }
-
-        public static void ImageCopyMarshal1() {
-            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
-            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
-
-            Glb.TimerStart();
-            IpUnsafe.MemcpyMarshal1(matDst.Data, Glb.matSrc.Data, nbytes);
-            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
-            
-            Glb.DrawMatAndHist0(Glb.matSrc);
-            Glb.DrawMatAndHist1(matDst);
-            Glb.DrawMatAndHist2(null);
-            matDst.Dispose();
-        }
-
-        public static void ImageCopyMarshal2() {
-            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
-            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
-
-            Glb.TimerStart();
-            IpUnsafe.MemcpyMarshal2(matDst.Data, Glb.matSrc.Data, nbytes);
-            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
-
-            Glb.DrawMatAndHist0(Glb.matSrc);
-            Glb.DrawMatAndHist1(matDst);
-            Glb.DrawMatAndHist2(null);
-            matDst.Dispose();
-        }
-
-        public static void ImageCopyUnsafe() {
-            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
-            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
-
-            Glb.TimerStart();
-            IpUnsafe.MemcpyUnsafe(matDst.Data, Glb.matSrc.Data, nbytes);
-            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
-
-            Glb.DrawMatAndHist0(Glb.matSrc);
-            Glb.DrawMatAndHist1(matDst);
-            Glb.DrawMatAndHist2(null);
-            matDst.Dispose();
-        }
-
-        public static void ImageCopyCrt() {
-            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
-            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
-
-            Glb.TimerStart();
-            IpUnsafe.MemcpyCrt(matDst.Data, Glb.matSrc.Data, nbytes);
-            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
-
-            Glb.DrawMatAndHist0(Glb.matSrc);
-            Glb.DrawMatAndHist1(matDst);
-            Glb.DrawMatAndHist2(null);
-            matDst.Dispose();
-        }
-
-        public static void ImageCopyBufferClass() {
-            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
-            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
-
-            Glb.TimerStart();
-            IpUnsafe.MemcpyBufferClass(matDst.Data, Glb.matSrc.Data, nbytes);
-            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
-
-            Glb.DrawMatAndHist0(Glb.matSrc);
-            Glb.DrawMatAndHist1(matDst);
-            Glb.DrawMatAndHist2(null);
-            matDst.Dispose();
-        }
-
-        public static void ImageCopyOpenCV() {
-            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
-
-            Glb.TimerStart();
-            Glb.matSrc.CopyTo(matDst);
-            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
-
-            Glb.DrawMatAndHist0(Glb.matSrc);
-            Glb.DrawMatAndHist1(matDst);
-            Glb.DrawMatAndHist2(null);
-            matDst.Dispose();
         }
     }
 }

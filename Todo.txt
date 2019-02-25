@@ -82,3 +82,15 @@ ok 206. CustomProperty Category 추가
 
 ==== 기타
 301. 웹캠 라이브 타이머 -> 쓰레드
+
+
+==== Erosion 성능 향상에 대한 연구 ====
+6000*3600 이미지
+OpenCV  :   66ms
+unsafe  : 3800ms
+C       :  255ms
+C PPL   :  858ms
+C2      : 2550ms
+C2 PPL  : 1000ms
+See     :  214ms
+See PPL :  155ms
