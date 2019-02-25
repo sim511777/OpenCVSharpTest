@@ -648,7 +648,7 @@ namespace OpenCVSharpTest {
             var matTemp = matGray.Clone();
             Glb.TimerStart();
             for (int i = 0; i < iteration; i++) {
-                IpDll.ErodeC(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                IpDll.ErodeC2(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
                 matTemp.CopyTo(matGray);
             }
             Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
