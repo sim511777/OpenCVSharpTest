@@ -86,16 +86,17 @@ ok 206. CustomProperty Category 추가
 
 ==== Erosion 성능 향상에 대한 연구 ====
 6000*3600 이미지
-OpenCV  :   66ms
-unsafe  : 3800ms
-C       :  255ms
-C STL   : 2650ms
-C PPL   :  858ms
-C2      : 2550ms
-C2 PPL  : 1000ms
-SSE     :  214ms
-SSE PPL :  155ms
-SSE 2D  :  185ms
+OpenCV          :   66ms
+unsafe          : 3800ms
+unsafe parallel :  980ms
+C               :  255ms
+C STL           : 2650ms
+C PPL           :  858ms
+C2              : 2550ms
+C2 PPL          : 1000ms
+SSE             :  214ms
+SSE PPL         :  155ms
+SSE 2D          :  185ms
 
 문제점
 1. C로 짠거와 SSE로 짠거와 속도차이가 별로 없음.

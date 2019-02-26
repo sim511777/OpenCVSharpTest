@@ -740,6 +740,63 @@ namespace OpenCVSharpTest {
             matTemp.Dispose();
         }
 
+        public static void ErodeUnsafeParallel(int iteration = 20) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matTemp = matGray.Clone();
+            Glb.TimerStart();
+            for (int i = 0; i < iteration; i++) {
+                IpUnsafe.ErodeParallel(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                matTemp.CopyTo(matGray);
+            }
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+            Glb.DrawMatAndHist2(matGray);
+
+            matGray.Dispose();
+            matTemp.Dispose();
+        }
+
+        public static void ErodeUnsafe2(int iteration = 20) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matTemp = matGray.Clone();
+            Glb.TimerStart();
+            for (int i = 0; i < iteration; i++) {
+                IpUnsafe.Erode2(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                matTemp.CopyTo(matGray);
+            }
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+            Glb.DrawMatAndHist2(matGray);
+
+            matGray.Dispose();
+            matTemp.Dispose();
+        }
+
+        public static void ErodeUnsafe3(int iteration = 20) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matTemp = matGray.Clone();
+            Glb.TimerStart();
+            for (int i = 0; i < iteration; i++) {
+                IpUnsafe.Erode3(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                matTemp.CopyTo(matGray);
+            }
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+            Glb.DrawMatAndHist2(matGray);
+
+            matGray.Dispose();
+            matTemp.Dispose();
+        }
+
         public static void ErodeC(int iteration = 20) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
