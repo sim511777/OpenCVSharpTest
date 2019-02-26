@@ -89,6 +89,7 @@ ok 206. CustomProperty Category Ãß°¡
 OpenCV  :   66ms
 unsafe  : 3800ms
 C       :  255ms
+C STL   : 2650ms
 C PPL   :  858ms
 C2      : 2550ms
 C2 PPL  : 1000ms
