@@ -19,6 +19,6 @@ namespace OpenCVSharpTest {
         [DllImport("IP.dll")] extern public static void ErodeSse(IntPtr srcPtr, IntPtr dstPtr, int bw, int bh, int step);
         [DllImport("IP.dll")] extern public static void ErodeSse2D(IntPtr srcPtr, IntPtr dstPtr, int bw, int bh, int step);
         [DllImport("IP.dll")] extern public static void ErodeSseParallel(IntPtr srcPtr, IntPtr dstPtr, int bw, int bh, int step);
-        [DllImport("IP.dll")] extern public static void ErodeIpp(IntPtr srcPtr, IntPtr dstPtr, int bw, int bh, int step);
+        [DllImport("IP.dll")] extern public static void ErodeIpp(IntPtr srcPtr, IntPtr dstPtr, IntPtr workPtr, int bw, int bh, int step);
     }
 }
