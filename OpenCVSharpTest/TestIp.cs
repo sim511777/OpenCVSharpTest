@@ -948,5 +948,24 @@ namespace OpenCVSharpTest {
             matGray.Dispose();
             matTemp.Dispose();
         }
+
+        public static void ErodeIpp(int iteration = 20) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matTemp = matGray.Clone();
+            Glb.TimerStart();
+            for (int i = 0; i < iteration; i++) {
+                IpDll.ErodeIpp(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                matTemp.CopyTo(matGray);
+            }
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+            Glb.DrawMatAndHist2(matGray);
+
+            matGray.Dispose();
+            matTemp.Dispose();
+        }
     }
 }
