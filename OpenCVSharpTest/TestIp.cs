@@ -816,6 +816,29 @@ namespace OpenCVSharpTest {
             matTemp.Dispose();
         }
 
+        public static void ErodeCNoCopy(int iteration = 20) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matTemp = new Mat(matGray.Size(), matGray.Type());
+            Glb.TimerStart();
+            for (int i = 0; i < iteration; i++) {
+                if (i % 2 == 0)
+                    IpDll.ErodeC(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                else
+                    IpDll.ErodeC(matTemp.Data, matGray.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+            }
+            if (iteration > 0 && iteration % 2 == 1)
+                IpUnsafe.MemcpyCrt(matTemp.Data, matGray.Data, (int)matGray.Step() * matGray.Height);
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+            Glb.DrawMatAndHist2(matGray);
+
+            matGray.Dispose();
+            matTemp.Dispose();
+        }
+
         public static void ErodeCStl(int iteration = 20) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
@@ -942,6 +965,29 @@ namespace OpenCVSharpTest {
                 IpDll.ErodeSseParallel(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
                 matTemp.CopyTo(matGray);
             }
+            Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
+            Glb.DrawMatAndHist2(matGray);
+
+            matGray.Dispose();
+            matTemp.Dispose();
+        }
+
+        public static void ErodeSseParallelNoCopy(int iteration = 20) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matTemp = new Mat(matGray.Size(), matGray.Type());
+            Glb.TimerStart();
+            for (int i = 0; i < iteration; i++) {
+                if (i % 2 == 0)
+                    IpDll.ErodeSseParallel(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                else
+                    IpDll.ErodeSseParallel(matTemp.Data, matGray.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+            }
+            if (iteration > 0 && iteration % 2 == 1)
+                IpUnsafe.MemcpyCrt(matTemp.Data, matGray.Data, (int)matGray.Step() * matGray.Height);
             Console.WriteLine($"=> Method Time: {Glb.TimerStop()}ms");
             Glb.DrawMatAndHist2(matGray);
 
