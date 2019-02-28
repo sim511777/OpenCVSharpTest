@@ -323,7 +323,7 @@ namespace OpenCVSharpTest {
             matDsp.Dispose();
         }
 
-        public static void Blob_CvBlobs(bool drawWithMyRenderer = true, int filterArea = 0) {
+        public static void Blob_CvBlobs(int filterArea = 0) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
@@ -340,10 +340,7 @@ namespace OpenCVSharpTest {
             matDsp.SetTo(Scalar.Black);
 
             Glb.TimerStart();
-            if (drawWithMyRenderer)
-                IpUnsafe.RenderBlobs(blobs, matDsp);
-            else
-                blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
+            blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
             Console.WriteLine("=> Render Time: {0}ms", Glb.TimerStop());
 
             Console.WriteLine("=> Blob Count: {0}", blobs.Count);
