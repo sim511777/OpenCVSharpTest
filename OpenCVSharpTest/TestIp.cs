@@ -323,7 +323,7 @@ namespace OpenCVSharpTest {
             matDsp.Dispose();
         }
 
-        public static void Blob_CvBlobs(bool drawWithMyRenderer = true) {
+        public static void Blob_CvBlobs(bool drawWithMyRenderer = true, int filterArea = 0) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
@@ -333,6 +333,8 @@ namespace OpenCVSharpTest {
             Glb.TimerStart();
             int cnt = blobs.Label(matThr);
             Console.WriteLine($"=> Label Time: {Glb.TimerStop()}ms");
+
+            blobs.FilterByArea(filterArea, int.MaxValue);
 
             var matDsp = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
             matDsp.SetTo(Scalar.Black);
