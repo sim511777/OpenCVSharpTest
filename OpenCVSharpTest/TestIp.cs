@@ -471,7 +471,7 @@ namespace OpenCVSharpTest {
             // 4. blob with area filter
             CvBlobs blobs = new CvBlobs();
             blobs.Label(matThr);
-            blobs.FilterByArea(filterArea, 30000);
+            blobs.FilterByArea(filterArea, int.MaxValue);
 
             // 5. display blob
             var matDsp = new Mat(matRoi.Rows, matRoi.Cols, MatType.CV_8UC3);
