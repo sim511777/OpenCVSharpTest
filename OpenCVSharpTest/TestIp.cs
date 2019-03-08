@@ -340,7 +340,7 @@ namespace OpenCVSharpTest {
             matDsp.SetTo(Scalar.Black);
 
             Glb.TimerStart();
-            blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
+            IpUnsafe.RenderBlobs(blobs, matDsp);
             Console.WriteLine("=> Render Time: {0}ms", Glb.TimerStop());
 
             Console.WriteLine("=> Blob Count: {0}", blobs.Count);
