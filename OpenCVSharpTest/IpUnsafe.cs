@@ -47,6 +47,45 @@ namespace OpenCVSharpTest {
             }
         }
 
+        public static void RenderBlobs(Mat matLabels, Mat matStats, Mat matCentroids, Mat matDst) {
+            int CC_STAT_LEFT = 0;
+            int CC_STAT_TOP = 1;
+            int CC_STAT_WIDTH = 2;
+            int CC_STAT_HEIGHT = 3;
+            int CC_STAT_AREA = 4;
+            int CC_STAT_MAX = 5;
+
+            byte* pdst = matDst.DataPointer;
+            int bw = matDst.Width;
+            int bh = matDst.Height;
+            int stride = (int)matDst.Step();
+            int num = matStats.Rows;
+            int* labels = (int*)matLabels.DataPointer;
+            int* stats = (int*)matStats.DataPointer;
+            for (int label=1; label<num; label++) {
+                double r, g, b;
+                Glb.Hsv2Rgb(((label-1) * 77) % 360, 0.5, 1.0, out r, out g, out b);
+                byte bb = (byte)b;
+                byte bg = (byte)g;
+                byte br = (byte)r;
+                int *stat = stats + label * CC_STAT_MAX;
+                int minX = stat[CC_STAT_LEFT];
+                int minY = stat[CC_STAT_TOP];
+                int maxX = minX + stat[CC_STAT_WIDTH] - 1;
+                int maxY = minY + stat[CC_STAT_HEIGHT] - 1;
+                for (int y = minY; y <= maxY; y++) {
+                    for (int x = minX; x <= maxX; x++) {
+                        if (labels[y * bw + x] == label) {
+                            byte* ppdst = pdst + stride * y + x * 3;
+                            ppdst[0] = bb;
+                            ppdst[1] = bg;
+                            ppdst[2] = br;
+                        }
+                    }
+                }
+            }
+        }
+
         public static void RenderBlobs(MyBlobs blobs, Mat matDst) {
             byte *pdst = matDst.DataPointer;
             int bw = matDst.Width;

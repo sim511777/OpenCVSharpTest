@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-//using System.Text;
 using System.Threading.Tasks;
 using OpenCVSharpTest.Properties;
 using OpenCvSharp;
@@ -349,6 +348,38 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist2(matDsp);
 
             matThr.Dispose();
+            matDsp.Dispose();
+        }
+
+        public static void Blob_CvConnectedComponent() {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+            
+            var matLabels = new Mat();
+            var matStats = new Mat();
+            var matCentroids = new Mat();
+
+            Glb.TimerStart();
+            int num = matThr.ConnectedComponentsWithStats(matLabels, matStats, matCentroids) - 1;   // 배경까지 블럽으로 계산된다.
+            Console.WriteLine("=> Label Time: {0}ms", Glb.TimerStop());
+
+            var matDsp = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
+            matDsp.SetTo(Scalar.Black);
+
+            Glb.TimerStart();
+            IpUnsafe.RenderBlobs(matLabels, matStats, matCentroids, matDsp);
+            Console.WriteLine("=> Render Time: {0}ms", Glb.TimerStop());
+
+            Console.WriteLine("=> Blob Count: {0}", num);
+
+            Glb.DrawMatAndHist1(matThr);
+            Glb.DrawMatAndHist2(matDsp);
+
+            matThr.Dispose();
+            matLabels.Dispose();
+            matStats.Dispose();
+            matCentroids.Dispose();
             matDsp.Dispose();
         }
 
