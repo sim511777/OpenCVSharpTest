@@ -244,33 +244,34 @@ namespace OpenCVSharpTest {
             if (Glb.matSrc == null)
                 return;
 
-            var method = (this.lbxFunc.SelectedItem as MethodInfoItem)?.MethodInfo;
-            var prmNameList = method.GetParameters().Select(prm => prm.Name);
-            if (method != null) {
+            try {
                 Console.WriteLine("==================================");
-                Console.WriteLine($"{method.Name}");
+                var method = (this.lbxFunc.SelectedItem as MethodInfoItem)?.MethodInfo;
+
+                var cs = this.grdParameter.SelectedObject as CustomClass;
+                var prmDisps = cs.Cast<CustomProperty>().Select(prm => prm.Name + ":" + prm.Value.ToString()).ToArray();
+                var prmDisp = string.Join(", ", prmDisps);
+                Console.WriteLine($"{method.Name} ({prmDisp})");
+                
+                var prmValues = cs.Cast<CustomProperty>().Select(prop => prop.Value).ToArray();
                 sw.Restart();
-                try {
-                    var cs = this.grdParameter.SelectedObject as CustomClass;
-                    var prms = cs.Cast<CustomProperty>().Select(prop => prop.Value).ToArray();
-                    object r = method.Invoke(this, prms);
-                } catch (TargetInvocationException ex) {
-                    DrawMat(null, this.pbx1);
-                    DrawHistogram(null, this.cht1);
-                    DrawMat(null, this.pbx2);
-                    DrawHistogram(null, this.cht2);
-                    Console.WriteLine($"=> Error: {ex.InnerException.Message}");
-                } catch (Exception ex) {
-                    DrawMat(null, this.pbx1);
-                    DrawHistogram(null, this.cht1);
-                    DrawMat(null, this.pbx2);
-                    DrawHistogram(null, this.cht2);
-                    Console.WriteLine($"=> Error: {ex.Message}");
-                }
+                object r = method.Invoke(this, prmValues);
                 sw.Stop();
                 Console.WriteLine($"=>  Total Time: {sw.ElapsedMilliseconds}ms");
-                Console.WriteLine();
+            } catch (TargetInvocationException ex) {
+                DrawMat(null, this.pbx1);
+                DrawHistogram(null, this.cht1);
+                DrawMat(null, this.pbx2);
+                DrawHistogram(null, this.cht2);
+                Console.WriteLine($"=> Error: {ex.InnerException.Message}");
+            } catch (Exception ex) {
+                DrawMat(null, this.pbx1);
+                DrawHistogram(null, this.cht1);
+                DrawMat(null, this.pbx2);
+                DrawHistogram(null, this.cht2);
+                Console.WriteLine($"=> Error: {ex.Message}");
             }
+            Console.WriteLine();
         }
 
         private void btnZoomReset_Click(object sender, EventArgs e) {
