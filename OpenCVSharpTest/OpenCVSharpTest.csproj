@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ErodeTest.cs" />
     <Compile Include="Glb.cs" />
     <Compile Include="IpUnsafe.cs" />
     <Compile Include="MyBlobs.cs" />
