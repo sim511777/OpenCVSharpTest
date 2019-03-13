@@ -9,7 +9,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 
 namespace ShimLib {
-    public class ZoomPictureBox : PictureBox {
+    public class ZoomPictureBox : Control {
         public static string ReleaseNote =
   @"
 v1.0.0.1
@@ -46,6 +46,7 @@ v1.0.0.0
 
         // 생성자
         public ZoomPictureBox() {
+            this.DoubleBuffered = true;
             this.DrawingImage = null;
             this.Zoom = 1;
             this.Pan = new SizeF(0, 0);

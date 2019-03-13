@@ -104,10 +104,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.cht1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cht2)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbx0)).BeginInit();
             this.popupPicture.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbx2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbx1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -758,10 +755,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.cht1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cht2)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbx0)).EndInit();
             this.popupPicture.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbx2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbx1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
