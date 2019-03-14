@@ -183,15 +183,13 @@ v1.0.0.0
 
             // 이미지 개별 픽셀 값 표시
             if (this.UseDrawPixelValue && this.Zoom >= this.DrawPixelValueZoom) {
-                FontFamily ff = SystemFonts.MessageBoxFont.FontFamily;
-                float fs = SystemFonts.MessageBoxFont.Size * this.Zoom / 70 * ((this.DrawingImage.PixelFormat == PixelFormat.Format8bppIndexed) ? 3f : 1);
-                Font font = new Font(ff, fs);
                 PointF ptMin = this.DrawToReal(new Point(0, 0));
                 PointF ptMax = this.DrawToReal(new Point(this.ClientSize.Width, this.ClientSize.Height));
                 int x1 = ValueClamp((int)Math.Floor(ptMin.X), 0, this.DrawingImage.Width - 1);
                 int x2 = ValueClamp((int)Math.Floor(ptMax.X), 0, this.DrawingImage.Width - 1);
                 int y1 = ValueClamp((int)Math.Floor(ptMin.Y), 0, this.DrawingImage.Height - 1);
                 int y2 = ValueClamp((int)Math.Floor(ptMax.Y), 0, this.DrawingImage.Height - 1);
+                var font = SystemFonts.DefaultFont;
                 for (int y = y1; y <= y2; y++) {
                     for (int x = x1; x <= x2; x++) {
                         StringBrush dispPixel;
