@@ -272,6 +272,7 @@
             // tbxConsole
             // 
             this.tbxConsole.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tbxConsole.Font = new System.Drawing.Font("굴림체", 9F);
             this.tbxConsole.Location = new System.Drawing.Point(261, 571);
             this.tbxConsole.Multiline = true;
             this.tbxConsole.Name = "tbxConsole";

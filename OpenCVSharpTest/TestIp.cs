@@ -779,5 +779,22 @@ namespace OpenCVSharpTest {
                 default: break;
             }
         }
+
+        public static void MatrixTest(FormatType formatType = FormatType.Default) {
+            Glb.DrawMatAndHist0(null);
+            Glb.DrawMatAndHist1(null);
+            Glb.DrawMatAndHist2(null);
+
+            void PrintMat(Mat mat) {
+                Console.WriteLine(mat.Dump(formatType).Replace("\n","\r\n"));
+            }
+
+            Mat a = new Mat(1, 3, MatType.CV_64FC1);
+            a.Set(0, 0, 1.0);
+            a.Set(0, 1, 2.0);
+            a.Set(0, 2, 3.0);
+            PrintMat(a);
+            PrintMat(a.Transpose());
+        }
     }
 }
