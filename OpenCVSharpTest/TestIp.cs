@@ -93,7 +93,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void Sobel(int xorder = 1, int yorder = 1, int ksize = 3, double scale = 1, double delta = 0, BorderTypes borderType = BorderTypes.Default) {
+        public static void Sobel(int xorder = 1, int yorder = 1, int ksize = 3, double scale = 1, double delta = 0, BorderTypes borderType = BorderTypes.Replicate) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
@@ -106,7 +106,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void Laplacian(int ksize = 1, double scale = 1, double delta = 0, BorderTypes borderType = BorderTypes.Default) {
+        public static void Laplacian(int ksize = 1, double scale = 1, double delta = 0, BorderTypes borderType = BorderTypes.Replicate) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
@@ -119,7 +119,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void Blur(double ksize = 3, BorderTypes borderType = BorderTypes.Reflect101) {
+        public static void Blur(double ksize = 3, BorderTypes borderType = BorderTypes.Replicate) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
@@ -132,7 +132,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void GaussianBlur(double ksize = 5, double sigmaX = 5, double sigmaY = 5, BorderTypes borderType = BorderTypes.Reflect101) {
+        public static void GaussianBlur(double ksize = 5, double sigmaX = 5, double sigmaY = 5, BorderTypes borderType = BorderTypes.Replicate) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
@@ -237,7 +237,7 @@ namespace OpenCVSharpTest {
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matGray);
 
-            var matDst = matGray.Filter2D(MatType.CV_8UC1, kernel, borderType: BorderTypes.Default);
+            var matDst = matGray.Filter2D(MatType.CV_8UC1, kernel, borderType: BorderTypes.Replicate);
             kernel.Dispose();
             Glb.DrawMatAndHist2(matDst);
 
