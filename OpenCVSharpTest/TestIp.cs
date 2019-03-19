@@ -119,7 +119,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void Blur(double ksize = 5, BorderTypes borderType = BorderTypes.Reflect101) {
+        public static void Blur(double ksize = 3, BorderTypes borderType = BorderTypes.Reflect101) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
