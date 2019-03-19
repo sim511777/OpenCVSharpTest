@@ -118,46 +118,49 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="BigImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BigImage.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_00_Lenna" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_00_Lenna.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="BlobTest" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BlobTest.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_01_Insect" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_01_Insect.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="BlobTest2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BlobTest2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_02_Coins" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_02_Coins.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="BlobTest3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BlobTest3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_03_BigImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_03_BigImage.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="BlobTest4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BlobTest4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_04_Budist" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_04_Budist.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="BlobTest5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BlobTest5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_05_Shapes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_05_Shapes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Circle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Circle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_06_Circle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_06_Circle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Cross" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Cross.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_07_Cross" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_07_Cross.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Diamond" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Diamond.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_08_Diamond" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_08_Diamond.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Lenna" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Lenna.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_09_Rectangle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_09_Rectangle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Rectangle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Rectangle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_10_BlobTest" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_10_BlobTest.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Budist" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Budist.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_11_BlobTest2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_11_BlobTest2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Insect" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Insect.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_12_BlobTest3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_12_BlobTest3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Shapes" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Shapes.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_13_BlobTest4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_13_BlobTest4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_14_BlobTest5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_14_BlobTest5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -109,52 +109,55 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Lenna.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Circle.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Rectangle.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Cross.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Diamond.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BlobTest.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BlobTest2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BlobTest3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BlobTest4.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BlobTest5.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BigImage.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Budist.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Insect.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Shapes.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ZoomPictureBox\ZoomPictureBox.csproj">
       <Project>{3aa5fcf0-a958-4d09-8a59-3b630aa50ae2}</Project>
       <Name>ZoomPictureBox</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_00_Lenna.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_01_Insect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_02_Coins.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_03_BigImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_04_Budist.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_05_Shapes.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_06_Circle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_07_Cross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_08_Diamond.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_09_Rectangle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_10_BlobTest.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_11_BlobTest2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_12_BlobTest3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_13_BlobTest4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_14_BlobTest5.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

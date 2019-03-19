@@ -63,9 +63,9 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap BigImage {
+        internal static System.Drawing.Bitmap _00_Lenna {
             get {
-                object obj = ResourceManager.GetObject("BigImage", resourceCulture);
+                object obj = ResourceManager.GetObject("_00_Lenna", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap BlobTest {
+        internal static System.Drawing.Bitmap _01_Insect {
             get {
-                object obj = ResourceManager.GetObject("BlobTest", resourceCulture);
+                object obj = ResourceManager.GetObject("_01_Insect", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap BlobTest2 {
+        internal static System.Drawing.Bitmap _02_Coins {
             get {
-                object obj = ResourceManager.GetObject("BlobTest2", resourceCulture);
+                object obj = ResourceManager.GetObject("_02_Coins", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap BlobTest3 {
+        internal static System.Drawing.Bitmap _03_BigImage {
             get {
-                object obj = ResourceManager.GetObject("BlobTest3", resourceCulture);
+                object obj = ResourceManager.GetObject("_03_BigImage", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap BlobTest4 {
+        internal static System.Drawing.Bitmap _04_Budist {
             get {
-                object obj = ResourceManager.GetObject("BlobTest4", resourceCulture);
+                object obj = ResourceManager.GetObject("_04_Budist", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +113,9 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap BlobTest5 {
+        internal static System.Drawing.Bitmap _05_Shapes {
             get {
-                object obj = ResourceManager.GetObject("BlobTest5", resourceCulture);
+                object obj = ResourceManager.GetObject("_05_Shapes", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +123,9 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap Budist {
+        internal static System.Drawing.Bitmap _06_Circle {
             get {
-                object obj = ResourceManager.GetObject("Budist", resourceCulture);
+                object obj = ResourceManager.GetObject("_06_Circle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +133,9 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap Circle {
+        internal static System.Drawing.Bitmap _07_Cross {
             get {
-                object obj = ResourceManager.GetObject("Circle", resourceCulture);
+                object obj = ResourceManager.GetObject("_07_Cross", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,9 +143,9 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap Cross {
+        internal static System.Drawing.Bitmap _08_Diamond {
             get {
-                object obj = ResourceManager.GetObject("Cross", resourceCulture);
+                object obj = ResourceManager.GetObject("_08_Diamond", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,9 +153,9 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap Diamond {
+        internal static System.Drawing.Bitmap _09_Rectangle {
             get {
-                object obj = ResourceManager.GetObject("Diamond", resourceCulture);
+                object obj = ResourceManager.GetObject("_09_Rectangle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -163,9 +163,9 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap Insect {
+        internal static System.Drawing.Bitmap _10_BlobTest {
             get {
-                object obj = ResourceManager.GetObject("Insect", resourceCulture);
+                object obj = ResourceManager.GetObject("_10_BlobTest", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,9 +173,9 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap Lenna {
+        internal static System.Drawing.Bitmap _11_BlobTest2 {
             get {
-                object obj = ResourceManager.GetObject("Lenna", resourceCulture);
+                object obj = ResourceManager.GetObject("_11_BlobTest2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -183,9 +183,9 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap Rectangle {
+        internal static System.Drawing.Bitmap _12_BlobTest3 {
             get {
-                object obj = ResourceManager.GetObject("Rectangle", resourceCulture);
+                object obj = ResourceManager.GetObject("_12_BlobTest3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,9 +193,19 @@ namespace OpenCVSharpTest.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap Shapes {
+        internal static System.Drawing.Bitmap _13_BlobTest4 {
             get {
-                object obj = ResourceManager.GetObject("Shapes", resourceCulture);
+                object obj = ResourceManager.GetObject("_13_BlobTest4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap _14_BlobTest5 {
+            get {
+                object obj = ResourceManager.GetObject("_14_BlobTest5", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
