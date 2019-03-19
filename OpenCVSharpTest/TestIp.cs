@@ -442,15 +442,23 @@ namespace OpenCVSharpTest {
             matMedian.Dispose();
         }
 
-        public static void DistanceTransform(DistanceTypes distanceType = DistanceTypes.L2, DistanceMaskSize distanceMaskSize = DistanceMaskSize.Mask3) {
+        public static void DistanceTransform(bool negative = false, DistanceTypes distanceType = DistanceTypes.L2, DistanceMaskSize distanceMaskSize = DistanceMaskSize.Mask3) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+            if (negative)
+                Cv2.BitwiseNot(matThr, matThr);
             Glb.DrawMatAndHist1(matThr);
 
             var matDist = matThr.DistanceTransform(distanceType, distanceMaskSize);
+            var x1 = matDist.Min();
+            var x2 = matDist.Max();
+            float y1 = 0;
+            float y2 = 255;
+            double scale = (y2 - y1) / (x2 - x1);
+            double offset = (x2 * y1 - x1 * y2) / (x2 - x1);
             var matDistColor = new Mat();
-            matDist.ConvertTo(matDistColor, MatType.CV_8UC1);
+            matDist.ConvertTo(matDistColor, MatType.CV_8UC1, scale, offset);
             Glb.DrawMatAndHist2(matDistColor);
 
             matThr.Dispose();
