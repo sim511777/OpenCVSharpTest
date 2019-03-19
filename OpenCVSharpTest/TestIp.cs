@@ -294,7 +294,7 @@ namespace OpenCVSharpTest {
             Glb.TimerStart();
             Rect[] faces = haarCascade.DetectMultiScale(matGray);
             Console.WriteLine("=> Detect Time: {0}ms", Glb.TimerStop());
-            Console.WriteLine("=> Face Count: {}", faces.Length);
+            Console.WriteLine("=> Face Count: {0}", faces.Length);
 
             var matDsp = Glb.matSrc.Clone();
             foreach (var face in faces) {
