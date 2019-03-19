@@ -65,8 +65,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ErodeTest.cs" />
+    <Compile Include="TestImageCopy.cs" />
+    <Compile Include="TestErode.cs" />
     <Compile Include="Glb.cs" />
+    <Compile Include="TestInverse.cs" />
     <Compile Include="IpUnsafe.cs" />
     <Compile Include="MyBlobs.cs" />
     <Compile Include="ShimLib\CustomClass.cs" />

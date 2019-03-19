@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using OpenCvSharp;
 
 namespace OpenCVSharpTest {
-    class ErodeTest {
+    class TestErode {
         public static void ErodeOpenCv(int iteration = 20) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 

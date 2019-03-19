@@ -527,89 +527,6 @@ namespace OpenCVSharpTest {
             matDsp.Dispose();
         }
 
-        public static void ImageCopyMarshal1() {
-            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
-            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
-
-            Glb.TimerStart();
-            IpUnsafe.MemcpyMarshal1(matDst.Data, Glb.matSrc.Data, nbytes);
-            Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
-
-            Glb.DrawMatAndHist0(Glb.matSrc);
-            Glb.DrawMatAndHist1(matDst);
-            Glb.DrawMatAndHist2(null);
-            matDst.Dispose();
-        }
-
-        public static void ImageCopyMarshal2() {
-            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
-            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
-
-            Glb.TimerStart();
-            IpUnsafe.MemcpyMarshal2(matDst.Data, Glb.matSrc.Data, nbytes);
-            Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
-
-            Glb.DrawMatAndHist0(Glb.matSrc);
-            Glb.DrawMatAndHist1(matDst);
-            Glb.DrawMatAndHist2(null);
-            matDst.Dispose();
-        }
-
-        public static void ImageCopyUnsafe() {
-            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
-            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
-
-            Glb.TimerStart();
-            IpUnsafe.MemcpyUnsafe(matDst.Data, Glb.matSrc.Data, nbytes);
-            Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
-
-            Glb.DrawMatAndHist0(Glb.matSrc);
-            Glb.DrawMatAndHist1(matDst);
-            Glb.DrawMatAndHist2(null);
-            matDst.Dispose();
-        }
-
-        public static void ImageCopyCrt() {
-            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
-            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
-
-            Glb.TimerStart();
-            IpUnsafe.MemcpyCrt(matDst.Data, Glb.matSrc.Data, nbytes);
-            Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
-
-            Glb.DrawMatAndHist0(Glb.matSrc);
-            Glb.DrawMatAndHist1(matDst);
-            Glb.DrawMatAndHist2(null);
-            matDst.Dispose();
-        }
-
-        public static void ImageCopyBufferClass() {
-            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
-            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
-
-            Glb.TimerStart();
-            IpUnsafe.MemcpyBufferClass(matDst.Data, Glb.matSrc.Data, nbytes);
-            Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
-
-            Glb.DrawMatAndHist0(Glb.matSrc);
-            Glb.DrawMatAndHist1(matDst);
-            Glb.DrawMatAndHist2(null);
-            matDst.Dispose();
-        }
-
-        public static void ImageCopyOpenCV() {
-            Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
-
-            Glb.TimerStart();
-            Glb.matSrc.CopyTo(matDst);
-            Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
-
-            Glb.DrawMatAndHist0(Glb.matSrc);
-            Glb.DrawMatAndHist1(matDst);
-            Glb.DrawMatAndHist2(null);
-            matDst.Dispose();
-        }
-
         public static void InverseApi_RGB() {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
@@ -630,117 +547,51 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void InverseOpenCv() {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matGray);
-
-            var matDst = new Mat();
-            Cv2.BitwiseNot(matGray, matDst);
-            Glb.DrawMatAndHist2(matDst);
-
-            matGray.Dispose();
-            matDst.Dispose();
+        public enum ImageCopyUseAlgorithm {
+            Marshal1,
+            Marshal2,
+            Unsafe,
+            Crt,
+            BufferClass,
+            OpenCV,
         }
 
-        public static void InverseApi() {
-            Glb.DrawMatAndHist0(Glb.matSrc);
 
-            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matDst);
-
-            int bw = matDst.Width;
-            int bh = matDst.Height;
-            for (int y = 0; y < bh; y++) {
-                for (int x = 0; x < bw; x++) {
-                    matDst.Set(y, x, (byte)~matDst.Get<byte>(y, x));
-                }
+        public static void ImageCopyAlgorithm(ImageCopyUseAlgorithm useAlgorithm = ImageCopyUseAlgorithm.OpenCV) {
+            switch (useAlgorithm) {
+                case ImageCopyUseAlgorithm.Marshal1    : TestImageCopy.ImageCopyMarshal1(); break;
+                case ImageCopyUseAlgorithm.Marshal2    : TestImageCopy.ImageCopyMarshal2(); break;
+                case ImageCopyUseAlgorithm.Unsafe      : TestImageCopy.ImageCopyUnsafe(); break;
+                case ImageCopyUseAlgorithm.Crt         : TestImageCopy.ImageCopyCrt(); break;
+                case ImageCopyUseAlgorithm.BufferClass : TestImageCopy.ImageCopyBufferClass(); break;
+                case ImageCopyUseAlgorithm.OpenCV      : TestImageCopy.ImageCopyOpenCV(); break;
+                default: break;
             }
-            Glb.DrawMatAndHist2(matDst);
-
-            matDst.Dispose();
         }
 
-        public static void InverseMarshal() {
-            Glb.DrawMatAndHist0(Glb.matSrc);
+        public enum InverseUseAlgorithm {
+            OpenCv,
+            Api,
+            Marshal,
+            Unsafe,
+            C,
+            See,
+            VectorClass,
+            Avx,
+        }
 
-            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matDst);
-
-            IntPtr buf = matDst.Data;
-            int bw = matDst.Width;
-            int bh = matDst.Height;
-            int stride = (int)matDst.Step();
-            for (int y = 0; y < bh; y++) {
-                IntPtr pp = buf + stride * y;
-                for (int x = 0; x < bw; x++, pp = pp + 1) {
-                    Marshal.WriteByte(pp, (byte)~Marshal.ReadByte(pp));
-                }
+        public static void InverseAlgorithm(InverseUseAlgorithm useAlgorithm = InverseUseAlgorithm.OpenCv) {
+            switch (useAlgorithm) {
+                case InverseUseAlgorithm.OpenCv      : TestInverse.InverseOpenCv(); break;
+                case InverseUseAlgorithm.Api         : TestInverse.InverseApi(); break;
+                case InverseUseAlgorithm.Marshal     : TestInverse.InverseMarshal(); break;
+                case InverseUseAlgorithm.Unsafe      : TestInverse.InverseUnsafe(); break;
+                case InverseUseAlgorithm.C           : TestInverse.InverseC(); break;
+                case InverseUseAlgorithm.See         : TestInverse.InverseSee(); break;
+                case InverseUseAlgorithm.VectorClass : TestInverse.InverseVectorClass(); break;
+                case InverseUseAlgorithm.Avx         : TestInverse.InverseAvx(); break;
+                default: break;
             }
-            Glb.DrawMatAndHist2(matDst);
-
-            matDst.Dispose();
-        }
-
-        public static void InverseUnsafe() {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matDst);
-
-            IpUnsafe.Inverse(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-            Glb.DrawMatAndHist2(matDst);
-
-            matDst.Dispose();
-        }
-
-        public static void InverseC() {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matDst);
-
-            IpDll.InverseC(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-            Glb.DrawMatAndHist2(matDst);
-
-            matDst.Dispose();
-        }
-
-        public static void InverseSee() {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matDst);
-
-            IpDll.InverseSse(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-            Glb.DrawMatAndHist2(matDst);
-
-            matDst.Dispose();
-        }
-
-        public static void InverseVectorClass() {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matDst);
-
-            IpDll.InverseVec(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-            Glb.DrawMatAndHist2(matDst);
-
-            matDst.Dispose();
-        }
-
-        public static void InverseAvx() {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matDst);
-
-            IpDll.InverseAvx(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
-            Glb.DrawMatAndHist2(matDst);
-
-            matDst.Dispose();
         }
 
         public enum ErodeUseAlgorithm {
@@ -764,26 +615,26 @@ namespace OpenCVSharpTest {
             Ipp,
         }
 
-        public static void Erode(ErodeUseAlgorithm useAlgorithm = ErodeUseAlgorithm.OpenCv, int iteration = 20) {
+        public static void ErodeAlgorithm(ErodeUseAlgorithm useAlgorithm = ErodeUseAlgorithm.OpenCv, int iteration = 20) {
             switch (useAlgorithm) {
-                case ErodeUseAlgorithm.OpenCv: ErodeTest.ErodeOpenCv(iteration); break;
-                case ErodeUseAlgorithm.Unsafe: ErodeTest.ErodeUnsafe(iteration); break;
-                case ErodeUseAlgorithm.UnsafeParallel: ErodeTest.ErodeUnsafeParallel(iteration); break;
-                case ErodeUseAlgorithm.Unsafe2: ErodeTest.ErodeUnsafe2(iteration); break;
-                case ErodeUseAlgorithm.Unsafe3: ErodeTest.ErodeUnsafe3(iteration); break;
-                case ErodeUseAlgorithm.C: ErodeTest.ErodeC(iteration); break;
-                case ErodeUseAlgorithm.CNoCopy: ErodeTest.ErodeCNoCopy(iteration); break;
-                case ErodeUseAlgorithm.CStl: ErodeTest.ErodeCStl(iteration); break;
-                case ErodeUseAlgorithm.CParallel: ErodeTest.ErodeCParallel(iteration); break;
-                case ErodeUseAlgorithm.C2: ErodeTest.ErodeC2(iteration); break;
-                case ErodeUseAlgorithm.C2Parallel: ErodeTest.ErodeC2Parallel(iteration); break;
-                case ErodeUseAlgorithm.Sse: ErodeTest.ErodeSse(iteration); break;
-                case ErodeUseAlgorithm.Sse2D: ErodeTest.ErodeSse2D(iteration); break;
-                case ErodeUseAlgorithm.SseParallel: ErodeTest.ErodeSseParallel(iteration); break;
-                case ErodeUseAlgorithm.SseParallelNoCopy: ErodeTest.ErodeSseParallelNoCopy(iteration); break;
-                case ErodeUseAlgorithm.SseOpenMP: ErodeTest.ErodeSseOpenMP(iteration); break;
-                case ErodeUseAlgorithm.SseOpenMPNoCopy: ErodeTest.ErodeSseOpenMPNoCopy(iteration); break;
-                case ErodeUseAlgorithm.Ipp: ErodeTest.ErodeIpp(iteration); break;
+                case ErodeUseAlgorithm.OpenCv            : TestErode.ErodeOpenCv(iteration); break;
+                case ErodeUseAlgorithm.Unsafe            : TestErode.ErodeUnsafe(iteration); break;
+                case ErodeUseAlgorithm.UnsafeParallel    : TestErode.ErodeUnsafeParallel(iteration); break;
+                case ErodeUseAlgorithm.Unsafe2           : TestErode.ErodeUnsafe2(iteration); break;
+                case ErodeUseAlgorithm.Unsafe3           : TestErode.ErodeUnsafe3(iteration); break;
+                case ErodeUseAlgorithm.C                 : TestErode.ErodeC(iteration); break;
+                case ErodeUseAlgorithm.CNoCopy           : TestErode.ErodeCNoCopy(iteration); break;
+                case ErodeUseAlgorithm.CStl              : TestErode.ErodeCStl(iteration); break;
+                case ErodeUseAlgorithm.CParallel         : TestErode.ErodeCParallel(iteration); break;
+                case ErodeUseAlgorithm.C2                : TestErode.ErodeC2(iteration); break;
+                case ErodeUseAlgorithm.C2Parallel        : TestErode.ErodeC2Parallel(iteration); break;
+                case ErodeUseAlgorithm.Sse               : TestErode.ErodeSse(iteration); break;
+                case ErodeUseAlgorithm.Sse2D             : TestErode.ErodeSse2D(iteration); break;
+                case ErodeUseAlgorithm.SseParallel       : TestErode.ErodeSseParallel(iteration); break;
+                case ErodeUseAlgorithm.SseParallelNoCopy : TestErode.ErodeSseParallelNoCopy(iteration); break;
+                case ErodeUseAlgorithm.SseOpenMP         : TestErode.ErodeSseOpenMP(iteration); break;
+                case ErodeUseAlgorithm.SseOpenMPNoCopy   : TestErode.ErodeSseOpenMPNoCopy(iteration); break;
+                case ErodeUseAlgorithm.Ipp               : TestErode.ErodeIpp(iteration); break;
                 default: break;
             }
         }
