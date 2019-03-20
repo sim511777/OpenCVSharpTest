@@ -12,9 +12,17 @@ namespace ShimLib {
     public class ZoomPictureBox : Control {
         public static string ReleaseNote =
   @"
+v1.0.0.3
+- 20190314
+1. PixelValue 폰트 default 폰트 고정사이즈로 변경
+
+v1.0.0.2
+- 20190313
+1. PictureBox 상속에서 Control 상속으로 바꾸고 DoubleBuffered = true로 변경
+
 v1.0.0.1
 - 20190215
-1. ZoomPictureBox event처리에서 override로 변경
+1. event처리에서 override로 변경
 
 v1.0.0.0
 - 20190213
