@@ -297,48 +297,6 @@ namespace OpenCVSharpTest {
             matTemp.Dispose();
         }
 
-        public static void ErodeSseOpenMP(int iteration = 20) {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matGray);
-
-            var matTemp = new Mat(matGray.Size(), matGray.Type());
-            Glb.TimerStart();
-            for (int i = 0; i < iteration; i++) {
-                IpDll.ErodeSseOpenMP(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
-                matTemp.CopyTo(matGray);
-            }
-            Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
-            Glb.DrawMatAndHist2(matGray);
-
-            matGray.Dispose();
-            matTemp.Dispose();
-        }
-
-        public static void ErodeSseOpenMPNoCopy(int iteration = 20) {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matGray);
-
-            var matTemp = new Mat(matGray.Size(), matGray.Type());
-            Glb.TimerStart();
-            for (int i = 0; i < iteration; i++) {
-                if (i % 2 == 0)
-                    IpDll.ErodeSseOpenMP(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
-                else
-                    IpDll.ErodeSseOpenMP(matTemp.Data, matGray.Data, matGray.Width, matGray.Height, (int)matGray.Step());
-            }
-            if (iteration > 0 && iteration % 2 == 1)
-                IpUnsafe.MemcpyCrt(matTemp.Data, matGray.Data, (int)matGray.Step() * matGray.Height);
-            Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
-            Glb.DrawMatAndHist2(matGray);
-
-            matGray.Dispose();
-            matTemp.Dispose();
-        }
-
         public static void ErodeIpp(int iteration = 20) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 

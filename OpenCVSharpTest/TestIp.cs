@@ -632,8 +632,6 @@ namespace OpenCVSharpTest {
                 case ErodeUseAlgorithm.Sse2D             : TestErode.ErodeSse2D(iteration); break;
                 case ErodeUseAlgorithm.SseParallel       : TestErode.ErodeSseParallel(iteration); break;
                 case ErodeUseAlgorithm.SseParallelNoCopy : TestErode.ErodeSseParallelNoCopy(iteration); break;
-                case ErodeUseAlgorithm.SseOpenMP         : TestErode.ErodeSseOpenMP(iteration); break;
-                case ErodeUseAlgorithm.SseOpenMPNoCopy   : TestErode.ErodeSseOpenMPNoCopy(iteration); break;
                 case ErodeUseAlgorithm.Ipp               : TestErode.ErodeIpp(iteration); break;
                 default: break;
             }
