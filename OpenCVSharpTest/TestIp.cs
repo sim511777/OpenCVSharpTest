@@ -339,7 +339,7 @@ namespace OpenCVSharpTest {
             matDsp.SetTo(Scalar.Black);
 
             Glb.TimerStart();
-            IpUnsafe.RenderBlobs(blobs, matDsp);
+            MyBlobRenderer.RenderBlobs(blobs, matDsp);
             Console.WriteLine("=> Render Time: {0}ms", Glb.TimerStop());
 
             Console.WriteLine("=> Blob Count: {0}", blobs.Count);
@@ -368,7 +368,7 @@ namespace OpenCVSharpTest {
             matDsp.SetTo(Scalar.Black);
 
             Glb.TimerStart();
-            IpUnsafe.RenderBlobs(matLabels, matStats, matCentroids, matDsp);
+            MyBlobRenderer.RenderBlobs(matLabels, matStats, matCentroids, matDsp);
             Console.WriteLine("=> Render Time: {0}ms", Glb.TimerStop());
 
             Console.WriteLine("=> Blob Count: {0}", num);
@@ -398,7 +398,7 @@ namespace OpenCVSharpTest {
             var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
             matDst.SetTo(Scalar.Black);
             Glb.TimerStart();
-            IpUnsafe.RenderBlobs(blobs, matDst);
+            MyBlobRenderer.RenderBlobs(blobs, matDst);
             Console.WriteLine("=> Render Time: {0}ms", Glb.TimerStop());
 
             Console.WriteLine("=> Blob Count: {0}", blobs.Blobs.Count);
@@ -442,7 +442,7 @@ namespace OpenCVSharpTest {
             matMedian.Dispose();
         }
 
-        public static void DistanceTransform(bool negative = false, DistanceTypes distanceType = DistanceTypes.L2, DistanceMaskSize distanceMaskSize = DistanceMaskSize.Precise) {
+        public static void DistanceTransform(bool negative = false, DistanceTypes distanceType = DistanceTypes.L2, DistanceMaskSize distanceMaskSize = DistanceMaskSize.Mask3) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
@@ -451,6 +451,32 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist1(matThr);
 
             var matDist = matThr.DistanceTransform(distanceType, distanceMaskSize);
+            var x1 = matDist.Min();
+            var x2 = matDist.Max();
+            float y1 = 0;
+            float y2 = 255;
+            double scale = (y2 - y1) / (x2 - x1);
+            double offset = (x2 * y1 - x1 * y2) / (x2 - x1);
+            var matDistColor = new Mat();
+            matDist.ConvertTo(matDistColor, MatType.CV_8UC1, scale, offset);
+            Glb.DrawMatAndHist2(matDistColor);
+
+            matThr.Dispose();
+            matDist.Dispose();
+            matDistColor.Dispose();
+        }
+
+        public static void DistanceTransformMy(bool negative = false)
+        {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+            if (negative)
+                Cv2.BitwiseNot(matThr, matThr);
+            Glb.DrawMatAndHist1(matThr);
+
+            MatOfFloat matDist = new MatOfFloat(matThr.Size());
+            IpUnsafe.DistanceTransform(matThr.Data, matThr.Width, matThr.Height, matDist.Data);
             var x1 = matDist.Min();
             var x2 = matDist.Max();
             float y1 = 0;

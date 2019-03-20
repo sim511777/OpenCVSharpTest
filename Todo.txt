@@ -28,7 +28,9 @@ ok - CvBlobs에 label 버퍼 유지
 ok - size, minXY, maxXY, centroid만 추출
 ok 11. MyBlob.cs => MyBlobs.cs로 파일명 변경
 ok 11. Release로 빌드하면 Label시간 차이가 250ms로 줄어듬
-11. DistanceTransform 직접 구현
+ok 11. DistanceTransform 직접 구현
+11. DistanceTransform 이미지 외곽이랑 맞다은 부분 어떻게 저리 하는지
+11. precision 처리 방법, distBuff에다가 dist와 어느픽셀에서의 dist인지 모두 저장, 이 픽셀을 참조할때는 거리가 아닌 픽셀위치로 거리 계산
 11. WaterShed 직접 구현
 11. Thinning 직접 구현
   - node, end point, internal branch, external branch 구조화

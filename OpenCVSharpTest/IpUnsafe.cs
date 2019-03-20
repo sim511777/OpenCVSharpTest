@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-using OpenCvSharp;
-using OpenCvSharp.Blob;
 
 namespace OpenCVSharpTest {
     unsafe class IpUnsafe {
@@ -16,99 +14,6 @@ namespace OpenCVSharpTest {
                 byte *ppbuf = pbuf + stride * y;
                 for (int x = 0; x < bw; x++, ppbuf = ppbuf + 1) {
                    *ppbuf = (byte)~*ppbuf;
-                }
-            }
-        }
-
-        public static void RenderBlobs(CvBlobs blobs, Mat matDst) {
-            byte *pdst = matDst.DataPointer;
-            int bw = matDst.Width;
-            int bh = matDst.Height;
-            int stride = (int)matDst.Step();
-            int colorCount = 0;
-            foreach (var blob in blobs.Values) {
-                double r, g, b;
-                Glb.Hsv2Rgb((colorCount*77) % 360, 0.5, 1.0, out r, out g, out b);
-                colorCount++;
-                byte bb = (byte)b;
-                byte bg = (byte)g;
-                byte br = (byte)r;
-                int label = blob.Label;
-                for (int y=blob.MinY; y<=blob.MaxY; y++) {
-                    for (int x=blob.MinX; x<=blob.MaxX; x++) {
-                        if (blobs.Labels[y, x] == label) {
-                            byte *ppdst = pdst + stride*y + x*3;
-                            ppdst[0] = bb;
-                            ppdst[1] = bg;
-                            ppdst[2] = br;
-                        }
-                    }
-                }
-            }
-        }
-
-        public static void RenderBlobs(Mat matLabels, Mat matStats, Mat matCentroids, Mat matDst) {
-            int CC_STAT_LEFT = 0;
-            int CC_STAT_TOP = 1;
-            int CC_STAT_WIDTH = 2;
-            int CC_STAT_HEIGHT = 3;
-            int CC_STAT_AREA = 4;
-            int CC_STAT_MAX = 5;
-
-            byte* pdst = matDst.DataPointer;
-            int bw = matDst.Width;
-            int bh = matDst.Height;
-            int stride = (int)matDst.Step();
-            int num = matStats.Rows;
-            int* labels = (int*)matLabels.DataPointer;
-            int* stats = (int*)matStats.DataPointer;
-            for (int label=1; label<num; label++) {
-                double r, g, b;
-                Glb.Hsv2Rgb(((label-1) * 77) % 360, 0.5, 1.0, out r, out g, out b);
-                byte bb = (byte)b;
-                byte bg = (byte)g;
-                byte br = (byte)r;
-                int *stat = stats + label * CC_STAT_MAX;
-                int minX = stat[CC_STAT_LEFT];
-                int minY = stat[CC_STAT_TOP];
-                int maxX = minX + stat[CC_STAT_WIDTH] - 1;
-                int maxY = minY + stat[CC_STAT_HEIGHT] - 1;
-                for (int y = minY; y <= maxY; y++) {
-                    for (int x = minX; x <= maxX; x++) {
-                        if (labels[y * bw + x] == label) {
-                            byte* ppdst = pdst + stride * y + x * 3;
-                            ppdst[0] = bb;
-                            ppdst[1] = bg;
-                            ppdst[2] = br;
-                        }
-                    }
-                }
-            }
-        }
-
-        public static void RenderBlobs(MyBlobs blobs, Mat matDst) {
-            byte *pdst = matDst.DataPointer;
-            int bw = matDst.Width;
-            int bh = matDst.Height;
-            int stride = (int)matDst.Step();
-            int colorCount = 0;
-            foreach (var blob in blobs.Blobs.Values) {
-                double r, g, b;
-                Glb.Hsv2Rgb((colorCount*77) % 360, 0.5, 1.0, out r, out g, out b);
-                colorCount++;
-                byte bb = (byte)b;
-                byte bg = (byte)g;
-                byte br = (byte)r;
-                int label = blob.label;
-                for (int y=blob.MinY; y<=blob.MaxY; y++) {
-                    for (int x=blob.MinX; x<=blob.MaxX; x++) {
-                        if (blobs.Labels[y*bw+x] == label) {
-                            byte *ppdst = pdst + stride*y + x*3;
-                            ppdst[0] = bb;
-                            ppdst[1] = bg;
-                            ppdst[2] = br;
-                        }
-                    }
                 }
             }
         }
@@ -350,6 +255,69 @@ namespace OpenCVSharpTest {
             byte* pdst = (byte*)dst.ToPointer();
             byte* psrc = (byte*)src.ToPointer();
             Buffer.MemoryCopy(psrc, pdst, nbytes, nbytes);
+        }
+
+        public static void DistanceTransform(IntPtr thrBuff, int bw, int bh, IntPtr distBuff) {
+            float sq2 = (float)Math.Sqrt(2);
+            float one = 1f;
+
+            // thr을 좌상단에서 우하단으로 스캔한다.
+            // thr이 0이면 패스
+            // thr이 255이면
+            // 주변 4개의 픽셀과 dist값에 거리를 더한 값중 가장 작은 값
+            for (int y=1; y<bh-1; y++) {
+                byte* thrPtr = (byte*)thrBuff.ToPointer() + bw * y + 1;
+                float* distPtr = (float*)distBuff.ToPointer() + bw * y + 1;
+                for (int x=1; x<bw-1; x++, thrPtr++, distPtr++) {
+                    if (*thrPtr == 0)
+                        continue;
+
+                    // LeftTop   / CenterTop / RightTop
+                    // LeftCenter
+                    float LeftTop = *(distPtr - bw - 1) + sq2;
+                    float CenterTop = *(distPtr - bw) + one;
+                    float RightTop = *(distPtr - bw + 1) + sq2;
+                    float LeftCenter = *(distPtr - 1) + one;
+                    float minDist = LeftTop;
+                    if (CenterTop < minDist) minDist = CenterTop;
+                    if (RightTop < minDist) minDist = RightTop;
+                    if (LeftCenter < minDist) minDist = LeftCenter;
+                    *distPtr = minDist;
+                }
+            }
+
+            // thr을 우하단에서 좌상단으로 스캔한다
+            // thr이 0이면 패스
+            // thr이 255이면
+            // 주변 8개의 픽셀과 dist값에 거리를 더한 값중 가장 작은 값
+            for (int y=bh-2; y>=1; y--) {
+                byte* thrPtr = (byte*)thrBuff.ToPointer() + bw * y + bw - 2;
+                float* distPtr = (float*)distBuff.ToPointer() + bw * y + bw - 2;
+                for (int x = bw-2; x >= 1; x--, thrPtr--, distPtr--) {
+                    if (*thrPtr == 0)
+                        continue;
+
+                    // LeftTop   / CenterTop / RightTop
+                    // LeftCenter
+                    float LeftTop = *(distPtr - bw - 1) + sq2;
+                    float CenterTop = *(distPtr - bw) + one;
+                    float RightTop = *(distPtr - bw + 1) + sq2;
+                    float LeftCenter = *(distPtr - 1) + one;
+                    float RightCenter = *(distPtr + 1) + one;
+                    float LeftBot = *(distPtr + bw - 1) + sq2;
+                    float CenterBot = *(distPtr + bw) + one;
+                    float RightBot = *(distPtr + bw + 1) + sq2;
+                    float minDist = LeftTop;
+                    if (CenterTop < minDist) minDist = CenterTop;
+                    if (RightTop < minDist) minDist = RightTop;
+                    if (LeftCenter < minDist) minDist = LeftCenter;
+                    if (RightCenter < minDist) minDist = RightCenter;
+                    if (LeftBot < minDist) minDist = LeftBot;
+                    if (CenterBot < minDist) minDist = CenterBot;
+                    if (RightBot < minDist) minDist = RightBot;
+                    *distPtr = minDist;
+                }
+            }
         }
     }
 }
