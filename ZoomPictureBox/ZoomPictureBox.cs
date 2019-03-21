@@ -12,6 +12,13 @@ namespace ShimLib {
     public class ZoomPictureBox : Control {
         public static string ReleaseNote =
   @"
+v1.0.0.4
+- 20190321
+ZoomPictureBox 이미지 픽셀 옵셋 교정
+  - 이미지 첫 픽셀의 중심이 (0.0f, 0.0f)  에 표시 되도록 0.5 픽셀 라이즈 만큼 이동
+  - 픽셀값은 픽셀의 센터에 표시하지 않고 죄상 모서리에 표시
+  - 커서 위치 이미지 좌표는 반올림으로 처리
+
 v1.0.0.3
 - 20190314
 1. PixelValue 폰트 default 폰트 고정사이즈로 변경
@@ -187,7 +194,8 @@ v1.0.0.0
 
         // 이미지 표시
         private void DrawImage(Graphics g) {
-            g.DrawImage(this.DrawingImage, this.Pan.Width, this.Pan.Height, this.DrawingImage.Width * this.Zoom, this.DrawingImage.Height * this.Zoom);
+            // 첫 픽셀의 중심이 (0.0f, 0.0f)  에 표시 되도록 0.5 픽셀 라이즈 만큼 이동
+            g.DrawImage(this.DrawingImage, this.Pan.Width - this.Zoom * 0.5f, this.Pan.Height - this.Zoom * 0.5f, this.DrawingImage.Width * this.Zoom, this.DrawingImage.Height * this.Zoom);
 
             // 이미지 개별 픽셀 값 표시
             if (this.UseDrawPixelValue && this.Zoom >= this.DrawPixelValueZoom) {
@@ -206,7 +214,8 @@ v1.0.0.0
                         } else {
                             dispPixel = GetBuiltinDispPixelValue(x, y);
                         }
-                        var pt = this.RealToDraw(new Point(x, y));
+                        // 픽셀의 센터에 표시하지 않고 죄상 모서리에 표시
+                        var pt = this.RealToDraw(new PointF(x-0.5f, y-0.5f));
                         g.DrawString(dispPixel.Item1, font, dispPixel.Item2, pt);
                     }
                 }
@@ -233,7 +242,7 @@ v1.0.0.0
         public void DrawCursorPixelInfo(Graphics g) {
             Point ptMouse = this.PointToClient(System.Windows.Forms.Cursor.Position);
             PointF ptReal = this.DrawToReal(ptMouse);
-            Point ptRealInt = new Point((int)Math.Floor(ptReal.X), (int)Math.Floor(ptReal.Y));
+            Point ptRealInt = new Point((int)Math.Round(ptReal.X), (int)Math.Round(ptReal.Y));
             Color col = Color.Black;
             if (this.DrawingImage != null) {
                 if (ptRealInt.X >= 0 && ptRealInt.X < this.DrawingImage.Width && ptRealInt.Y >= 0 && ptRealInt.Y < this.DrawingImage.Height) {
