@@ -622,33 +622,16 @@ namespace OpenCVSharpTest {
             OpenCv,
             Unsafe,
             C,
-            CNoCopy,
-            CStl,
-            CParallel,
-            C2,
-            C2Parallel,
             Sse,
-            Sse2D,
-            SseParallel,
-            SseParallelNoCopy,
-            SseOpenMP,
-            SseOpenMPNoCopy,
             Ipp,
         }
 
-        public static void ErodeAlgorithm(ErodeUseAlgorithm useAlgorithm = ErodeUseAlgorithm.OpenCv, int iteration = 20, ParallelMode parallelMode = ParallelMode.Serial, MorphologyLogic morphlogyLogic = MorphologyLogic.Outer) {
+        public static void ErodeAlgorithm(ErodeUseAlgorithm useAlgorithm = ErodeUseAlgorithm.OpenCv, int iteration = 20, ParallelMode parallelMode = ParallelMode.Parallel) {
             switch (useAlgorithm) {
                 case ErodeUseAlgorithm.OpenCv            : TestErode.ErodeOpenCv(iteration); break;
-                case ErodeUseAlgorithm.Unsafe            : TestErode.ErodeUnsafe(iteration, parallelMode, morphlogyLogic); break;
-                case ErodeUseAlgorithm.C                 : TestErode.ErodeC(iteration); break;
-                case ErodeUseAlgorithm.CNoCopy           : TestErode.ErodeCNoCopy(iteration); break;
-                case ErodeUseAlgorithm.CStl              : TestErode.ErodeCStl(iteration); break;
-                case ErodeUseAlgorithm.CParallel         : TestErode.ErodeCParallel(iteration); break;
-                case ErodeUseAlgorithm.C2                : TestErode.ErodeC2(iteration); break;
-                case ErodeUseAlgorithm.C2Parallel        : TestErode.ErodeC2Parallel(iteration); break;
-                case ErodeUseAlgorithm.Sse               : TestErode.ErodeSse(iteration); break;
-                case ErodeUseAlgorithm.SseParallel       : TestErode.ErodeSseParallel(iteration); break;
-                case ErodeUseAlgorithm.SseParallelNoCopy : TestErode.ErodeSseParallelNoCopy(iteration); break;
+                case ErodeUseAlgorithm.Unsafe            : TestErode.ErodeUnsafe(iteration, parallelMode); break;
+                case ErodeUseAlgorithm.C                 : TestErode.ErodeC(iteration, parallelMode); break;
+                case ErodeUseAlgorithm.Sse               : TestErode.ErodeSse(iteration, parallelMode); break;
                 case ErodeUseAlgorithm.Ipp               : TestErode.ErodeIpp(iteration); break;
                 default: break;
             }

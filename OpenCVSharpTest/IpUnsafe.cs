@@ -57,7 +57,7 @@ namespace OpenCVSharpTest {
             }
         }
 
-        private static void Erode1LineOuter(byte* sp, byte* dp, int step, int x1, int x2) {
+        private static void Erode1Line(byte* sp, byte* dp, int step, int x1, int x2) {
             int[] ofs = { -step - 1, -step, -step + 1, -1, 0, 1, step - 1, step, step + 1, };
             byte* s0 = sp + ofs[0];
             byte* s1 = sp + ofs[1];
@@ -82,59 +82,7 @@ namespace OpenCVSharpTest {
             }
         }
 
-        private static void Erode1LineInner(byte* sp, byte* dp, int step, int x1, int x2) {
-            int[] ofs = { -step - 1, -step, -step + 1, -1, 0, 1, step - 1, step, step + 1, };
-            for (int x = x1; x < x2; x++, sp++, dp++) {
-                byte *s0 = sp + ofs[0];
-                byte *s1 = sp + ofs[1];
-                byte *s2 = sp + ofs[2];
-                byte *s3 = sp + ofs[3];
-                byte *s4 = sp + ofs[4];
-                byte *s5 = sp + ofs[5];
-                byte *s6 = sp + ofs[6];
-                byte *s7 = sp + ofs[7];
-                byte *s8 = sp + ofs[8];
-
-                byte min = *s0;
-                if (*s1 < min) min = *s1;
-                if (*s2 < min) min = *s2;
-                if (*s3 < min) min = *s3;
-                if (*s4 < min) min = *s4;
-                if (*s5 < min) min = *s5;
-                if (*s6 < min) min = *s6;
-                if (*s7 < min) min = *s7;
-                if (*s8 < min) min = *s8;
-                *(dp) = min;
-            }
-        }
-
-        private static void Erode1LineInnerValue(byte* sp, byte* dp, int step, int x1, int x2) {
-            int[] ofs = { -step - 1, -step, -step + 1, -1, 0, 1, step - 1, step, step + 1, };
-            for (int x = x1; x < x2; x++, sp++, dp++) {
-                byte s0 = *(sp + ofs[0]);
-                byte s1 = *(sp + ofs[1]);
-                byte s2 = *(sp + ofs[2]);
-                byte s3 = *(sp + ofs[3]);
-                byte s4 = *(sp + ofs[4]);
-                byte s5 = *(sp + ofs[5]);
-                byte s6 = *(sp + ofs[6]);
-                byte s7 = *(sp + ofs[7]);
-                byte s8 = *(sp + ofs[8]);
-
-                byte min = s0;
-                if (s1 < min) min = s1;
-                if (s2 < min) min = s2;
-                if (s3 < min) min = s3;
-                if (s4 < min) min = s4;
-                if (s5 < min) min = s5;
-                if (s6 < min) min = s6;
-                if (s7 < min) min = s7;
-                if (s8 < min) min = s8;
-                *(dp) = min;
-            }
-        }
-
-        public static void Erode(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step, ParallelMode parallelMode, MorphologyLogic morphologyLogic) {
+        public static void Erode(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step, ParallelMode parallelMode) {
             byte* srcPtr = (byte*)srcBuf.ToPointer();
             byte* dstPtr = (byte*)dstBuf.ToPointer();
             ErodeBorder(srcPtr, dstPtr, bw, bh, step);
@@ -145,12 +93,7 @@ namespace OpenCVSharpTest {
             Action<int> actionErode1Line = (y) => {
                 byte* sp = &srcPtr[y * step + x1];
                 byte* dp = &dstPtr[y * step + x1];
-                if (morphologyLogic == MorphologyLogic.Outer)
-                    Erode1LineOuter(sp, dp, step, x1, x2);
-                else if (morphologyLogic == MorphologyLogic.Inner)
-                    Erode1LineInner(sp, dp, step, x1, x2);
-                else
-                    Erode1LineInnerValue(sp, dp, step, x1, x2);
+                Erode1Line(sp, dp, step, x1, x2);
             };
 
             if (parallelMode == ParallelMode.Parallel) {
