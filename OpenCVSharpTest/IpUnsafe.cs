@@ -8,17 +8,7 @@ using System.Diagnostics;
 
 namespace OpenCVSharpTest {
     unsafe class IpUnsafe {
-        public static void Inverse(IntPtr buf, int bw, int bh, int stride) {
-            byte *pbuf = (byte *)buf.ToPointer();
-            for (int y = 0; y < bh; y++) {
-                byte *ppbuf = pbuf + stride * y;
-                for (int x = 0; x < bw; x++, ppbuf = ppbuf + 1) {
-                   *ppbuf = (byte)~*ppbuf;
-                }
-            }
-        }
-
-        public static byte GetPixelEdgeReplicate(byte* ptr, int bw, int bh, int step, int x, int y) {
+        private static byte GetBorderPixelReplicate(byte* ptr, int bw, int bh, int step, int x, int y) {
             if (x < 0) x = 0;
             else if (x > bw - 1) x = bw - 1;
 
@@ -28,16 +18,16 @@ namespace OpenCVSharpTest {
             return *(ptr + step * y + x);
         }
 
-        public static void ErodeEdge(byte* srcPtr, byte* dstPtr, int bw, int bh, int step, int x, int y) {
-            byte s0 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x - 1, y - 1);
-            byte s1 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x, y - 1);
-            byte s2 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x + 1, y - 1);
-            byte s3 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x - 1, y);
-            byte s4 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x, y);
-            byte s5 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x + 1, y);
-            byte s6 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x - 1, y + 1);
-            byte s7 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x, y + 1);
-            byte s8 = GetPixelEdgeReplicate(srcPtr, bw, bh, step, x + 1, y + 1);
+        private static void ErodeBorderPixel(byte* srcPtr, byte* dstPtr, int bw, int bh, int step, int x, int y) {
+            byte s0 = GetBorderPixelReplicate(srcPtr, bw, bh, step, x - 1, y - 1);
+            byte s1 = GetBorderPixelReplicate(srcPtr, bw, bh, step, x, y - 1);
+            byte s2 = GetBorderPixelReplicate(srcPtr, bw, bh, step, x + 1, y - 1);
+            byte s3 = GetBorderPixelReplicate(srcPtr, bw, bh, step, x - 1, y);
+            byte s4 = GetBorderPixelReplicate(srcPtr, bw, bh, step, x, y);
+            byte s5 = GetBorderPixelReplicate(srcPtr, bw, bh, step, x + 1, y);
+            byte s6 = GetBorderPixelReplicate(srcPtr, bw, bh, step, x - 1, y + 1);
+            byte s7 = GetBorderPixelReplicate(srcPtr, bw, bh, step, x, y + 1);
+            byte s8 = GetBorderPixelReplicate(srcPtr, bw, bh, step, x + 1, y + 1);
 
             byte min = s0;
             if (s1 < min) min = s1;
@@ -52,176 +42,133 @@ namespace OpenCVSharpTest {
             *(dstPtr + step * y + x) = min;
         }
 
-        public static void Erode(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step) {
-            byte* srcPtr = (byte*)srcBuf.ToPointer();
-            byte* dstPtr = (byte*)dstBuf.ToPointer();
-            int x1 = 1, x2 = bw - 2;
-            int y1 = 1, y2 = bh - 2;
-            for (int y = y1; y <= y2; y++) {
-                byte* sp = &srcPtr[y * step + x1];
-                byte* dp = &dstPtr[y * step + x1];
-                byte* s0 = (sp - step - 1);
-                byte* s1 = (sp - step);
-                byte* s2 = (sp - step + 1);
-                byte* s3 = (sp - 1);
-                byte* s5 = (sp + 1);
-                byte* s6 = (sp + step - 1);
-                byte* s7 = (sp + step);
-                byte* s8 = (sp + step + 1);
-                for (int x = x1; x <= x2; x++, sp++, dp++, s0++, s1++, s2++, s3++, s5++, s6++, s7++, s8++) {
-                    byte min = *s0;
-                    if (*s1 < min) min = *s1;
-                    if (*s2 < min) min = *s2;
-                    if (*s3 < min) min = *s3;
-                    if (*sp < min) min = *sp;
-                    if (*s5 < min) min = *s5;
-                    if (*s6 < min) min = *s6;
-                    if (*s7 < min) min = *s7;
-                    if (*s8 < min) min = *s8;
-
-                    *(dp) = min;
-                }
-            }
-
-            // edge pixel process
+        private static void ErodeBorder(byte* srcPtr, byte* dstPtr, int bw, int bh, int step) {
             for (int x = 0; x < bw; x++) {
                 int yTop = 0;
                 int yBottom = bh - 1;
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, x, yTop);
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, x, yBottom);
+                ErodeBorderPixel(srcPtr, dstPtr, bw, bh, step, x, yTop);
+                ErodeBorderPixel(srcPtr, dstPtr, bw, bh, step, x, yBottom);
             }
             for (int y = 1; y < bh - 1; y++) {
                 int xLeft = 0;
                 int xRight = bw - 1;
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, xLeft, y);
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, xRight, y);
+                ErodeBorderPixel(srcPtr, dstPtr, bw, bh, step, xLeft, y);
+                ErodeBorderPixel(srcPtr, dstPtr, bw, bh, step, xRight, y);
             }
         }
 
-        public static void ErodeParallel(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step) {
-            byte* srcPtr = (byte*)srcBuf.ToPointer();
-            byte* dstPtr = (byte*)dstBuf.ToPointer();
-            int x1 = 1, x2 = bw - 2;
-            int y1 = 1, y2 = bh - 2;
-            Parallel.For(y1, y2, (y) => {
-                byte* sp = &srcPtr[y * step + x1];
-                byte* dp = &dstPtr[y * step + x1];
-                byte* s0 = (sp - step - 1);
-                byte* s1 = (sp - step);
-                byte* s2 = (sp - step + 1);
-                byte* s3 = (sp - 1);
-                byte* s5 = (sp + 1);
-                byte* s6 = (sp + step - 1);
-                byte* s7 = (sp + step);
-                byte* s8 = (sp + step + 1);
-                for (int x = x1; x <= x2; x++, sp++, dp++, s0++, s1++, s2++, s3++, s5++, s6++, s7++, s8++) {
-                    byte min = *s0;
-                    if (*s1 < min) min = *s1;
-                    if (*s2 < min) min = *s2;
-                    if (*s3 < min) min = *s3;
-                    if (*sp < min) min = *sp;
-                    if (*s5 < min) min = *s5;
-                    if (*s6 < min) min = *s6;
-                    if (*s7 < min) min = *s7;
-                    if (*s8 < min) min = *s8;
-
-                    *(dp) = min;
-                }
-            });
-
-            // edge pixel process
-            for (int x = 0; x < bw; x++) {
-                int yTop = 0;
-                int yBottom = bh - 1;
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, x, yTop);
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, x, yBottom);
-            }
-            for (int y = 1; y < bh - 1; y++) {
-                int xLeft = 0;
-                int xRight = bw - 1;
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, xLeft, y);
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, xRight, y);
-            }
-        }
-
-        public static void Erode2(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step) {
-            byte* srcPtr = (byte*)srcBuf.ToPointer();
-            byte* dstPtr = (byte*)dstBuf.ToPointer();
-            int x1 = 1, x2 = bw - 2;
-            int y1 = 1, y2 = bh - 2;
+        private static void Erode1LineOuter(byte* sp, byte* dp, int step, int x1, int x2) {
             int[] ofs = { -step - 1, -step, -step + 1, -1, 0, 1, step - 1, step, step + 1, };
-            for (int y = y1; y <= y2; y++) {
-                byte* sptr = &srcPtr[y * step];
-                byte* dptr = &dstPtr[y * step];
-                for (int x = x1; x <= x2; x++) {
-                    byte result = sptr[x + ofs[0]];
-                    for (int i = 1; i < 9; i++) {
-                        byte val = sptr[x + ofs[i]];
-                        result = result < val ? result : val;
-                    }
-                    dptr[x] = result;
-                }
-            }
-
-            // edge pixel process
-            for (int x = 0; x < bw; x++) {
-                int yTop = 0;
-                int yBottom = bh - 1;
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, x, yTop);
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, x, yBottom);
-            }
-            for (int y = 1; y < bh - 1; y++) {
-                int xLeft = 0;
-                int xRight = bw - 1;
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, xLeft, y);
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, xRight, y);
+            byte* s0 = sp + ofs[0];
+            byte* s1 = sp + ofs[1];
+            byte* s2 = sp + ofs[2];
+            byte* s3 = sp + ofs[3];
+            byte* s4 = sp + ofs[4];
+            byte* s5 = sp + ofs[5];
+            byte* s6 = sp + ofs[6];
+            byte* s7 = sp + ofs[7];
+            byte* s8 = sp + ofs[8];
+            for (int x = x1; x < x2; dp++, x++, s0++, s1++, s2++, s3++, s4++, s5++, s6++, s7++, s8++) {
+                byte min = *s0;
+                if (*s1 < min) min = *s1;
+                if (*s2 < min) min = *s2;
+                if (*s3 < min) min = *s3;
+                if (*s4 < min) min = *s4;
+                if (*s5 < min) min = *s5;
+                if (*s6 < min) min = *s6;
+                if (*s7 < min) min = *s7;
+                if (*s8 < min) min = *s8;
+                *(dp) = min;
             }
         }
 
-        public static void Erode3(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step) {
+        private static void Erode1LineInner(byte* sp, byte* dp, int step, int x1, int x2) {
+            int[] ofs = { -step - 1, -step, -step + 1, -1, 0, 1, step - 1, step, step + 1, };
+            for (int x = x1; x < x2; x++, sp++, dp++) {
+                byte *s0 = sp + ofs[0];
+                byte *s1 = sp + ofs[1];
+                byte *s2 = sp + ofs[2];
+                byte *s3 = sp + ofs[3];
+                byte *s4 = sp + ofs[4];
+                byte *s5 = sp + ofs[5];
+                byte *s6 = sp + ofs[6];
+                byte *s7 = sp + ofs[7];
+                byte *s8 = sp + ofs[8];
+
+                byte min = *s0;
+                if (*s1 < min) min = *s1;
+                if (*s2 < min) min = *s2;
+                if (*s3 < min) min = *s3;
+                if (*s4 < min) min = *s4;
+                if (*s5 < min) min = *s5;
+                if (*s6 < min) min = *s6;
+                if (*s7 < min) min = *s7;
+                if (*s8 < min) min = *s8;
+                *(dp) = min;
+            }
+        }
+
+        private static void Erode1LineInnerValue(byte* sp, byte* dp, int step, int x1, int x2) {
+            int[] ofs = { -step - 1, -step, -step + 1, -1, 0, 1, step - 1, step, step + 1, };
+            for (int x = x1; x < x2; x++, sp++, dp++) {
+                byte s0 = *(sp + ofs[0]);
+                byte s1 = *(sp + ofs[1]);
+                byte s2 = *(sp + ofs[2]);
+                byte s3 = *(sp + ofs[3]);
+                byte s4 = *(sp + ofs[4]);
+                byte s5 = *(sp + ofs[5]);
+                byte s6 = *(sp + ofs[6]);
+                byte s7 = *(sp + ofs[7]);
+                byte s8 = *(sp + ofs[8]);
+
+                byte min = s0;
+                if (s1 < min) min = s1;
+                if (s2 < min) min = s2;
+                if (s3 < min) min = s3;
+                if (s4 < min) min = s4;
+                if (s5 < min) min = s5;
+                if (s6 < min) min = s6;
+                if (s7 < min) min = s7;
+                if (s8 < min) min = s8;
+                *(dp) = min;
+            }
+        }
+
+        public static void Erode(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step, ParallelMode parallelMode, MorphologyLogic morphologyLogic) {
             byte* srcPtr = (byte*)srcBuf.ToPointer();
             byte* dstPtr = (byte*)dstBuf.ToPointer();
-            int x1 = 1, x2 = bw - 2;
-            int y1 = 1, y2 = bh - 2;
-            for (int y = y1; y <= y2; y++) {
+            ErodeBorder(srcPtr, dstPtr, bw, bh, step);
+            
+            int x1 = 1, x2 = bw - 1;
+            int y1 = 1, y2 = bh - 1;
+
+            Action<int> actionErode1Line = (y) => {
                 byte* sp = &srcPtr[y * step + x1];
                 byte* dp = &dstPtr[y * step + x1];
-                for (int x = x1; x <= x2; x++, sp++, dp++) {
-                    byte *s0 = (sp - step - 1);
-                    byte *s1 = (sp - step);
-                    byte *s2 = (sp - step + 1);
-                    byte *s3 = (sp - 1);
-                    byte *s5 = (sp + 1);
-                    byte *s6 = (sp + step - 1);
-                    byte *s7 = (sp + step);
-                    byte *s8 = (sp + step + 1);
+                if (morphologyLogic == MorphologyLogic.Outer)
+                    Erode1LineOuter(sp, dp, step, x1, x2);
+                else if (morphologyLogic == MorphologyLogic.Inner)
+                    Erode1LineInner(sp, dp, step, x1, x2);
+                else
+                    Erode1LineInnerValue(sp, dp, step, x1, x2);
+            };
 
-                    byte min = *s0;
-                    if (*s1 < min) min = *s1;
-                    if (*s2 < min) min = *s2;
-                    if (*s3 < min) min = *s3;
-                    if (*sp < min) min = *sp;
-                    if (*s5 < min) min = *s5;
-                    if (*s6 < min) min = *s6;
-                    if (*s7 < min) min = *s7;
-                    if (*s8 < min) min = *s8;
-
-                    *(dp) = min;
+            if (parallelMode == ParallelMode.Parallel) {
+                Parallel.For(y1, y2, actionErode1Line);
+            } else {
+                for (int y = y1; y < y2; y++) {
+                    actionErode1Line(y);
                 }
             }
+        }
 
-            // edge pixel process
-            for (int x = 0; x < bw; x++) {
-                int yTop = 0;
-                int yBottom = bh - 1;
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, x, yTop);
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, x, yBottom);
-            }
-            for (int y = 1; y < bh - 1; y++) {
-                int xLeft = 0;
-                int xRight = bw - 1;
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, xLeft, y);
-                ErodeEdge(srcPtr, dstPtr, bw, bh, step, xRight, y);
+        public static void Inverse(IntPtr buf, int bw, int bh, int stride) {
+            byte *pbuf = (byte *)buf.ToPointer();
+            for (int y = 0; y < bh; y++) {
+                byte *ppbuf = pbuf + stride * y;
+                for (int x = 0; x < bw; x++, ppbuf = ppbuf + 1) {
+                   *ppbuf = (byte)~*ppbuf;
+                }
             }
         }
 

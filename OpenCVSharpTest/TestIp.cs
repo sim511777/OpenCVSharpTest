@@ -621,9 +621,6 @@ namespace OpenCVSharpTest {
         public enum ErodeUseAlgorithm {
             OpenCv,
             Unsafe,
-            UnsafeParallel,
-            Unsafe2,
-            Unsafe3,
             C,
             CNoCopy,
             CStl,
@@ -639,13 +636,10 @@ namespace OpenCVSharpTest {
             Ipp,
         }
 
-        public static void ErodeAlgorithm(ErodeUseAlgorithm useAlgorithm = ErodeUseAlgorithm.OpenCv, int iteration = 20) {
+        public static void ErodeAlgorithm(ErodeUseAlgorithm useAlgorithm = ErodeUseAlgorithm.OpenCv, int iteration = 20, ParallelMode parallelMode = ParallelMode.Serial, MorphologyLogic morphlogyLogic = MorphologyLogic.Outer) {
             switch (useAlgorithm) {
                 case ErodeUseAlgorithm.OpenCv            : TestErode.ErodeOpenCv(iteration); break;
-                case ErodeUseAlgorithm.Unsafe            : TestErode.ErodeUnsafe(iteration); break;
-                case ErodeUseAlgorithm.UnsafeParallel    : TestErode.ErodeUnsafeParallel(iteration); break;
-                case ErodeUseAlgorithm.Unsafe2           : TestErode.ErodeUnsafe2(iteration); break;
-                case ErodeUseAlgorithm.Unsafe3           : TestErode.ErodeUnsafe3(iteration); break;
+                case ErodeUseAlgorithm.Unsafe            : TestErode.ErodeUnsafe(iteration, parallelMode, morphlogyLogic); break;
                 case ErodeUseAlgorithm.C                 : TestErode.ErodeC(iteration); break;
                 case ErodeUseAlgorithm.CNoCopy           : TestErode.ErodeCNoCopy(iteration); break;
                 case ErodeUseAlgorithm.CStl              : TestErode.ErodeCStl(iteration); break;
@@ -653,7 +647,6 @@ namespace OpenCVSharpTest {
                 case ErodeUseAlgorithm.C2                : TestErode.ErodeC2(iteration); break;
                 case ErodeUseAlgorithm.C2Parallel        : TestErode.ErodeC2Parallel(iteration); break;
                 case ErodeUseAlgorithm.Sse               : TestErode.ErodeSse(iteration); break;
-                case ErodeUseAlgorithm.Sse2D             : TestErode.ErodeSse2D(iteration); break;
                 case ErodeUseAlgorithm.SseParallel       : TestErode.ErodeSseParallel(iteration); break;
                 case ErodeUseAlgorithm.SseParallelNoCopy : TestErode.ErodeSseParallelNoCopy(iteration); break;
                 case ErodeUseAlgorithm.Ipp               : TestErode.ErodeIpp(iteration); break;

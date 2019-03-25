@@ -6,97 +6,64 @@ using System.Threading.Tasks;
 using OpenCvSharp;
 
 namespace OpenCVSharpTest {
+    public enum ParallelMode {
+        Serial,
+        Parallel,
+    }
+
+    public enum MorphologyLogic {
+        Outer,
+        Inner,
+        InnerValue,
+    }
+
     class TestErode {
         public static void ErodeOpenCv(int iteration = 20) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
-            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matThr);
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
 
             Glb.TimerStart();
-            var matDst = matThr.Erode(new Mat(), iterations: iteration, borderType: BorderTypes.Replicate);
+            var matDst = matGray.Erode(new Mat(), iterations: iteration, borderType: BorderTypes.Replicate);
             Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
 
             Glb.DrawMatAndHist2(matDst);
 
-            matThr.Dispose();
+            matGray.Dispose();
             matDst.Dispose();
         }
 
-        public static void ErodeUnsafe(int iteration = 20) {
+        public static void ErodeUnsafe(int iteration, ParallelMode parallelMode, MorphologyLogic morphologyLogic) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matGray);
 
-            var matTemp = new Mat(matGray.Size(), matGray.Type());
             Glb.TimerStart();
+            var matTemp = matGray.Clone();
+            var matDst = new Mat(matGray.Size(), matGray.Type());
             for (int i = 0; i < iteration; i++) {
-                IpUnsafe.Erode(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
-                matTemp.CopyTo(matGray);
+                IntPtr srcBuf;
+                IntPtr dstBuf;
+                if (i % 2 == 0) {
+                    srcBuf = matTemp.Data;
+                    dstBuf = matDst.Data;
+                } else {
+                    srcBuf = matDst.Data;
+                    dstBuf = matTemp.Data;
+                }
+                IpUnsafe.Erode(srcBuf, dstBuf, matGray.Width, matGray.Height, (int)matGray.Step(), parallelMode, morphologyLogic);
             }
+            if (iteration % 2 == 0)
+                matTemp.CopyTo(matDst);
+
             Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
-            Glb.DrawMatAndHist2(matGray);
+            Glb.DrawMatAndHist2(matDst);
 
             matGray.Dispose();
-            matTemp.Dispose();
-        }
-
-        public static void ErodeUnsafeParallel(int iteration = 20) {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matGray);
-
-            var matTemp = new Mat(matGray.Size(), matGray.Type());
-            Glb.TimerStart();
-            for (int i = 0; i < iteration; i++) {
-                IpUnsafe.ErodeParallel(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
-                matTemp.CopyTo(matGray);
-            }
-            Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
-            Glb.DrawMatAndHist2(matGray);
-
-            matGray.Dispose();
-            matTemp.Dispose();
-        }
-
-        public static void ErodeUnsafe2(int iteration = 20) {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matGray);
-
-            var matTemp = new Mat(matGray.Size(), matGray.Type());
-            Glb.TimerStart();
-            for (int i = 0; i < iteration; i++) {
-                IpUnsafe.Erode2(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
-                matTemp.CopyTo(matGray);
-            }
-            Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
-            Glb.DrawMatAndHist2(matGray);
-
-            matGray.Dispose();
-            matTemp.Dispose();
-        }
-
-        public static void ErodeUnsafe3(int iteration = 20) {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matGray);
-
-            var matTemp = new Mat(matGray.Size(), matGray.Type());
-            Glb.TimerStart();
-            for (int i = 0; i < iteration; i++) {
-                IpUnsafe.Erode3(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
-                matTemp.CopyTo(matGray);
-            }
-            Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
-            Glb.DrawMatAndHist2(matGray);
-
-            matGray.Dispose();
-            matTemp.Dispose();
+            matDst.Dispose();
+            matDst.Dispose();
         }
 
         public static void ErodeC(int iteration = 20) {
@@ -227,25 +194,6 @@ namespace OpenCVSharpTest {
             Glb.TimerStart();
             for (int i = 0; i < iteration; i++) {
                 IpDll.ErodeSse(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
-                matTemp.CopyTo(matGray);
-            }
-            Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
-            Glb.DrawMatAndHist2(matGray);
-
-            matGray.Dispose();
-            matTemp.Dispose();
-        }
-
-        public static void ErodeSse2D(int iteration = 20) {
-            Glb.DrawMatAndHist0(Glb.matSrc);
-
-            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
-            Glb.DrawMatAndHist1(matGray);
-
-            var matTemp = new Mat(matGray.Size(), matGray.Type());
-            Glb.TimerStart();
-            for (int i = 0; i < iteration; i++) {
-                IpDll.ErodeSse2D(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
                 matTemp.CopyTo(matGray);
             }
             Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
