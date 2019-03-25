@@ -304,10 +304,9 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist1(matGray);
 
             var matTemp = new Mat(matGray.Size(), matGray.Type());
-            var matWork = new Mat(matGray.Size(), matGray.Type());
             Glb.TimerStart();
             for (int i = 0; i < iteration; i++) {
-                IpDll.ErodeIpp(matGray.Data, matTemp.Data, matWork.Data, matGray.Width, matGray.Height, (int)matGray.Step());
+                IpDll.ErodeIpp(matGray.Data, matTemp.Data, matGray.Width, matGray.Height, (int)matGray.Step());
                 matTemp.CopyTo(matGray);
             }
             Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
@@ -315,7 +314,6 @@ namespace OpenCVSharpTest {
 
             matGray.Dispose();
             matTemp.Dispose();
-            matWork.Dispose();
         }
     }
 }
