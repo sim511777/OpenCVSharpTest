@@ -200,10 +200,8 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             Rect roi = new Rect(x, y, width, height);
-            Mat matCrop = new Mat(Glb.matSrc, roi)  // 크롭 이미지 생성 하여 수정
-               .CvtColor(ColorConversionCodes.BGR2GRAY)
-               .Threshold(128, 255, ThresholdTypes.Binary)
-               .CvtColor(ColorConversionCodes.GRAY2BGR);
+            Mat matCrop = new Mat(Glb.matSrc, roi);  // 크롭 이미지 생성 하여 수정
+            Cv2.BitwiseNot(matCrop, matCrop);
             Glb.DrawMatAndHist1(matCrop);
 
             Mat matDst = Glb.matSrc.Clone();
