@@ -599,7 +599,7 @@ namespace OpenCVSharpTest {
             Marshal,
             Unsafe,
             C,
-            See,
+            Sse,
             VectorClass,
             Avx,
         }
@@ -611,7 +611,7 @@ namespace OpenCVSharpTest {
                 case InverseUseAlgorithm.Marshal     : TestInverse.InverseMarshal(); break;
                 case InverseUseAlgorithm.Unsafe      : TestInverse.InverseUnsafe(); break;
                 case InverseUseAlgorithm.C           : TestInverse.InverseC(); break;
-                case InverseUseAlgorithm.See         : TestInverse.InverseSee(); break;
+                case InverseUseAlgorithm.Sse         : TestInverse.Sse(); break;
                 case InverseUseAlgorithm.VectorClass : TestInverse.InverseVectorClass(); break;
                 case InverseUseAlgorithm.Avx         : TestInverse.InverseAvx(); break;
                 default: break;

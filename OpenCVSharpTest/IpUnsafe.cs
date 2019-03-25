@@ -68,7 +68,7 @@ namespace OpenCVSharpTest {
             byte* s6 = sp + ofs[6];
             byte* s7 = sp + ofs[7];
             byte* s8 = sp + ofs[8];
-            for (int x = x1; x < x2; dp++, x++, s0++, s1++, s2++, s3++, s4++, s5++, s6++, s7++, s8++) {
+            for (int x = x1; x < x2; x++, dp++, s0++, s1++, s2++, s3++, s4++, s5++, s6++, s7++, s8++) {
                 byte min = *s0;
                 if (*s1 < min) min = *s1;
                 if (*s2 < min) min = *s2;

@@ -85,7 +85,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void InverseSee() {
+        public static void Sse() {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);

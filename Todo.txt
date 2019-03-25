@@ -92,23 +92,19 @@ ok 206. CustomProperty Category 추가
 
 ==== Erosion 성능 향상에 대한 연구 ====
 6000*3600 이미지
-OpenCV          :   66ms
-unsafe          : 3800ms
-unsafe parallel :  980ms
-C               :  255ms
-C STL           : 2650ms
-C PPL           :  858ms
-C2              : 2550ms
-C2 PPL          : 1000ms
-SSE             :  214ms
-SSE PPL         :  155ms
-SSE 2D          :  185ms
+OpenCv Serial   : 74ms
+Unsafe Serial   : 4213ms
+Unsafe Parallel : 1844ms
+C Serial        : 217ms
+C Parallel      : 162ms
+Sse Serial      : 177ms
+Sse Parallel    : 160ms
 
 문제점
 1. C로 짠거와 SSE로 짠거와 속도차이가 별로 없음.
 -> 이론적으로 16개의 바이트를 동시 처리하르모 16배 빨라야 함
--> SEE를 잘못짜서 느린건지 C컴파일러가 SIMD코드로 변환해서 빠른건지?
-2. SEE와 SEE PPL 속도 차이가 별로 없음.
+-> SSE를 잘못짜서 느린건지 C컴파일러가 SIMD코드로 변환해서 빠른건지?
+2. SSE와 SSE PPL 속도 차이가 별로 없음.
 -> 이론적으로 4개의 코어와 8개의 쓰레드가 동시에 처리하므로 4배 이상 빨라야 함
 -> 컴파일러가 병렬처리 최적화 해주는건지?
 3. 어쨌거나 OpenCV의 속도를 도저히 따라 잡을 수 없음.

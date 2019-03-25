@@ -111,7 +111,7 @@ namespace OpenCVSharpTest {
                     srcBuf = matDst.Data;
                     dstBuf = matTemp.Data;
                 }
-                IpUnsafe.Erode(srcBuf, dstBuf, matGray.Width, matGray.Height, (int)matGray.Step(), parallelMode);
+                IpDll.ErodeSse(srcBuf, dstBuf, matGray.Width, matGray.Height, (int)matGray.Step(), parallelMode);
             }
             if (iteration % 2 == 0)
                 matTemp.CopyTo(matDst);
@@ -123,8 +123,6 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
             matDst.Dispose();
         }
-
-
 
         public static void ErodeIpp(int iteration = 20) {
             Glb.DrawMatAndHist0(Glb.matSrc);
