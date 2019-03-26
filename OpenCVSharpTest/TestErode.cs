@@ -12,7 +12,7 @@ namespace OpenCVSharpTest {
     }
 
     class TestErode {
-        public static void ErodeOpenCv(int iteration = 20) {
+        public static void ErodeOpenCv(int iteration) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
@@ -124,7 +124,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void ErodeIpp(int iteration = 20) {
+        public static void ErodeIpp(int iteration) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
