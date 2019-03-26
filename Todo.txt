@@ -91,14 +91,26 @@ ok 206. CustomProperty Category 추가
 
 
 ==== Erosion 성능 향상에 대한 연구 ====
-6000*3600 이미지
-OpenCv Serial   : 74ms
+5998*3597 이미지
+
+I5-6200U
+OpenCv Serial   :   74ms
 Unsafe Serial   : 4213ms
 Unsafe Parallel : 1844ms
-C Serial        : 217ms
-C Parallel      : 162ms
-Sse Serial      : 177ms
-Sse Parallel    : 160ms
+C Serial        :  217ms
+C Parallel      :  162ms
+Sse Serial      :  177ms
+Sse Parallel    :  160ms
+
+I7-6700HQ
+OpenCv Parallel :   73ms
+Unsafe Serial   : 3764ms
+Unsafe Parallel :  875ms
+C Serial        :  214ms
+C Parallel      :  114ms
+Sse Serial      :  170ms
+Sse Parallel    :  107ms
+
 
 문제점
 1. C로 짠거와 SSE로 짠거와 속도차이가 별로 없음.
