@@ -653,5 +653,14 @@ namespace OpenCVSharpTest {
             PrintMat(a);
             PrintMat(a.Transpose());
         }
+
+        public static void DummyFunction(int callCount = 20, int sleepMs = 20) {
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            var matDst = new Mat(matGray.Size(), matGray.Type());
+            Glb.TimerStart();
+            for (int i=0; i<callCount; i++)
+                IpDll.DummyFunction(matGray.Data, matDst.Data, matGray.Width, matGray.Height, (int)matGray.Step(), sleepMs);
+            Console.WriteLine("=> DummyFunction Time: {0}ms", Glb.TimerStop());
+        }
     }
 }
