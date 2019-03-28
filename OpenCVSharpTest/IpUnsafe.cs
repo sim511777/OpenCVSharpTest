@@ -57,7 +57,7 @@ namespace OpenCVSharpTest {
             }
         }
 
-        private static void Erode1Line(byte* sp, byte* dp, int step, int x1, int x2) {
+        private static void Erode1Line(byte* sp, byte* dp, int step, int len) {
             int[] ofs = { -step - 1, -step, -step + 1, -1, 0, 1, step - 1, step, step + 1, };
             byte* s0 = sp + ofs[0];
             byte* s1 = sp + ofs[1];
@@ -68,7 +68,7 @@ namespace OpenCVSharpTest {
             byte* s6 = sp + ofs[6];
             byte* s7 = sp + ofs[7];
             byte* s8 = sp + ofs[8];
-            for (int x = x1; x < x2; x++, dp++, s0++, s1++, s2++, s3++, s4++, s5++, s6++, s7++, s8++) {
+            for (int x = 0; x < len; x++, dp++, s0++, s1++, s2++, s3++, s4++, s5++, s6++, s7++, s8++) {
                 byte min = *s0;
                 if (*s1 < min) min = *s1;
                 if (*s2 < min) min = *s2;
@@ -93,7 +93,7 @@ namespace OpenCVSharpTest {
             Action<int> actionErode1Line = (y) => {
                 byte* sp = &srcPtr[y * step + x1];
                 byte* dp = &dstPtr[y * step + x1];
-                Erode1Line(sp, dp, step, x1, x2);
+                Erode1Line(sp, dp, step, x2 - x1);
             };
 
             if (parallelMode == ParallelMode.Parallel) {
