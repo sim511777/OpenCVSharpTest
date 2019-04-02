@@ -243,13 +243,6 @@ namespace OpenCVSharpTest {
         }
 
         public static void RenderBlobs(Mat matLabels, Mat matStats, Mat matCentroids, Mat matDst) {
-            int CC_STAT_LEFT = 0;
-            int CC_STAT_TOP = 1;
-            int CC_STAT_WIDTH = 2;
-            int CC_STAT_HEIGHT = 3;
-            int CC_STAT_AREA = 4;
-            int CC_STAT_MAX = 5;
-
             byte* pdst = matDst.DataPointer;
             int bw = matDst.Width;
             int bh = matDst.Height;
@@ -263,11 +256,11 @@ namespace OpenCVSharpTest {
                 byte bb = (byte)b;
                 byte bg = (byte)g;
                 byte br = (byte)r;
-                int* stat = stats + label * CC_STAT_MAX;
-                int minX = stat[CC_STAT_LEFT];
-                int minY = stat[CC_STAT_TOP];
-                int maxX = minX + stat[CC_STAT_WIDTH] - 1;
-                int maxY = minY + stat[CC_STAT_HEIGHT] - 1;
+                int* stat = stats + label * 5;
+                int minX = stat[(int)ConnectedComponentsTypes.Left];
+                int minY = stat[(int)ConnectedComponentsTypes.Top];
+                int maxX = minX + stat[(int)ConnectedComponentsTypes.Width] - 1;
+                int maxY = minY + stat[(int)ConnectedComponentsTypes.Height] - 1;
                 for (int y = minY; y <= maxY; y++) {
                     for (int x = minX; x <= maxX; x++) {
                         if (labels[y * bw + x] == label) {
