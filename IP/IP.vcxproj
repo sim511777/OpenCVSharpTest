@@ -110,7 +110,7 @@
       <ImageHasSafeExceptionHandlers>
       </ImageHasSafeExceptionHandlers>
       <AdditionalLibraryDirectories>C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2019.2.190\windows\ipp\lib\ia32_win;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ipp_iw.lib;ippcc.lib;ippch.lib;ippcore.lib;ippcv.lib;ippdc.lib;ippi.lib;ipps.lib;ippvm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ipp_iw.lib;ippccmt.lib;ippchmt.lib;ippcoremt.lib;ippcvmt.lib;ippdcmt.lib;ippimt.lib;ippsmt.lib;ippvmmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -148,7 +148,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2019.2.190\windows\ipp\lib\ia32_win;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ipp_iw.lib;ippcc.lib;ippch.lib;ippcore.lib;ippcv.lib;ippdc.lib;ippi.lib;ipps.lib;ippvm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ipp_iw.lib;ippccmt.lib;ippchmt.lib;ippcoremt.lib;ippcvmt.lib;ippdcmt.lib;ippimt.lib;ippsmt.lib;ippvmmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
