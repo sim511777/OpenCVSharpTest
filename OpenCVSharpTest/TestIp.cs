@@ -662,5 +662,29 @@ namespace OpenCVSharpTest {
                 IpDll.DummyFunction(matGray.Data, matDst.Data, matGray.Width, matGray.Height, (int)matGray.Step(), sleepMs);
             Console.WriteLine("=> DummyFunction Time: {0}ms", Glb.TimerStop());
         }
+
+        public static void ErodeIppRoi(int iteration = 20, int roiX = 50, int roiY = 50, int roiW = 50, int roiH = 50) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            Glb.TimerStart();
+            var matDst = matGray.Clone();
+            for (int i = 0; i < iteration; i++) {
+                if (i % 2 == 0)
+                    IpDll.ErodeIppRoi(matGray.Data, matDst.Data, matGray.Width, matGray.Height, (int)matGray.Step(), roiX, roiY, roiW, roiH);
+                else
+                    IpDll.ErodeIppRoi(matDst.Data, matGray.Data, matGray.Width, matGray.Height, (int)matGray.Step(), roiX, roiY, roiW, roiH);
+            }
+            if (iteration != 0 && iteration % 2 == 0)
+                matGray.CopyTo(matDst);
+
+            Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
+            Glb.DrawMatAndHist2(matDst);
+
+            matGray.Dispose();
+            matDst.Dispose();
+        }
     }
 }
