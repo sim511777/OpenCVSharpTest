@@ -6,11 +6,6 @@ using System.Threading.Tasks;
 using OpenCvSharp;
 
 namespace OpenCVSharpTest {
-    public enum ParallelMode {
-        Serial,
-        Parallel,
-    }
-
     class TestErode {
         public static void ErodeOpenCv(int iteration) {
             Glb.DrawMatAndHist0(Glb.matSrc);
@@ -28,7 +23,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void ErodeUnsafe(int iteration, ParallelMode parallelMode) {
+        public static void ErodeUnsafe(int iteration, bool useParallel) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
@@ -38,9 +33,9 @@ namespace OpenCVSharpTest {
             var matDst = new Mat(matGray.Size(), matGray.Type());
             for (int i = 0; i < iteration; i++) {
                 if (i % 2 == 0)
-                    IpUnsafe.Erode(matGray.Data, matDst.Data, matGray.Width, matGray.Height, (int)matGray.Step(), parallelMode);
+                    IpUnsafe.Erode(matGray.Data, matDst.Data, matGray.Width, matGray.Height, (int)matGray.Step(), useParallel);
                 else
-                    IpUnsafe.Erode(matDst.Data, matGray.Data, matGray.Width, matGray.Height, (int)matGray.Step(), parallelMode);
+                    IpUnsafe.Erode(matDst.Data, matGray.Data, matGray.Width, matGray.Height, (int)matGray.Step(), useParallel);
             }
             if (iteration != 0 && iteration % 2 == 0)
                 matGray.CopyTo(matDst);
@@ -52,7 +47,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void ErodeC(int iteration, ParallelMode parallelMode) {
+        public static void ErodeC(int iteration, bool useParallel) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
@@ -62,9 +57,9 @@ namespace OpenCVSharpTest {
             var matDst = new Mat(matGray.Size(), matGray.Type());
             for (int i = 0; i < iteration; i++) {
                 if (i % 2 == 0)
-                    IpDll.ErodeC(matGray.Data, matDst.Data, matGray.Width, matGray.Height, (int)matGray.Step(), parallelMode);
+                    IpDll.ErodeC(matGray.Data, matDst.Data, matGray.Width, matGray.Height, (int)matGray.Step(), false, useParallel);
                 else
-                    IpDll.ErodeC(matDst.Data, matGray.Data, matGray.Width, matGray.Height, (int)matGray.Step(), parallelMode);
+                    IpDll.ErodeC(matDst.Data, matGray.Data, matGray.Width, matGray.Height, (int)matGray.Step(), false, useParallel);
             }
             if (iteration != 0 && iteration % 2 == 0)
                 matGray.CopyTo(matDst);
@@ -76,7 +71,7 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void ErodeSse(int iteration, ParallelMode parallelMode) {
+        public static void ErodeSse(int iteration, bool useParallel) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
@@ -86,9 +81,9 @@ namespace OpenCVSharpTest {
             var matDst = new Mat(matGray.Size(), matGray.Type());
             for (int i = 0; i < iteration; i++) {
                 if (i % 2 == 0)
-                    IpDll.ErodeSse(matGray.Data, matDst.Data, matGray.Width, matGray.Height, (int)matGray.Step(), parallelMode);
+                    IpDll.ErodeC(matGray.Data, matDst.Data, matGray.Width, matGray.Height, (int)matGray.Step(), true, useParallel);
                 else
-                    IpDll.ErodeSse(matDst.Data, matGray.Data, matGray.Width, matGray.Height, (int)matGray.Step(), parallelMode);
+                    IpDll.ErodeC(matDst.Data, matGray.Data, matGray.Width, matGray.Height, (int)matGray.Step(), true, useParallel);
             }
             if (iteration != 0 && iteration % 2 == 0)
                 matGray.CopyTo(matDst);

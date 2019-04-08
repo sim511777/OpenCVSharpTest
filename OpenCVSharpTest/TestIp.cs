@@ -626,12 +626,12 @@ namespace OpenCVSharpTest {
             Ipp,
         }
 
-        public static void ErodeAlgorithm(ErodeUseAlgorithm useAlgorithm = ErodeUseAlgorithm.OpenCv, int iteration = 20, ParallelMode parallelMode = ParallelMode.Parallel) {
+        public static void ErodeAlgorithm(ErodeUseAlgorithm useAlgorithm = ErodeUseAlgorithm.OpenCv, int iteration = 20, bool useParallel = true) {
             switch (useAlgorithm) {
                 case ErodeUseAlgorithm.OpenCv            : TestErode.ErodeOpenCv(iteration); break;
-                case ErodeUseAlgorithm.Unsafe            : TestErode.ErodeUnsafe(iteration, parallelMode); break;
-                case ErodeUseAlgorithm.C                 : TestErode.ErodeC(iteration, parallelMode); break;
-                case ErodeUseAlgorithm.Sse               : TestErode.ErodeSse(iteration, parallelMode); break;
+                case ErodeUseAlgorithm.Unsafe            : TestErode.ErodeUnsafe(iteration, useParallel); break;
+                case ErodeUseAlgorithm.C                 : TestErode.ErodeC(iteration, useParallel); break;
+                case ErodeUseAlgorithm.Sse               : TestErode.ErodeSse(iteration, useParallel); break;
                 case ErodeUseAlgorithm.Ipp               : TestErode.ErodeIpp(iteration); break;
                 default: break;
             }

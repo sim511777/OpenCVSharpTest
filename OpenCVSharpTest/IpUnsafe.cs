@@ -82,7 +82,7 @@ namespace OpenCVSharpTest {
             }
         }
 
-        public static void Erode(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step, ParallelMode parallelMode) {
+        public static void Erode(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step, bool useParallel) {
             byte* srcPtr = (byte*)srcBuf.ToPointer();
             byte* dstPtr = (byte*)dstBuf.ToPointer();
             ErodeBorder(srcPtr, dstPtr, bw, bh, step);
@@ -96,7 +96,7 @@ namespace OpenCVSharpTest {
                 Erode1Line(sp, dp, step, x2 - x1);
             };
 
-            if (parallelMode == ParallelMode.Parallel) {
+            if (useParallel) {
                 Parallel.For(y1, y2, actionErode1Line);
             } else {
                 for (int y = y1; y < y2; y++) {
