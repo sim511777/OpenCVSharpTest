@@ -686,5 +686,11 @@ namespace OpenCVSharpTest {
             matGray.Dispose();
             matDst.Dispose();
         }
+
+        public static void Skeleton() {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            var size = Glb.matSrc.Size();
+            var matSkel = new Mat(Glb.matSrc.Size(), MatType.CV_8UC1, 0);
+        }
     }
 }
