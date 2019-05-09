@@ -122,17 +122,5 @@ namespace OpenCVSharpTest {
             }
             return null;
         }
-
-        public static Image BitmapToJpg(Bitmap bmp, int quality) {
-            var buff = new byte[bmp.Width*bmp.Height*4];
-            var ms = new MemoryStream(buff);
-            
-            var codecInfo = Glb.GetImageCodecInfo(ImageFormat.Jpeg);
-            var encoderParams = new EncoderParameters();
-            encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, quality);
-            bmp.Save(ms, codecInfo, encoderParams);
-            
-            return System.Drawing.Image.FromStream(ms);
-        }
     }
 }

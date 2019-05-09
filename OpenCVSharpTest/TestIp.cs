@@ -306,13 +306,41 @@ namespace OpenCVSharpTest {
             matGray.Dispose();
         }
 
-        public static void JpegCompress(int quality = 50) {
+        public enum ImageFormatType { Bmp, Gif, Jpeg, Png, Tiff, }
+        public static void ImageCompress(ImageFormatType format = ImageFormatType.Jpeg, int quality = 50) {
+            var formatTable = new Dictionary<ImageFormatType, ImageFormat>() {
+                { ImageFormatType.Bmp, ImageFormat.Bmp },
+                { ImageFormatType.Gif, ImageFormat.Gif },
+                { ImageFormatType.Jpeg, ImageFormat.Jpeg },
+                { ImageFormatType.Png, ImageFormat.Png },
+                { ImageFormatType.Tiff, ImageFormat.Tiff },
+                };
+
             Glb.DrawMatAndHist0(Glb.matSrc);
 
+            var bmpBufferSize = Glb.matSrc.Step() * Glb.matSrc.Height;
+            
             var bmp = Glb.matSrc.ToBitmap();
-            var jpg = Glb.BitmapToJpg(bmp, quality);
-            var bmpNew = new System.Drawing.Bitmap(jpg);
+            
+            // 인코더 준비
+            var imageFormat = formatTable[format];
+            var enc = ImageCodecInfo.GetImageEncoders().FirstOrDefault(codecInfo => codecInfo.FormatID == imageFormat.Guid);
+            var encPrms = new EncoderParameters(1);
+            encPrms.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+
+            // 메모리 스트림으로 저장
+            var ms = new MemoryStream();
+            bmp.Save(ms, enc, encPrms);
+            
+            var compressedBufferSize = ms.Length;
+
+            // 메모리 스트림에서 로드
+            var compressedImage = System.Drawing.Image.FromStream(ms);
+
+            var bmpNew = new System.Drawing.Bitmap(compressedImage);
             var matDsp = bmpNew.ToMat();
+
+            Console.WriteLine("bmp : {0}KB => {1}({2}%) : {3}KB", bmpBufferSize / 1000, imageFormat, quality, compressedBufferSize / 1000);
 
             Glb.DrawMatAndHist1(matDsp);
             Glb.DrawMatAndHist2(null);
