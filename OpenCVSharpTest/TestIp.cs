@@ -720,5 +720,15 @@ namespace OpenCVSharpTest {
             var size = Glb.matSrc.Size();
             var matSkel = new Mat(Glb.matSrc.Size(), MatType.CV_8UC1, 0);
         }
+
+        public static void GetStringTest() {
+            StringBuilder sb = new StringBuilder(512);
+            IpDll.GetString(sb);
+            Console.WriteLine(sb.ToString());
+        }
+
+        public static void SetStringTest(string str = "0123456789") {
+            IpDll.SetString(str);
+        }
     }
 }
