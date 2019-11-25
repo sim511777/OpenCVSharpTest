@@ -518,12 +518,14 @@ namespace OpenCVSharpTest {
             matDistColor.Dispose();
         }
 
-        public static void Morpology(MorphTypes morphTypes = MorphTypes.Erode, int iteration = 1) {
+        public static void Morpology(MorphTypes morphTypes = MorphTypes.Erode, MorphShapes shape = MorphShapes.Rect, int kernelSize = 3, int iteration = 1) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
 
-            var matMorpology = matGray.MorphologyEx(morphTypes, new Mat(), iterations: iteration);
+            var element = Cv2.GetStructuringElement(shape, new Size(kernelSize, kernelSize));
+
+            var matMorpology = matGray.MorphologyEx(morphTypes, element, iterations: iteration);
             Glb.DrawMatAndHist1(matMorpology);
 
             Glb.DrawMatAndHist2(null);
