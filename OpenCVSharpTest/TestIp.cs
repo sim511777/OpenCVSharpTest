@@ -782,5 +782,39 @@ namespace OpenCVSharpTest {
                 }
             }
         }
+
+        public static void GenerateHoleSizeSaveTest(
+                int bufWidth = 1000, int bufHeight = 1000, byte bufColor = 35,
+                int circleX = 500, int circleY = 500, int circleRadius = 30, byte circleColor = 255,
+                double blurKsize = 61, double blurSigma = 0,
+                int resize = 100) {
+            for (int i = - 20; i <= 20; i += 4) {
+                var matImage = new Mat(bufHeight, bufWidth, MatType.CV_8UC1);
+                matImage.FloodFill(new Point(0, 0), bufColor);
+                matImage.Circle(circleX, circleY, circleRadius, circleColor);
+                matImage.FloodFill(new Point(circleX, circleY), circleColor);
+                Glb.DrawMatAndHist0(matImage);
+
+                var matBlur = matImage.GaussianBlur(new Size(blurKsize, blurKsize), blurSigma, blurSigma, BorderTypes.Replicate);
+                Glb.DrawMatAndHist1(matBlur);
+
+                int roiSize = 60;
+                int resize2 = resize + i;
+                var matResizeHole = matBlur.Resize(new Size(resize2, resize2));
+                var matResizeHoleRoi = new Mat(matResizeHole, new Rect((resize2-roiSize)/2, (resize2-roiSize)/2, roiSize, roiSize));
+                
+                var matResizeOri = matImage.Resize(new Size(resize, resize));
+                var matResizeOriRoi = new Mat(matResizeOri, new Rect((resize-roiSize)/2, (resize-roiSize)/2, roiSize, roiSize));
+
+                matResizeHoleRoi.CopyTo(matResizeOriRoi);
+                string imageFilePath = $@"C:\test\ContactHole_Size\HoleSize_({resize2:000}).bmp";
+                bool r = matResizeOri.SaveImage(imageFilePath);
+                Console.WriteLine($"Save Image File : {imageFilePath} => {r}");
+
+                matResizeHole.Dispose();
+                matBlur.Dispose();
+                matImage.Dispose();
+            }
+        }
     }
 }
