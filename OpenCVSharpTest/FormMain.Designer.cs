@@ -138,14 +138,14 @@
             this.lbxFunc.ItemHeight = 12;
             this.lbxFunc.Location = new System.Drawing.Point(3, 17);
             this.lbxFunc.Name = "lbxFunc";
-            this.lbxFunc.Size = new System.Drawing.Size(250, 406);
+            this.lbxFunc.Size = new System.Drawing.Size(250, 273);
             this.lbxFunc.TabIndex = 4;
             this.lbxFunc.SelectedIndexChanged += new System.EventHandler(this.lbxTest_SelectedIndexChanged);
             // 
             // splitter4
             // 
             this.splitter4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter4.Location = new System.Drawing.Point(3, 423);
+            this.splitter4.Location = new System.Drawing.Point(3, 290);
             this.splitter4.Name = "splitter4";
             this.splitter4.Size = new System.Drawing.Size(250, 3);
             this.splitter4.TabIndex = 5;
@@ -154,10 +154,10 @@
             // grdParameter
             // 
             this.grdParameter.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.grdParameter.Location = new System.Drawing.Point(3, 426);
+            this.grdParameter.Location = new System.Drawing.Point(3, 293);
             this.grdParameter.Name = "grdParameter";
             this.grdParameter.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-            this.grdParameter.Size = new System.Drawing.Size(250, 196);
+            this.grdParameter.Size = new System.Drawing.Size(250, 329);
             this.grdParameter.TabIndex = 3;
             this.grdParameter.ToolbarVisible = false;
             this.grdParameter.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.grdParameter_PropertyValueChanged);

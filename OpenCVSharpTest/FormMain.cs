@@ -303,6 +303,7 @@ namespace OpenCVSharpTest {
                 cs.Add(cp);
             }
             grdParameter.SelectedObject = cs;
+            grdParameter.ExpandAllGridItems();
             grdParameter.Refresh();
 
             this.ProcessImage();
