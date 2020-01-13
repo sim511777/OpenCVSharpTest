@@ -734,10 +734,10 @@ namespace OpenCVSharpTest {
         }
 
         public static void GenerateHoleTest(
-                int bufWidth = 1024, int bufHeight = 1024, byte bufColor = 35,
-                int circleX = 512, int circleY = 512, int circleRadius = 32, byte circleColor = 255,
-                double blurKsize = 63, double blurSigma = 0,
-                int resizeX = 96, int resizeY = 96) {
+                int bufWidth = 1000, int bufHeight = 1000, byte bufColor = 35,
+                int circleX = 500, int circleY = 500, int circleRadius = 30, byte circleColor = 255,
+                double blurKsize = 61, double blurSigma = 0,
+                int resizeX = 100, int resizeY = 100) {
             var matImage = new Mat(bufHeight, bufWidth, MatType.CV_8UC1);
             matImage.FloodFill(new Point(0, 0), bufColor);
             matImage.Circle(circleX, circleY, circleRadius, circleColor);
@@ -753,6 +753,34 @@ namespace OpenCVSharpTest {
             matResize.Dispose();
             matBlur.Dispose();
             matImage.Dispose();
+        }
+
+        public static void GenerateHoleLocationSaveTest(
+                int bufWidth = 1000, int bufHeight = 1000, byte bufColor = 35,
+                int circleX = 500, int circleY = 500, int circleRadius = 30, byte circleColor = 255,
+                double blurKsize = 61, double blurSigma = 0,
+                int resizeX = 100, int resizeY = 100) {
+            for (int y = circleY; y < circleY + 10; y++) {
+                for (int x = circleX; x < circleX + 10; x++) {
+                    var matImage = new Mat(bufHeight, bufWidth, MatType.CV_8UC1);
+                    matImage.FloodFill(new Point(0, 0), bufColor);
+                    matImage.Circle(x, y, circleRadius, circleColor);
+                    matImage.FloodFill(new Point(x, y), circleColor);
+                    Glb.DrawMatAndHist0(matImage);
+
+                    var matBlur = matImage.GaussianBlur(new Size(blurKsize, blurKsize), blurSigma, blurSigma, BorderTypes.Replicate);
+                    Glb.DrawMatAndHist1(matBlur);
+
+                    var matResize = matBlur.Resize(new Size(resizeX, resizeY));
+                    Glb.DrawMatAndHist2(matResize);
+                    string imageFilePath = $@"C:\test\ContactHole_Location\HolePos_({x},{y}).bmp";
+                    bool r = matResize.SaveImage(imageFilePath);
+                    Console.WriteLine($"Save Image File : {imageFilePath} => {r}");
+                    matResize.Dispose();
+                    matBlur.Dispose();
+                    matImage.Dispose();
+                }
+            }
         }
     }
 }
