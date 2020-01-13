@@ -732,5 +732,27 @@ namespace OpenCVSharpTest {
         public static void SetStringTest(string str = "0123456789") {
             IpDll.SetString(str);
         }
+
+        public static void GenerateHoleTest(
+                int bufWidth = 1024, int bufHeight = 1024, byte bufColor = 35,
+                int circleX = 512, int circleY = 512, int circleRadius = 32, byte circleColor = 255,
+                double blurKsize = 63, double blurSigma = 0,
+                int resizeX = 96, int resizeY = 96) {
+            var matImage = new Mat(bufHeight, bufWidth, MatType.CV_8UC1);
+            matImage.FloodFill(new Point(0, 0), bufColor);
+            matImage.Circle(circleX, circleY, circleRadius, circleColor);
+            matImage.FloodFill(new Point(circleX, circleY), circleColor);
+            Glb.DrawMatAndHist0(matImage);
+
+            var matBlur = matImage.GaussianBlur(new Size(blurKsize, blurKsize), blurSigma, blurSigma, BorderTypes.Replicate);
+            Glb.DrawMatAndHist1(matBlur);
+
+            var matResize = matBlur.Resize(new Size(resizeX, resizeY));
+            Glb.DrawMatAndHist2(matResize);
+
+            matResize.Dispose();
+            matBlur.Dispose();
+            matImage.Dispose();
+        }
     }
 }
