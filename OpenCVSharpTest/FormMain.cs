@@ -35,6 +35,31 @@ namespace OpenCVSharpTest {
             this.InitFunctionList();
         }
 
+        private static void ZoomReset(ZoomPictureBox pbx) {
+            pbx.ZoomLevel = 0;
+            pbx.PtPanning = System.Drawing.Point.Empty;
+            pbx.Invalidate();
+        }
+
+        private static void ZoomToImage(ZoomPictureBox pbx) {
+            if (pbx.ImgBW <= 0 || pbx.ImgBH <= 0)
+                ZoomReset(pbx);
+            else
+                ZoomToRect(pbx, 0, 0, pbx.ImgBW, pbx.ImgBH);
+        }
+
+        private static void ZoomToRect(ZoomPictureBox pbx, int x, int y, int width, int height) {
+            double scale1 = (double)pbx.ClientRectangle.Width / width;
+            double scale2 = (double)pbx.ClientRectangle.Height / height;
+            double wantedZoomFactor = Math.Min(scale1, scale2);
+            pbx.ZoomLevel = Util.IntClamp((int)Math.Floor(Math.Log(wantedZoomFactor) / Math.Log(Math.Sqrt(2))), -20, 20);
+            double ZoomFactor = pbx.GetZoomFactor();
+            int panX = (int)Math.Floor((pbx.ClientRectangle.Width - width * ZoomFactor) / 2 - x * ZoomFactor);
+            int panY = (int)Math.Floor((pbx.ClientRectangle.Height - height * ZoomFactor) / 2 - y * ZoomFactor);
+            pbx.PtPanning = new System.Drawing.Point(panX, panY);
+            pbx.Invalidate();
+        }
+
         private void DrawHistogram(float[] histo, Series series, string name, Color color, AxisType yAxisTYpe = AxisType.Primary) {
             series.Name = name;
             series.Color = color;
@@ -104,12 +129,17 @@ namespace OpenCVSharpTest {
         }
 
         public void DrawMat(Bitmap bmp, ZoomPictureBox pbx) {
-            var bmpOld = pbx.DrawingImage;
-            var bmpSrc = bmp;
-            pbx.DrawingImage = bmpSrc;
-            pbx.Invalidate();
-            if (bmpOld != null)
-                bmpOld.Dispose();
+            if (pbx.ImgBuf != IntPtr.Zero) {
+                Marshal.FreeHGlobal(pbx.ImgBuf);
+            }
+
+            IntPtr buf = IntPtr.Zero;
+            int bw = 0;
+            int bh = 0;
+            int bytepp = 1;
+            if (bmp != null)
+                Util.BitmapToImageBuffer(bmp, ref buf, ref bw, ref bh, ref bytepp);
+            pbx.SetImgBuf(buf, bw, bh, bytepp);
         }
 
         private void InitFunctionList() {
@@ -121,17 +151,6 @@ namespace OpenCVSharpTest {
             this.lbxFunc.Items.AddRange(list);
             if (this.lbxFunc.Items.Count > 0)
                 this.lbxFunc.SelectedIndex = 0;
-        }
-
-        private Tuple<string, Brush> GetDstPixelValue(int x, int y) {
-            Color col;
-            if (this.pbx1.DrawingImage == null || x < 0 || x >= this.pbx1.DrawingImage.Width || y < 0 || y >= this.pbx1.DrawingImage.Height)
-                col = Color.Black;
-            else
-                col = this.pbx1.DrawingImage.GetPixel(x, y);
-            int avg = (col.R + col.G + col.B) / 3;
-            Brush br = (avg > 128) ? Brushes.Blue : Brushes.Yellow;
-            return Tuple.Create(avg.ToString(), br);
         }
 
         private void btnExample_Click(object sender, EventArgs e) {
@@ -148,9 +167,9 @@ namespace OpenCVSharpTest {
 
             this.ProcessImage();
 
-            this.pbx0.ZoomToImage();
-            this.pbx1.ZoomToImage();
-            this.pbx2.ZoomToImage();
+            ZoomToImage(this.pbx0);
+            ZoomToImage(this.pbx1);
+            ZoomToImage(this.pbx2);
         }
 
         private void btnClipboard_Click(object sender, EventArgs e) {
@@ -174,9 +193,9 @@ namespace OpenCVSharpTest {
 
             this.ProcessImage();
 
-            this.pbx0.ZoomToImage();
-            this.pbx1.ZoomToImage();
-            this.pbx2.ZoomToImage();
+            ZoomToImage(this.pbx0);
+            ZoomToImage(this.pbx1);
+            ZoomToImage(this.pbx2);
         }
 
         private void btnLoad_Click(object sender, EventArgs e) {
@@ -196,9 +215,9 @@ namespace OpenCVSharpTest {
 
             this.ProcessImage();
 
-            this.pbx0.ZoomToImage();
-            this.pbx1.ZoomToImage();
-            this.pbx2.ZoomToImage();
+            ZoomToImage(this.pbx0);
+            ZoomToImage(this.pbx1);
+            ZoomToImage(this.pbx2);
         }
 
         private void timer1_Tick(object sender, EventArgs e) {
@@ -227,8 +246,8 @@ namespace OpenCVSharpTest {
             this.cap = new VideoCapture(0);
             this.timer1.Enabled = true;
             this.btnLive.Text = "Live Stop";
-            this.pbx0.ZoomToRect(0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
-            this.pbx1.ZoomToRect(0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
+            ZoomToRect(this.pbx0, 0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
+            ZoomToRect(this.pbx1, 0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
         }
 
         private void StopLive() {
@@ -275,15 +294,15 @@ namespace OpenCVSharpTest {
         }
 
         private void btnZoomReset_Click(object sender, EventArgs e) {
-            this.pbx0.ZoomReset();
-            this.pbx1.ZoomReset();
-            this.pbx2.ZoomReset();
+            ZoomReset(this.pbx0);
+            ZoomReset(this.pbx1);
+            ZoomReset(this.pbx2);
         }
 
         private void btnFitZoom_Click(object sender, EventArgs e) {
-            this.pbx0.ZoomToImage();
-            this.pbx1.ZoomToImage();
-            this.pbx2.ZoomToImage();
+            ZoomToImage(this.pbx0);
+            ZoomToImage(this.pbx1);
+            ZoomToImage(this.pbx2);
         }
 
         private void lbxTest_SelectedIndexChanged(object sender, EventArgs e) {
@@ -314,49 +333,60 @@ namespace OpenCVSharpTest {
         }
 
         private void copyImageToClipboardToolStripMenuItem_Click(object sender, EventArgs e) {
-            Bitmap bmp = (this.popupPicture.SourceControl as ZoomPictureBox).DrawingImage;
-            if (bmp == null)
+            var pbx = this.popupPicture.SourceControl as ZoomPictureBox;
+            if (pbx.ImgBuf == IntPtr.Zero)
                 return;
-            Clipboard.SetImage(bmp);
+            using(Bitmap bmp = Util.ImageBufferToBitmap(pbx.ImgBuf, pbx.ImgBW, pbx.ImgBH, pbx.ImgBytepp)) {
+                if (bmp == null)
+                    return;
+
+                Clipboard.SetImage(bmp);
+            }
         }
 
         private void saveImageToolStripMenuItem_Click(object sender, EventArgs e) {
-            Bitmap bmp = (this.popupPicture.SourceControl as ZoomPictureBox).DrawingImage;
-            if (bmp == null) {
+            var pbx = this.popupPicture.SourceControl as ZoomPictureBox;
+            if (pbx.ImgBuf == IntPtr.Zero) {
                 Console.WriteLine("No Image");
                 return;
             }
+
             if (this.dlgSave.ShowDialog(this) != DialogResult.OK)
                 return;
 
-            ImageFormat fmt = null;
-            try {
-                string fileName = this.dlgSave.FileName;
-                string ext = Path.GetExtension(fileName).ToLower();
-                switch (ext) {
-                    case ".bmp":
-                        fmt = ImageFormat.Bmp;
-                        break;
-                    case ".jpg":
-                    case ".jpeg":
-                        fmt = ImageFormat.Jpeg;
-                        break;
-                    case ".png":
-                        fmt = ImageFormat.Png;
-                        break;
-                    case ".gif":
-                        fmt = ImageFormat.Gif;
-                        break;
-                    default:
-                        break;
-                }
-                if (fmt == null) {
-                    Console.WriteLine("Unsupported Format");
+            using(Bitmap bmp = Util.ImageBufferToBitmap(pbx.ImgBuf, pbx.ImgBW, pbx.ImgBH, pbx.ImgBytepp)) {
+                if (bmp == null)
                     return;
+
+                ImageFormat fmt = null;
+                try {
+                    string fileName = this.dlgSave.FileName;
+                    string ext = Path.GetExtension(fileName).ToLower();
+                    switch (ext) {
+                        case ".bmp":
+                            fmt = ImageFormat.Bmp;
+                            break;
+                        case ".jpg":
+                        case ".jpeg":
+                            fmt = ImageFormat.Jpeg;
+                            break;
+                        case ".png":
+                            fmt = ImageFormat.Png;
+                            break;
+                        case ".gif":
+                            fmt = ImageFormat.Gif;
+                            break;
+                        default:
+                            break;
+                    }
+                    if (fmt == null) {
+                        Console.WriteLine("Unsupported Format");
+                        return;
+                    }
+                    bmp.Save(this.dlgSave.FileName, fmt);
+                } catch (Exception ex) {
+                    Console.WriteLine(ex.Message);
                 }
-                bmp.Save(this.dlgSave.FileName, fmt);
-            } catch (Exception ex) {
-                Console.WriteLine(ex.Message);
             }
         }
     }

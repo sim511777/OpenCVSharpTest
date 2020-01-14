@@ -111,12 +111,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ZoomPictureBox\ZoomPictureBox.csproj">
-      <Project>{3aa5fcf0-a958-4d09-8a59-3b630aa50ae2}</Project>
-      <Name>ZoomPictureBox</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\_00_Lenna.png" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +157,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\_15_LongImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ShimLib\ShimLib.csproj">
+      <Project>{c70efcd5-2a2b-4384-81e5-39275df3be42}</Project>
+      <Name>ShimLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
