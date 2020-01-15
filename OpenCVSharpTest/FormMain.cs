@@ -35,28 +35,11 @@ namespace OpenCVSharpTest {
             this.InitFunctionList();
         }
 
-        private static void ZoomReset(ZoomPictureBox pbx) {
-            pbx.ZoomLevel = 0;
-            pbx.PtPanning = System.Drawing.Point.Empty;
-            pbx.Invalidate();
-        }
-
         private static void ZoomToImage(ZoomPictureBox pbx) {
             if (pbx.ImgBW <= 0 || pbx.ImgBH <= 0)
-                ZoomReset(pbx);
+                pbx.ZoomReset();
             else
-                ZoomToRect(pbx, 0, 0, pbx.ImgBW, pbx.ImgBH);
-        }
-
-        private static void ZoomToRect(ZoomPictureBox pbx, int x, int y, int width, int height) {
-            double scale1 = (double)pbx.ClientRectangle.Width / width;
-            double scale2 = (double)pbx.ClientRectangle.Height / height;
-            double wantedZoomFactor = Math.Min(scale1, scale2);
-            pbx.ZoomLevel = Util.IntClamp((int)Math.Floor(Math.Log(wantedZoomFactor) / Math.Log(Math.Sqrt(2))), -20, 20);
-            double ZoomFactor = pbx.GetZoomFactor();
-            int panX = (int)Math.Floor((pbx.ClientRectangle.Width - width * ZoomFactor) / 2 - x * ZoomFactor);
-            int panY = (int)Math.Floor((pbx.ClientRectangle.Height - height * ZoomFactor) / 2 - y * ZoomFactor);
-            pbx.PtPanning = new System.Drawing.Point(panX, panY);
+                pbx.ZoomToRect(0, 0, pbx.ImgBW, pbx.ImgBH);
             pbx.Invalidate();
         }
 
@@ -246,8 +229,8 @@ namespace OpenCVSharpTest {
             this.cap = new VideoCapture(0);
             this.timer1.Enabled = true;
             this.btnLive.Text = "Live Stop";
-            ZoomToRect(this.pbx0, 0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
-            ZoomToRect(this.pbx1, 0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
+            this.pbx0.ZoomToRect(0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
+            this.pbx0.Invalidate();
         }
 
         private void StopLive() {
@@ -294,9 +277,13 @@ namespace OpenCVSharpTest {
         }
 
         private void btnZoomReset_Click(object sender, EventArgs e) {
-            ZoomReset(this.pbx0);
-            ZoomReset(this.pbx1);
-            ZoomReset(this.pbx2);
+            this.pbx0.ZoomReset();
+            this.pbx0.Invalidate();
+            this.pbx1.ZoomReset();
+            this.pbx1.Invalidate();
+            this.pbx2.ZoomReset();
+            this.pbx2.Invalidate();
+
         }
 
         private void btnFitZoom_Click(object sender, EventArgs e) {
