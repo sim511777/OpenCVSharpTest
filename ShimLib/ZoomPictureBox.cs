@@ -19,6 +19,10 @@ namespace ShimLib {
         private IntPtr dispBuf;
         private Bitmap dispBmp;
 
+        // 기본 폰트
+        private Font defaultFont = SystemFonts.DefaultFont;
+        private Font pixelFont = new Font("돋움", 8);
+
         // 이미지용 버퍼
         [Browsable(false)]
         public int ImgBW { get; private set; } = 0;
@@ -91,24 +95,41 @@ namespace ShimLib {
 
         // 페인트 할때
         protected override void OnPaint(PaintEventArgs e) {
-            long st = Stopwatch.GetTimestamp();
-            
             var g = e.Graphics;
+            var t0 = Stopwatch.GetTimestamp();
 
-            DrawImage(g);
+            Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb());
+            var t1 = Stopwatch.GetTimestamp();
+
+            g.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
+            var t2 = Stopwatch.GetTimestamp();
+
             if (UseDrawPixelValue)
                 DrawPixelValue(g);
+            var t3 = Stopwatch.GetTimestamp();
+
             if (UseDrawCenterLine)
                 DrawCenterLine(g);
+            var t4 = Stopwatch.GetTimestamp();
 
             base.OnPaint(e);
+            var t5 = Stopwatch.GetTimestamp();
 
             if (UseDrawInfo)
                 DrawInfo(g);
-
+            var t6 = Stopwatch.GetTimestamp();
+            
             if (UseDrawDrawTime) {
-                double drawingMs = Util.GetPastTimeMs(st);
-                DrawDrawTime(g, drawingMs);
+                var freqMs = 1000.0/Stopwatch.Frequency;
+                string info =
+$@"CopyImage : {(t1-t0)*freqMs:0.0}ms
+DrawImage : {(t2-t1)*freqMs:0.0}ms
+PixelValue : {(t3-t2)*freqMs:0.0}ms
+CenterLine : {(t4-t3)*freqMs:0.0}ms
+OnPaint : {(t5-t4)*freqMs:0.0}ms
+CursorInfo : {(t6-t5)*freqMs:0.0}ms
+Total : {(t6-t0)*freqMs:0.0}ms";
+                DrawDrawTime(g, info);
             }
         }
 
@@ -191,7 +212,6 @@ namespace ShimLib {
             dispBW = Math.Max(ClientSize.Width, 64);
             dispBH = Math.Max(ClientSize.Height, 64);
             dispBuf = Marshal.AllocHGlobal((IntPtr)(dispBW * dispBH * 4));
-            Util.memset4(dispBuf, 0xff808080, (long)dispBW * dispBH);
             dispBmp = new Bitmap(dispBW, dispBH, dispBW * 4, PixelFormat.Format32bppPArgb, dispBuf);
         }
 
@@ -201,13 +221,6 @@ namespace ShimLib {
                 dispBmp.Dispose();
             if (dispBuf != IntPtr.Zero)
                 Marshal.FreeHGlobal(dispBuf);
-        }
-
-        // 이미지 버퍼 그림
-        private void DrawImage(Graphics g) {
-            int bgColor = this.BackColor.ToArgb();
-            Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, bgColor);
-            g.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
         }
 
         // 중심선 표시
@@ -262,7 +275,6 @@ namespace ShimLib {
             int imgX2 = Util.IntClamp((int)Math.Floor(ptImg2.X), 0, ImgBW-1);
             int imgY2 = Util.IntClamp((int)Math.Floor(ptImg2.Y), 0, ImgBH-1);
 
-            Font font = new Font("돋움", 8);
             for (int imgY = imgY1; imgY <= imgY2; imgY++) {
                 for (int imgX = imgX1; imgX <= imgX2; imgX++) {
                     var ptImg = new PointF(imgX, imgY);
@@ -270,16 +282,13 @@ namespace ShimLib {
                     string pixelValText = GetImagePixelValueText(imgX, imgY);
                     int pixelVal = GetImagePixelValueAverage(imgX, imgY);
                     var brush = pseudo[pixelVal / 32];
-                    g.DrawString(pixelValText.ToString(), font, brush, ptDisp.X, ptDisp.Y);
+                    g.DrawString(pixelValText.ToString(), pixelFont, brush, ptDisp.X, ptDisp.Y);
                 }
             }
-            font.Dispose();
         }
 
         // 좌상단 정보 표시
         private void DrawInfo(Graphics g) {
-            var font = SystemFonts.DefaultFont;
-
             Point ptCur = ptMouseLast;
             PointF ptImg = DispToImg(ptCur);
             int imgX = (int)Math.Floor(ptImg.X);
@@ -287,25 +296,16 @@ namespace ShimLib {
             string pixelVal = GetImagePixelValueText(imgX, imgY);
             string info = $"zoom={GetZoomText()} ({imgX},{imgY})={pixelVal}";
 
-            var rect = g.MeasureString(info, font);
+            var rect = g.MeasureString(info, defaultFont);
             g.FillRectangle(Brushes.White, 0, 0, rect.Width, rect.Height);
-            g.DrawString(info, font, Brushes.Black, 0, 0);
-
-            font.Dispose();
+            g.DrawString(info, defaultFont, Brushes.Black, 0, 0);
         }
 
         // 렌더링 시간 표시
-        private void DrawDrawTime(Graphics g, double drawingMs) {
-            var font = SystemFonts.DefaultFont;
-
-            var info = $"Draw Time : {drawingMs:0.000}ms";
-            
-            var rect = g.MeasureString(info, font);
-            int x = ClientSize.Width - 150;
-            g.FillRectangle(Brushes.White, x, 0, rect.Width, rect.Height);
-            g.DrawString(info, font, Brushes.Black, x, 0);
-            
-            font.Dispose();
+        private void DrawDrawTime(Graphics g, string info) {
+            var rect = g.MeasureString(info, defaultFont);
+            g.FillRectangle(Brushes.White, ClientSize.Width - 150, 0, rect.Width, rect.Height);
+            g.DrawString(info, defaultFont, Brushes.Black, ClientSize.Width - 150, 0);
         }
 
         // 표시 픽셀 좌표를 이미지 좌표로 변환
