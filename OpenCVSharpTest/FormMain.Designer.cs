@@ -87,11 +87,11 @@
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.pbx2 = new ShimLib.ZoomPictureBox();
-            this.pbx1 = new ShimLib.ZoomPictureBox();
-            this.pbx0 = new ShimLib.ZoomPictureBox();
             this.popupPicture = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyImageToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pbx1 = new ShimLib.ZoomPictureBox();
+            this.pbx0 = new ShimLib.ZoomPictureBox();
             this.splitter3 = new System.Windows.Forms.Splitter();
             this.dlgSave = new System.Windows.Forms.SaveFileDialog();
             this.panel1.SuspendLayout();
@@ -625,50 +625,12 @@
             this.pbx2.TabIndex = 2;
             this.pbx2.Text = "zoomPictureBox3";
             this.pbx2.UseDrawCenterLine = true;
-            this.pbx2.UseDrawDrawTime = true;
+            this.pbx2.UseDrawDrawTime = false;
             this.pbx2.UseDrawInfo = true;
             this.pbx2.UseDrawPixelValue = true;
             this.pbx2.UseMouseMove = true;
             this.pbx2.UseMouseWheelZoom = true;
             this.pbx2.ZoomLevel = 0;
-            // 
-            // pbx1
-            // 
-            this.pbx1.BackColor = System.Drawing.Color.Gray;
-            this.pbx1.ContextMenuStrip = this.popupPicture;
-            this.pbx1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbx1.Location = new System.Drawing.Point(419, 4);
-            this.pbx1.Name = "pbx1";
-            this.pbx1.PtPanning = new System.Drawing.Point(0, 0);
-            this.pbx1.Size = new System.Drawing.Size(408, 381);
-            this.pbx1.TabIndex = 1;
-            this.pbx1.Text = "zoomPictureBox2";
-            this.pbx1.UseDrawCenterLine = true;
-            this.pbx1.UseDrawDrawTime = true;
-            this.pbx1.UseDrawInfo = true;
-            this.pbx1.UseDrawPixelValue = true;
-            this.pbx1.UseMouseMove = true;
-            this.pbx1.UseMouseWheelZoom = true;
-            this.pbx1.ZoomLevel = 0;
-            // 
-            // pbx0
-            // 
-            this.pbx0.BackColor = System.Drawing.Color.Gray;
-            this.pbx0.ContextMenuStrip = this.popupPicture;
-            this.pbx0.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbx0.Location = new System.Drawing.Point(4, 4);
-            this.pbx0.Name = "pbx0";
-            this.pbx0.PtPanning = new System.Drawing.Point(0, 0);
-            this.pbx0.Size = new System.Drawing.Size(408, 381);
-            this.pbx0.TabIndex = 0;
-            this.pbx0.Text = "zoomPictureBox1";
-            this.pbx0.UseDrawCenterLine = true;
-            this.pbx0.UseDrawDrawTime = true;
-            this.pbx0.UseDrawInfo = true;
-            this.pbx0.UseDrawPixelValue = true;
-            this.pbx0.UseMouseMove = true;
-            this.pbx0.UseMouseWheelZoom = true;
-            this.pbx0.ZoomLevel = 0;
             // 
             // popupPicture
             // 
@@ -691,6 +653,44 @@
             this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.saveImageToolStripMenuItem.Text = "Save Image";
             this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
+            // 
+            // pbx1
+            // 
+            this.pbx1.BackColor = System.Drawing.Color.Gray;
+            this.pbx1.ContextMenuStrip = this.popupPicture;
+            this.pbx1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbx1.Location = new System.Drawing.Point(419, 4);
+            this.pbx1.Name = "pbx1";
+            this.pbx1.PtPanning = new System.Drawing.Point(0, 0);
+            this.pbx1.Size = new System.Drawing.Size(408, 381);
+            this.pbx1.TabIndex = 1;
+            this.pbx1.Text = "zoomPictureBox2";
+            this.pbx1.UseDrawCenterLine = true;
+            this.pbx1.UseDrawDrawTime = false;
+            this.pbx1.UseDrawInfo = true;
+            this.pbx1.UseDrawPixelValue = true;
+            this.pbx1.UseMouseMove = true;
+            this.pbx1.UseMouseWheelZoom = true;
+            this.pbx1.ZoomLevel = 0;
+            // 
+            // pbx0
+            // 
+            this.pbx0.BackColor = System.Drawing.Color.Gray;
+            this.pbx0.ContextMenuStrip = this.popupPicture;
+            this.pbx0.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbx0.Location = new System.Drawing.Point(4, 4);
+            this.pbx0.Name = "pbx0";
+            this.pbx0.PtPanning = new System.Drawing.Point(0, 0);
+            this.pbx0.Size = new System.Drawing.Size(408, 381);
+            this.pbx0.TabIndex = 0;
+            this.pbx0.Text = "zoomPictureBox1";
+            this.pbx0.UseDrawCenterLine = true;
+            this.pbx0.UseDrawDrawTime = false;
+            this.pbx0.UseDrawInfo = true;
+            this.pbx0.UseDrawPixelValue = true;
+            this.pbx0.UseMouseMove = true;
+            this.pbx0.UseMouseWheelZoom = true;
+            this.pbx0.ZoomLevel = 0;
             // 
             // splitter3
             // 
