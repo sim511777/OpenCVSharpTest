@@ -501,7 +501,7 @@ namespace OpenCVSharpTest {
                 Cv2.BitwiseNot(matThr, matThr);
             Glb.DrawMatAndHist1(matThr);
 
-            MatOfFloat matDist = new MatOfFloat(matThr.Size());
+            var matDist = new Mat<float>(matThr.Size());
             IpUnsafe.DistanceTransform(matThr.Data, matThr.Width, matThr.Height, matDist.Data);
             var x1 = matDist.Min();
             var x2 = matDist.Max();
