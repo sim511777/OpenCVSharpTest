@@ -816,5 +816,34 @@ namespace OpenCVSharpTest {
                 matImage.Dispose();
             }
         }
+
+        public static void HSVControl(double hscale = 1.0, double hoffset = 0.0, double sscale = 1.0, double soffset = 0.0, double vscale = 1.0, double voffset = 0.0) {
+            Glb.DrawMat0(Glb.matSrc);
+
+            // BGR to HSV변환
+            var matHsv = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2HSV);
+            Glb.DrawHist0(matHsv, true);
+
+            // 채널 분리
+            var hsvChannels = matHsv.Split();
+            // 변환
+            hsvChannels[0].ConvertTo(hsvChannels[0], MatType.CV_8UC1, hscale, hoffset);
+            hsvChannels[1].ConvertTo(hsvChannels[1], MatType.CV_8UC1, sscale, soffset);
+            hsvChannels[2].ConvertTo(hsvChannels[2], MatType.CV_8UC1, vscale, voffset);
+
+            // 채널 병합
+            var matDst = new Mat();
+            Cv2.Merge(hsvChannels, matDst);
+            Glb.DrawHist1(matDst, true);
+
+            // HSV to BGR변환
+            matDst = matDst.CvtColor(ColorConversionCodes.HSV2BGR);
+            Glb.DrawMat1(matDst);
+
+            Glb.DrawMatAndHist2(null);
+
+            matHsv.Dispose();
+            matDst.Dispose();
+        }
     }
 }
