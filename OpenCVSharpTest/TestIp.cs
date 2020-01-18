@@ -733,89 +733,89 @@ namespace OpenCVSharpTest {
             IpDll.SetString(str);
         }
 
-        public static void GenerateHoleTest(
-                int bufWidth = 1000, int bufHeight = 1000, byte bufColor = 35,
-                int circleX = 500, int circleY = 500, int circleRadius = 30, byte circleColor = 255,
-                double blurKsize = 61, double blurSigma = 0,
-                int resizeX = 100, int resizeY = 100) {
-            var matImage = new Mat(bufHeight, bufWidth, MatType.CV_8UC1);
-            matImage.FloodFill(new Point(0, 0), bufColor);
-            matImage.Circle(circleX, circleY, circleRadius, circleColor);
-            matImage.FloodFill(new Point(circleX, circleY), circleColor);
-            Glb.DrawMatAndHist0(matImage);
+        //public static void GenerateHoleTest(
+        //        int bufWidth = 1000, int bufHeight = 1000, byte bufColor = 35,
+        //        int circleX = 500, int circleY = 500, int circleRadius = 30, byte circleColor = 255,
+        //        double blurKsize = 61, double blurSigma = 0,
+        //        int resizeX = 100, int resizeY = 100) {
+        //    var matImage = new Mat(bufHeight, bufWidth, MatType.CV_8UC1);
+        //    matImage.FloodFill(new Point(0, 0), bufColor);
+        //    matImage.Circle(circleX, circleY, circleRadius, circleColor);
+        //    matImage.FloodFill(new Point(circleX, circleY), circleColor);
+        //    Glb.DrawMatAndHist0(matImage);
 
-            var matBlur = matImage.GaussianBlur(new Size(blurKsize, blurKsize), blurSigma, blurSigma, BorderTypes.Replicate);
-            Glb.DrawMatAndHist1(matBlur);
+        //    var matBlur = matImage.GaussianBlur(new Size(blurKsize, blurKsize), blurSigma, blurSigma, BorderTypes.Replicate);
+        //    Glb.DrawMatAndHist1(matBlur);
 
-            var matResize = matBlur.Resize(new Size(resizeX, resizeY));
-            Glb.DrawMatAndHist2(matResize);
+        //    var matResize = matBlur.Resize(new Size(resizeX, resizeY));
+        //    Glb.DrawMatAndHist2(matResize);
 
-            matResize.Dispose();
-            matBlur.Dispose();
-            matImage.Dispose();
-        }
+        //    matResize.Dispose();
+        //    matBlur.Dispose();
+        //    matImage.Dispose();
+        //}
 
-        public static void GenerateHoleLocationSaveTest(
-                int bufWidth = 1000, int bufHeight = 1000, byte bufColor = 35,
-                int circleX = 500, int circleY = 500, int circleRadius = 30, byte circleColor = 255,
-                double blurKsize = 61, double blurSigma = 0,
-                int resizeX = 100, int resizeY = 100) {
-            for (int y = circleY; y < circleY + 10; y++) {
-                for (int x = circleX; x < circleX + 10; x++) {
-                    var matImage = new Mat(bufHeight, bufWidth, MatType.CV_8UC1);
-                    matImage.FloodFill(new Point(0, 0), bufColor);
-                    matImage.Circle(x, y, circleRadius, circleColor);
-                    matImage.FloodFill(new Point(x, y), circleColor);
-                    Glb.DrawMatAndHist0(matImage);
+        //public static void GenerateHoleLocationSaveTest(
+        //        int bufWidth = 1000, int bufHeight = 1000, byte bufColor = 35,
+        //        int circleX = 500, int circleY = 500, int circleRadius = 30, byte circleColor = 255,
+        //        double blurKsize = 61, double blurSigma = 0,
+        //        int resizeX = 100, int resizeY = 100) {
+        //    for (int y = circleY; y < circleY + 10; y++) {
+        //        for (int x = circleX; x < circleX + 10; x++) {
+        //            var matImage = new Mat(bufHeight, bufWidth, MatType.CV_8UC1);
+        //            matImage.FloodFill(new Point(0, 0), bufColor);
+        //            matImage.Circle(x, y, circleRadius, circleColor);
+        //            matImage.FloodFill(new Point(x, y), circleColor);
+        //            Glb.DrawMatAndHist0(matImage);
 
-                    var matBlur = matImage.GaussianBlur(new Size(blurKsize, blurKsize), blurSigma, blurSigma, BorderTypes.Replicate);
-                    Glb.DrawMatAndHist1(matBlur);
+        //            var matBlur = matImage.GaussianBlur(new Size(blurKsize, blurKsize), blurSigma, blurSigma, BorderTypes.Replicate);
+        //            Glb.DrawMatAndHist1(matBlur);
 
-                    var matResize = matBlur.Resize(new Size(resizeX, resizeY));
-                    Glb.DrawMatAndHist2(matResize);
-                    string imageFilePath = $@"C:\test\ContactHole_Location\HolePos_({x},{y}).bmp";
-                    bool r = matResize.SaveImage(imageFilePath);
-                    Console.WriteLine($"Save Image File : {imageFilePath} => {r}");
-                    matResize.Dispose();
-                    matBlur.Dispose();
-                    matImage.Dispose();
-                }
-            }
-        }
+        //            var matResize = matBlur.Resize(new Size(resizeX, resizeY));
+        //            Glb.DrawMatAndHist2(matResize);
+        //            string imageFilePath = $@"C:\test\ContactHole_Location\HolePos_({x},{y}).bmp";
+        //            bool r = matResize.SaveImage(imageFilePath);
+        //            Console.WriteLine($"Save Image File : {imageFilePath} => {r}");
+        //            matResize.Dispose();
+        //            matBlur.Dispose();
+        //            matImage.Dispose();
+        //        }
+        //    }
+        //}
 
-        public static void GenerateHoleSizeSaveTest(
-                int bufWidth = 1000, int bufHeight = 1000, byte bufColor = 35,
-                int circleX = 500, int circleY = 500, int circleRadius = 30, byte circleColor = 255,
-                double blurKsize = 61, double blurSigma = 0,
-                int resize = 100) {
-            for (int i = - 20; i <= 20; i += 4) {
-                var matImage = new Mat(bufHeight, bufWidth, MatType.CV_8UC1);
-                matImage.FloodFill(new Point(0, 0), bufColor);
-                matImage.Circle(circleX, circleY, circleRadius, circleColor);
-                matImage.FloodFill(new Point(circleX, circleY), circleColor);
-                Glb.DrawMatAndHist0(matImage);
+        //public static void GenerateHoleSizeSaveTest(
+        //        int bufWidth = 1000, int bufHeight = 1000, byte bufColor = 35,
+        //        int circleX = 500, int circleY = 500, int circleRadius = 30, byte circleColor = 255,
+        //        double blurKsize = 61, double blurSigma = 0,
+        //        int resize = 100) {
+        //    for (int i = - 20; i <= 20; i += 4) {
+        //        var matImage = new Mat(bufHeight, bufWidth, MatType.CV_8UC1);
+        //        matImage.FloodFill(new Point(0, 0), bufColor);
+        //        matImage.Circle(circleX, circleY, circleRadius, circleColor);
+        //        matImage.FloodFill(new Point(circleX, circleY), circleColor);
+        //        Glb.DrawMatAndHist0(matImage);
 
-                var matBlur = matImage.GaussianBlur(new Size(blurKsize, blurKsize), blurSigma, blurSigma, BorderTypes.Replicate);
-                Glb.DrawMatAndHist1(matBlur);
+        //        var matBlur = matImage.GaussianBlur(new Size(blurKsize, blurKsize), blurSigma, blurSigma, BorderTypes.Replicate);
+        //        Glb.DrawMatAndHist1(matBlur);
 
-                int roiSize = 60;
-                int resize2 = resize + i;
-                var matResizeHole = matBlur.Resize(new Size(resize2, resize2));
-                var matResizeHoleRoi = new Mat(matResizeHole, new Rect((resize2-roiSize)/2, (resize2-roiSize)/2, roiSize, roiSize));
-                
-                var matResizeOri = matImage.Resize(new Size(resize, resize));
-                var matResizeOriRoi = new Mat(matResizeOri, new Rect((resize-roiSize)/2, (resize-roiSize)/2, roiSize, roiSize));
+        //        int roiSize = 60;
+        //        int resize2 = resize + i;
+        //        var matResizeHole = matBlur.Resize(new Size(resize2, resize2));
+        //        var matResizeHoleRoi = new Mat(matResizeHole, new Rect((resize2-roiSize)/2, (resize2-roiSize)/2, roiSize, roiSize));
 
-                matResizeHoleRoi.CopyTo(matResizeOriRoi);
-                string imageFilePath = $@"C:\test\ContactHole_Size\HoleSize_({resize2:000}).bmp";
-                bool r = matResizeOri.SaveImage(imageFilePath);
-                Console.WriteLine($"Save Image File : {imageFilePath} => {r}");
+        //        var matResizeOri = matImage.Resize(new Size(resize, resize));
+        //        var matResizeOriRoi = new Mat(matResizeOri, new Rect((resize-roiSize)/2, (resize-roiSize)/2, roiSize, roiSize));
 
-                matResizeHole.Dispose();
-                matBlur.Dispose();
-                matImage.Dispose();
-            }
-        }
+        //        matResizeHoleRoi.CopyTo(matResizeOriRoi);
+        //        string imageFilePath = $@"C:\test\ContactHole_Size\HoleSize_({resize2:000}).bmp";
+        //        bool r = matResizeOri.SaveImage(imageFilePath);
+        //        Console.WriteLine($"Save Image File : {imageFilePath} => {r}");
+
+        //        matResizeHole.Dispose();
+        //        matBlur.Dispose();
+        //        matImage.Dispose();
+        //    }
+        //}
 
         public static void HSVControl(double hscale = 1.0, double hoffset = 0.0, double sscale = 1.0, double soffset = 0.0, double vscale = 1.0, double voffset = 0.0) {
             Glb.DrawMat0(Glb.matSrc);
