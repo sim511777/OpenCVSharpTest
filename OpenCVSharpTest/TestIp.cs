@@ -628,6 +628,7 @@ namespace OpenCVSharpTest {
             Api,
             Marshal,
             Unsafe,
+            ParallelFor,
             C,
             Sse,
             VectorClass,
@@ -635,17 +636,20 @@ namespace OpenCVSharpTest {
         }
 
         public static void InverseAlgorithm(InverseUseAlgorithm useAlgorithm = InverseUseAlgorithm.OpenCv) {
+            double dtMs = 0;
             switch (useAlgorithm) {
-                case InverseUseAlgorithm.OpenCv      : TestInverse.InverseOpenCv(); break;
-                case InverseUseAlgorithm.Api         : TestInverse.InverseApi(); break;
-                case InverseUseAlgorithm.Marshal     : TestInverse.InverseMarshal(); break;
-                case InverseUseAlgorithm.Unsafe      : TestInverse.InverseUnsafe(); break;
-                case InverseUseAlgorithm.C           : TestInverse.InverseC(); break;
-                case InverseUseAlgorithm.Sse         : TestInverse.Sse(); break;
-                case InverseUseAlgorithm.VectorClass : TestInverse.InverseVectorClass(); break;
-                case InverseUseAlgorithm.Avx         : TestInverse.InverseAvx(); break;
+                case InverseUseAlgorithm.OpenCv      : dtMs = TestInverse.InverseOpenCv(); break;
+                case InverseUseAlgorithm.Api         : dtMs = TestInverse.InverseApi(); break;
+                case InverseUseAlgorithm.Marshal     : dtMs = TestInverse.InverseMarshal(); break;
+                case InverseUseAlgorithm.Unsafe      : dtMs = TestInverse.InverseUnsafe(); break;
+                case InverseUseAlgorithm.ParallelFor : dtMs = TestInverse.InverseParallelFor(); break;
+                case InverseUseAlgorithm.C           : dtMs = TestInverse.InverseC(); break;
+                case InverseUseAlgorithm.Sse         : dtMs = TestInverse.Sse(); break;
+                case InverseUseAlgorithm.VectorClass : dtMs = TestInverse.InverseVectorClass(); break;
+                case InverseUseAlgorithm.Avx         : dtMs = TestInverse.InverseAvx(); break;
                 default: break;
             }
+            Console.WriteLine($"Inverse Time = {dtMs:0.000}ms");
         }
 
         public enum ErodeUseAlgorithm {

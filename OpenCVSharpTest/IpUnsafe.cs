@@ -115,6 +115,17 @@ namespace OpenCVSharpTest {
             }
         }
 
+        public static void InverseParallelFor(IntPtr buf, int bw, int bh, int stride) {
+            byte *pbuf = (byte *)buf.ToPointer();
+            Action<int> act = (y) => {
+                byte *ppbuf = pbuf + stride * y;
+                for (int x = 0; x < bw; x++, ppbuf = ppbuf + 1) {
+                   *ppbuf = (byte)~*ppbuf;
+                }
+            };
+            Parallel.For(0, bh, act);
+        }
+
         public static void MemcpyMarshal1(IntPtr dst, IntPtr src, int nbytes) {
             for (int i = 0; i < nbytes; i++) {
                 Marshal.WriteByte(dst, i, Marshal.ReadByte(src, i));

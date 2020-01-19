@@ -68,7 +68,6 @@ namespace OpenCVSharpTest {
             return sw.ElapsedMilliseconds;
         }
 
-
         public static void Hsv2Rgb(double h, double s, double v, out double r, out double g, out double b) {
             double d = h / 60.0;
             int num1 = (int)Math.Floor(d);
