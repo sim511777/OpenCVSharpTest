@@ -128,14 +128,14 @@ namespace OpenCVSharpTest {
             return dt;
         }
 
-        public static double Sse() {
+        public static double Sse(bool useParallel) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matDst = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matDst);
 
             var st = GetTimeMs();
-            IpDll.InverseSse(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step());
+            IpDll.InverseSse(matDst.Data, matDst.Width, matDst.Height, (int)matDst.Step(), useParallel);
             var dt = GetTimeMs() - st;
 
             Glb.DrawMatAndHist2(matDst);

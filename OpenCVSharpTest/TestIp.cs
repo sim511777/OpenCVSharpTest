@@ -631,6 +631,7 @@ namespace OpenCVSharpTest {
             ParallelFor,
             C,
             Sse,
+            SseParallel,
             VectorClass,
             Avx,
         }
@@ -644,7 +645,8 @@ namespace OpenCVSharpTest {
                 case InverseUseAlgorithm.Unsafe      : dtMs = TestInverse.InverseUnsafe(); break;
                 case InverseUseAlgorithm.ParallelFor : dtMs = TestInverse.InverseParallelFor(); break;
                 case InverseUseAlgorithm.C           : dtMs = TestInverse.InverseC(); break;
-                case InverseUseAlgorithm.Sse         : dtMs = TestInverse.Sse(); break;
+                case InverseUseAlgorithm.Sse         : dtMs = TestInverse.Sse(false); break;
+                case InverseUseAlgorithm.SseParallel : dtMs = TestInverse.Sse(true); break;
                 case InverseUseAlgorithm.VectorClass : dtMs = TestInverse.InverseVectorClass(); break;
                 case InverseUseAlgorithm.Avx         : dtMs = TestInverse.InverseAvx(); break;
                 default: break;

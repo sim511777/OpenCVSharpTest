@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 namespace OpenCVSharpTest {
     class IpDll {
         [DllImport("IP.dll")] public static extern void InverseC(IntPtr buf, int bw, int bh, int stride);
-        [DllImport("IP.dll")] extern public static void InverseSse(IntPtr buf, int bw, int bh, int stride);
+        [DllImport("IP.dll")] extern public static void InverseSse(IntPtr buf, int bw, int bh, int stride, bool useParallel);
         [DllImport("IP.dll")] extern public static void InverseVec(IntPtr buf, int bw, int bh, int stride);
         [DllImport("IP.dll")] extern public static void InverseAvx(IntPtr buf, int bw, int bh, int stride);
         [DllImport("IP.dll")] extern public static void ErodeC(IntPtr srcBuf, IntPtr dstBuf, int bw, int bh, int step, bool useSse, bool useParallel);
