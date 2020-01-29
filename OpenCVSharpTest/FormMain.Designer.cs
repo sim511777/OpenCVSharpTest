@@ -620,7 +620,6 @@
             this.pbx2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbx2.Location = new System.Drawing.Point(834, 4);
             this.pbx2.Name = "pbx2";
-            this.pbx2.PtPanning = new System.Drawing.Point(0, 0);
             this.pbx2.Size = new System.Drawing.Size(408, 381);
             this.pbx2.TabIndex = 2;
             this.pbx2.Text = "zoomPictureBox3";
@@ -661,7 +660,6 @@
             this.pbx1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbx1.Location = new System.Drawing.Point(419, 4);
             this.pbx1.Name = "pbx1";
-            this.pbx1.PtPanning = new System.Drawing.Point(0, 0);
             this.pbx1.Size = new System.Drawing.Size(408, 381);
             this.pbx1.TabIndex = 1;
             this.pbx1.Text = "zoomPictureBox2";
@@ -680,7 +678,6 @@
             this.pbx0.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbx0.Location = new System.Drawing.Point(4, 4);
             this.pbx0.Name = "pbx0";
-            this.pbx0.PtPanning = new System.Drawing.Point(0, 0);
             this.pbx0.Size = new System.Drawing.Size(408, 381);
             this.pbx0.TabIndex = 0;
             this.pbx0.Text = "zoomPictureBox1";

@@ -122,7 +122,7 @@ namespace OpenCVSharpTest {
             int bytepp = 1;
             if (bmp != null)
                 Util.BitmapToImageBuffer(bmp, ref buf, ref bw, ref bh, ref bytepp);
-            pbx.SetImgBuf(buf, bw, bh, bytepp);
+            pbx.SetImgBuf(buf, bw, bh, bytepp, true);
         }
 
         private void InitFunctionList() {
