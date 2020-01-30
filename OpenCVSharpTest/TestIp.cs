@@ -851,5 +851,18 @@ namespace OpenCVSharpTest {
             matHsv.Dispose();
             matDst.Dispose();
         }
+
+        public static void Resize(double magnify = 64, InterpolationFlags interpolation = InterpolationFlags.Linear) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var sizeSrc = Glb.matSrc.Size();
+            var sizeDst = new Size(sizeSrc.Width * magnify, sizeSrc.Height * magnify);
+            var matResize = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Resize(sizeDst, interpolation: interpolation);
+            Glb.DrawMatAndHist1(matResize);
+            
+            Glb.DrawMatAndHist2(null);
+
+            matResize.Dispose();
+        }
     }
 }
