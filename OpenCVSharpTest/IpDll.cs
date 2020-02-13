@@ -18,8 +18,10 @@ namespace OpenCVSharpTest {
         [DllImport(dll)] public static extern void ErodeIppRoi(IntPtr srcPtr, IntPtr dstPtr, int bw, int bh, int step, int roiX, int roiY, int roiW, int roiH);
         [DllImport(dll)] public static extern void GetString([MarshalAs(UnmanagedType.LPWStr)] StringBuilder sb);
         [DllImport(dll)] public static extern void SetString([MarshalAs(UnmanagedType.LPWStr)] string str);
-        [DllImport(dll)] public static extern unsafe void Devernay(double** x, double** y, int* N, int** curve_limits, int* M, double* image, int X, int Y, double sigma, double th_h, double th_l);
-        [DllImport(dll)] public static extern unsafe void FreeBuffer(void* buffer);
+        [DllImport(dll)] public static extern unsafe void Devernay(ref IntPtr x, ref IntPtr y, ref int N, ref IntPtr curve_limits, ref int M, 
+            IntPtr image, int X, int Y, 
+            double sigma, double th_h, double th_l);
+        [DllImport(dll)] public static extern unsafe void FreeBuffer(IntPtr buffer);
     }
 
     class Crt {

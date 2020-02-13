@@ -864,5 +864,35 @@ namespace OpenCVSharpTest {
 
             matResize.Dispose();
         }
+
+        public static unsafe void DevernayTest(double sigma = 3, double th_h = 255, double th_l = 128) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            IntPtr image = Marshal.AllocHGlobal(matGray.Width * matGray.Height * sizeof(double));
+            for (int iy = 0; iy < matGray.Height; iy++)
+            {
+                byte* sptr = (byte*)matGray.Ptr(iy);
+                double* dptr = (double*)image + matGray.Width * iy;
+                for (int ix = 0; ix < matGray.Width; ix++, sptr++, dptr++)
+                {
+                    *dptr = *sptr;
+                }
+            }
+            IntPtr x = IntPtr.Zero;
+            IntPtr y = IntPtr.Zero;
+            int N = 0;
+            IntPtr curve_limits= IntPtr.Zero;
+            int M = 0;
+            IpDll.Devernay(ref x, ref y, ref N, ref curve_limits, ref M, image, matGray.Width, matGray.Height, sigma, th_h, th_l);
+            
+            IpDll.FreeBuffer(x);
+            IpDll.FreeBuffer(y);
+            IpDll.FreeBuffer(curve_limits);
+            Marshal.FreeHGlobal(image);
+            matGray.Dispose();
+        }
     }
 }
