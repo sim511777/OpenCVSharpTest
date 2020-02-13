@@ -90,11 +90,12 @@ namespace OpenCVSharpTest {
             int x1 = 1, x2 = bw - 1;
             int y1 = 1, y2 = bh - 1;
 
-            Action<int> actionErode1Line = (y) => {
+            void actionErode1Line(int y)
+            {
                 byte* sp = &srcPtr[y * step + x1];
                 byte* dp = &dstPtr[y * step + x1];
                 Erode1Line(sp, dp, step, x2 - x1);
-            };
+            }
 
             if (useParallel) {
                 Parallel.For(y1, y2, actionErode1Line);
@@ -117,12 +118,14 @@ namespace OpenCVSharpTest {
 
         public static void InverseParallelFor(IntPtr buf, int bw, int bh, int stride) {
             byte *pbuf = (byte *)buf.ToPointer();
-            Action<int> act = (y) => {
-                byte *ppbuf = pbuf + stride * y;
-                for (int x = 0; x < bw; x++, ppbuf = ppbuf + 1) {
-                   *ppbuf = (byte)~*ppbuf;
+            void act(int y)
+            {
+                byte* ppbuf = pbuf + stride * y;
+                for (int x = 0; x < bw; x++, ppbuf = ppbuf + 1)
+                {
+                    *ppbuf = (byte)~*ppbuf;
                 }
-            };
+            }
             Parallel.For(0, bh, act);
         }
 
@@ -147,9 +150,9 @@ namespace OpenCVSharpTest {
         }
 
         [DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
-        public static extern IntPtr memcpy(IntPtr dest, IntPtr src, ulong count);
+        public static extern IntPtr Memcpy(IntPtr dest, IntPtr src, ulong count);
         public static void MemcpyCrt(IntPtr dst, IntPtr src, int nbytes) {
-            memcpy(dst, src, (ulong)nbytes);
+            Memcpy(dst, src, (ulong)nbytes);
         }
 
         public static void MemcpyBufferClass(IntPtr dst, IntPtr src, int nbytes) {
