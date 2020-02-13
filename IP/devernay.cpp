@@ -25,10 +25,7 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
   ----------------------------------------------------------------------------*/
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <float.h>
+#include "stdafx.h"
 
 /*----------------------------------------------------------------------------*/
 #ifndef FALSE
@@ -48,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* fatal error, print a message to standard error and exit
  */
-static void error(char * msg)
+static void error(const char * msg)
 {
   fprintf(stderr,"error: %s\n",msg);
   exit(EXIT_FAILURE);
