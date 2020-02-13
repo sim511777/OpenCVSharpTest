@@ -17,5 +17,7 @@ namespace OpenCVSharpTest {
         [DllImport("IP.dll")] extern public static void ErodeIppRoi(IntPtr srcPtr, IntPtr dstPtr, int bw, int bh, int step, int roiX, int roiY, int roiW, int roiH);
         [DllImport("IP.dll")] extern public static void GetString([MarshalAs(UnmanagedType.LPWStr)] StringBuilder sb);
         [DllImport("IP.dll")] extern public static void SetString([MarshalAs(UnmanagedType.LPWStr)] string str);
+        [DllImport("IP.dll")] extern public static unsafe void Devernay(double** x, double** y, int* N, int** curve_limits, int* M, double* image, int X, int Y, double sigma, double th_h, double th_l);
+        [DllImport("IP.dll")] extern public static unsafe void FreeBuffer(void* buffer);
     }
 }
