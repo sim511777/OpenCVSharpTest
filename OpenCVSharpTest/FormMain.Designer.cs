@@ -60,6 +60,7 @@
             System.Windows.Forms.DataVisualization.Charting.Series series28 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series29 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series30 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.lbxFunc = new System.Windows.Forms.ListBox();
@@ -620,6 +621,7 @@
             this.pbx2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbx2.Location = new System.Drawing.Point(834, 4);
             this.pbx2.Name = "pbx2";
+            this.pbx2.PtPanning = ((System.Drawing.PointF)(resources.GetObject("pbx2.PtPanning")));
             this.pbx2.Size = new System.Drawing.Size(408, 381);
             this.pbx2.TabIndex = 2;
             this.pbx2.Text = "zoomPictureBox3";
@@ -627,9 +629,12 @@
             this.pbx2.UseDrawDrawTime = false;
             this.pbx2.UseDrawInfo = true;
             this.pbx2.UseDrawPixelValue = true;
+            this.pbx2.UseInterPorlation = false;
             this.pbx2.UseMouseMove = true;
             this.pbx2.UseMouseWheelZoom = true;
+            this.pbx2.UseParallel = false;
             this.pbx2.ZoomLevel = 0;
+            this.pbx2.Paint += new System.Windows.Forms.PaintEventHandler(this.pbx_Paint);
             // 
             // popupPicture
             // 
@@ -660,6 +665,7 @@
             this.pbx1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbx1.Location = new System.Drawing.Point(419, 4);
             this.pbx1.Name = "pbx1";
+            this.pbx1.PtPanning = ((System.Drawing.PointF)(resources.GetObject("pbx1.PtPanning")));
             this.pbx1.Size = new System.Drawing.Size(408, 381);
             this.pbx1.TabIndex = 1;
             this.pbx1.Text = "zoomPictureBox2";
@@ -667,9 +673,12 @@
             this.pbx1.UseDrawDrawTime = false;
             this.pbx1.UseDrawInfo = true;
             this.pbx1.UseDrawPixelValue = true;
+            this.pbx1.UseInterPorlation = false;
             this.pbx1.UseMouseMove = true;
             this.pbx1.UseMouseWheelZoom = true;
+            this.pbx1.UseParallel = false;
             this.pbx1.ZoomLevel = 0;
+            this.pbx1.Paint += new System.Windows.Forms.PaintEventHandler(this.pbx_Paint);
             // 
             // pbx0
             // 
@@ -678,6 +687,7 @@
             this.pbx0.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbx0.Location = new System.Drawing.Point(4, 4);
             this.pbx0.Name = "pbx0";
+            this.pbx0.PtPanning = ((System.Drawing.PointF)(resources.GetObject("pbx0.PtPanning")));
             this.pbx0.Size = new System.Drawing.Size(408, 381);
             this.pbx0.TabIndex = 0;
             this.pbx0.Text = "zoomPictureBox1";
@@ -685,9 +695,12 @@
             this.pbx0.UseDrawDrawTime = false;
             this.pbx0.UseDrawInfo = true;
             this.pbx0.UseDrawPixelValue = true;
+            this.pbx0.UseInterPorlation = false;
             this.pbx0.UseMouseMove = true;
             this.pbx0.UseMouseWheelZoom = true;
+            this.pbx0.UseParallel = false;
             this.pbx0.ZoomLevel = 0;
+            this.pbx0.Paint += new System.Windows.Forms.PaintEventHandler(this.pbx_Paint);
             // 
             // splitter3
             // 

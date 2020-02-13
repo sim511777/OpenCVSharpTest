@@ -246,7 +246,11 @@ namespace OpenCVSharpTest {
             if (Glb.matSrc == null)
                 return;
 
-            try {
+            Glb.form.pbx0.Tag = null;
+            Glb.form.pbx1.Tag = null;
+            Glb.form.pbx2.Tag = null;
+            try
+            {
                 Console.WriteLine("==================================");
                 var method = (this.lbxFunc.SelectedItem as MethodInfoItem)?.MethodInfo;
 
@@ -374,6 +378,12 @@ namespace OpenCVSharpTest {
                 } catch (Exception ex) {
                     Console.WriteLine(ex.Message);
                 }
+            }
+        }
+
+        private void pbx_Paint(object sender, PaintEventArgs e) {
+            if ((sender as ZoomPictureBox).Tag is Action<Graphics> drawing) {
+                drawing(e.Graphics);
             }
         }
     }

@@ -865,11 +865,12 @@ namespace OpenCVSharpTest {
             matResize.Dispose();
         }
 
-        public static unsafe void DevernayTest(double sigma = 3, double th_h = 255, double th_l = 128) {
+        public static unsafe void DevernayTest(double sigma = 0, double th_h = 128, double th_l = 50) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matGray);
+            Glb.DrawMatAndHist2(null);
 
             IntPtr image = Marshal.AllocHGlobal(matGray.Width * matGray.Height * sizeof(double));
             for (int iy = 0; iy < matGray.Height; iy++)
@@ -883,15 +884,42 @@ namespace OpenCVSharpTest {
             }
             IntPtr x = IntPtr.Zero;
             IntPtr y = IntPtr.Zero;
-            int N = 0;
+            int numXY = 0;
             IntPtr curve_limits= IntPtr.Zero;
-            int M = 0;
-            IpDll.Devernay(ref x, ref y, ref N, ref curve_limits, ref M, image, matGray.Width, matGray.Height, sigma, th_h, th_l);
-            
+            int numCurve = 0;
+            IpDll.Devernay(ref x, ref y, ref numXY, ref curve_limits, ref numCurve, image, matGray.Width, matGray.Height, sigma, th_h, th_l);
+            Console.WriteLine($"numXY={numXY}, numCurve={numCurve}");
+
+            double* xList = (double*)x;
+            double* yList = (double*)y;
+            int* curveLimitList = (int*)curve_limits;
+
+            List<List<Point2d>> curveList = new List<List<Point2d>>();
+            for (int i = 0; i < numCurve; i++) {
+                List<Point2d> curve = new List<Point2d>();
+                curveList.Add(curve);
+                int stIdx = curveLimitList[i];
+                int edIdx = i < numCurve - 1 ? curveLimitList[i + 1] : numXY;
+                for (int j = stIdx; j < edIdx; j++) {
+                    curve.Add(new Point2d(xList[j], yList[j]));
+                }
+            }
+
+            Action<System.Drawing.Graphics> drawing = delegate(System.Drawing.Graphics g) {
+                foreach (var curve in curveList) {
+                    var polyline = curve
+                    .Select(ptd => new System.Drawing.PointF((float)ptd.X + 0.5f, (float)ptd.Y + 0.5f))
+                    .Select(ptf => Glb.form.pbx1.ImgToDisp(ptf)).ToArray();
+                    g.DrawLines(System.Drawing.Pens.Lime, polyline);
+                }
+            };
+            Glb.form.pbx1.Tag = drawing;
+
             IpDll.FreeBuffer(x);
             IpDll.FreeBuffer(y);
             IpDll.FreeBuffer(curve_limits);
             Marshal.FreeHGlobal(image);
+            
             matGray.Dispose();
         }
     }
