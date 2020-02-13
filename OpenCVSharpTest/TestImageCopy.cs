@@ -51,10 +51,10 @@ namespace OpenCVSharpTest {
 
         public static void ImageCopyCrt() {
             Mat matDst = new Mat(Glb.matSrc.Size(), Glb.matSrc.Type());
-            int nbytes = (int)Glb.matSrc.Step() * Glb.matSrc.Height;
+            var nbytes = Glb.matSrc.Step() * Glb.matSrc.Height;
 
             Glb.TimerStart();
-            IpUnsafe.MemcpyCrt(matDst.Data, Glb.matSrc.Data, nbytes);
+            Crt.memcpy(matDst.Data, Glb.matSrc.Data, nbytes);
             Console.WriteLine("=> Method Time: {0}ms", Glb.TimerStop());
 
             Glb.DrawMatAndHist0(Glb.matSrc);

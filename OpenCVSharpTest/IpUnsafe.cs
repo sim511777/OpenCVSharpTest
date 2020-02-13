@@ -149,12 +149,6 @@ namespace OpenCVSharpTest {
             }
         }
 
-        [DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
-        public static extern IntPtr Memcpy(IntPtr dest, IntPtr src, ulong count);
-        public static void MemcpyCrt(IntPtr dst, IntPtr src, int nbytes) {
-            Memcpy(dst, src, (ulong)nbytes);
-        }
-
         public static void MemcpyBufferClass(IntPtr dst, IntPtr src, int nbytes) {
             byte* pdst = (byte*)dst.ToPointer();
             byte* psrc = (byte*)src.ToPointer();
