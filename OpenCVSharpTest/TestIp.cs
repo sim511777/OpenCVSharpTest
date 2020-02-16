@@ -12,6 +12,8 @@ using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Text;
+using ShimLib;
+using PointD = System.Windows.Point;
 
 namespace OpenCVSharpTest {
     class TestIp {
@@ -894,23 +896,26 @@ namespace OpenCVSharpTest {
             double* yList = (double*)y;
             int* curveLimitList = (int*)curve_limits;
 
-            List<List<Point2d>> curveList = new List<List<Point2d>>();
+            List<List<PointD>> curveList = new List<List<PointD>>();
             for (int i = 0; i < numCurve; i++) {
-                List<Point2d> curve = new List<Point2d>();
+                List<PointD> curve = new List<PointD>();
                 curveList.Add(curve);
                 int stIdx = curveLimitList[i];
                 int edIdx = i < numCurve - 1 ? curveLimitList[i + 1] : numXY;
                 for (int j = stIdx; j < edIdx; j++) {
-                    curve.Add(new Point2d(xList[j], yList[j]));
+                    curve.Add(new PointD(xList[j], yList[j]));
                 }
             }
 
-            Action<System.Drawing.Graphics> drawing = delegate(System.Drawing.Graphics g) {
+            Action<ImageGraphics> drawing = delegate(ImageGraphics ig) {
                 foreach (var curve in curveList) {
                     var polyline = curve
-                    .Select(ptd => new System.Drawing.PointF((float)ptd.X + 0.5f, (float)ptd.Y + 0.5f))
-                    .Select(ptf => Glb.form.pbx1.ImgToDisp(ptf)).ToArray();
-                    g.DrawLines(System.Drawing.Pens.Lime, polyline);
+                    .Select(ptd => new PointD(ptd.X + 0.5, ptd.Y + 0.5)).ToArray();
+                    for (int i = 0; i < polyline.Length - 1; i++) {
+                        var pt1 = polyline[i];
+                        var pt2 = polyline[i + 1];
+                        ig.DrawLine(pt1, pt2, System.Drawing.Pens.Lime);
+                    }
                 }
             };
             Glb.form.pbx1.Tag = drawing;

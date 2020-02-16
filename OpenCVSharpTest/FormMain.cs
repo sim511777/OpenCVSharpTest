@@ -35,7 +35,7 @@ namespace OpenCVSharpTest {
             this.InitFunctionList();
         }
 
-        private static void ZoomToImage(ZoomPictureBox pbx) {
+        private static void ZoomToImage(ImageBox pbx) {
             if (pbx.ImgBW <= 0 || pbx.ImgBH <= 0)
                 pbx.ZoomReset();
             else
@@ -111,7 +111,7 @@ namespace OpenCVSharpTest {
             return histo;
         }
 
-        public void DrawMat(Bitmap bmp, ZoomPictureBox pbx) {
+        public void DrawMat(Bitmap bmp, ImageBox pbx) {
             if (pbx.ImgBuf != IntPtr.Zero) {
                 Marshal.FreeHGlobal(pbx.ImgBuf);
             }
@@ -324,7 +324,7 @@ namespace OpenCVSharpTest {
         }
 
         private void copyImageToClipboardToolStripMenuItem_Click(object sender, EventArgs e) {
-            var pbx = this.popupPicture.SourceControl as ZoomPictureBox;
+            var pbx = this.popupPicture.SourceControl as ImageBox;
             if (pbx.ImgBuf == IntPtr.Zero)
                 return;
             using(Bitmap bmp = Util.ImageBufferToBitmap(pbx.ImgBuf, pbx.ImgBW, pbx.ImgBH, pbx.ImgBytepp)) {
@@ -336,7 +336,7 @@ namespace OpenCVSharpTest {
         }
 
         private void saveImageToolStripMenuItem_Click(object sender, EventArgs e) {
-            var pbx = this.popupPicture.SourceControl as ZoomPictureBox;
+            var pbx = this.popupPicture.SourceControl as ImageBox;
             if (pbx.ImgBuf == IntPtr.Zero) {
                 Console.WriteLine("No Image");
                 return;
@@ -382,8 +382,9 @@ namespace OpenCVSharpTest {
         }
 
         private void pbx_Paint(object sender, PaintEventArgs e) {
-            if ((sender as ZoomPictureBox).Tag is Action<Graphics> drawing) {
-                drawing(e.Graphics);
+            ImageGraphics ig = new ImageGraphics(sender as ImageBox, e.Graphics);
+            if ((sender as ImageBox).Tag is Action<ImageGraphics> drawing) {
+                drawing(ig);
             }
         }
     }
