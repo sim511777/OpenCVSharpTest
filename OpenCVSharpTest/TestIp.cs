@@ -927,5 +927,41 @@ namespace OpenCVSharpTest {
             
             matGray.Dispose();
         }
+
+        public static void MakeImage(int bw, int bh, int seed = 0, int holeSize = 25, int gaussainSize = 33) {
+            void DrawCircle(System.Drawing.Graphics g, int x, int y, int r, System.Drawing.Brush br) {
+                g.FillEllipse(br, x - r, y - r, r + r, r + r);
+            }
+
+            using (System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(bw, bh)) {
+                Console.WriteLine($"Make Iamge by code: ({bmp.Width}x{bmp.Height})");
+
+                using (var g = System.Drawing.Graphics.FromImage(bmp)) {
+                    System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height);
+                    System.Drawing.Brush br = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(35, 35, 35));
+                    g.FillRectangle(br, rect);
+                    br.Dispose();
+                    g.FillRectangle(System.Drawing.Brushes.White, 400, 400, 200, 800);
+                    g.FillRectangle(System.Drawing.Brushes.White, 400, 400, 400, 200);
+
+                    Random rnd = new Random(seed);
+                    for (int i = 0; i < 7; i++) {
+                        DrawCircle(g, rnd.Next(1, 10) * 500, rnd.Next(1, 10) * 500, holeSize, System.Drawing.Brushes.White);
+                    }
+                }
+
+                var matGray = bmp.ToMat().CvtColor(ColorConversionCodes.BGR2GRAY);
+                var matBlur = matGray.GaussianBlur(new Size(gaussainSize, gaussainSize), gaussainSize, gaussainSize, BorderTypes.Replicate);
+                var matResult = matBlur.Resize(new Size(bw/10, bh/10), 0, 0, InterpolationFlags.Linear);
+
+                Glb.DrawMatAndHist0(matGray);
+                Glb.DrawMatAndHist1(matBlur);
+                Glb.DrawMatAndHist2(matResult);
+
+                matGray.Dispose();
+                matBlur.Dispose();
+                matResult.Dispose();
+            }
+        }
     }
 }
