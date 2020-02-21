@@ -524,13 +524,32 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
 
             var element = Cv2.GetStructuringElement(shape, new Size(kernelSize, kernelSize));
-
             var matMorpology = matGray.MorphologyEx(morphTypes, element, iterations: iteration);
-            Glb.DrawMatAndHist1(matMorpology);
+            Glb.DrawMatAndHist2(matMorpology);
 
-            Glb.DrawMatAndHist2(null);
+            matGray.Dispose();
+            matMorpology.Dispose();
+        }
+
+        public static void MorpologyUserKernal(MorphTypes morphTypes = MorphTypes.Erode, int iteration = 1,
+            byte m00 = 1, byte m01 = 1, byte m02 = 1,
+            byte m10 = 1, byte m11 = 1, byte m12 = 1,
+            byte m20 = 1, byte m21 = 1, byte m22 = 1) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+            byte[] arr = {
+                m00, m01, m02,
+                m10, m11, m12,
+                m20, m21, m22,
+            };
+            var element = new Mat(3, 3, MatType.CV_8UC1, arr);
+            var matMorpology = matGray.MorphologyEx(morphTypes, element, iterations: iteration);
+            Glb.DrawMatAndHist2(matMorpology);
 
             matGray.Dispose();
             matMorpology.Dispose();
