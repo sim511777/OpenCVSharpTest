@@ -387,6 +387,56 @@ namespace OpenCVSharpTest {
                 drawing(ig);
             }
         }
+
+        static string[] extList = { ".bmp", ".jpg", ".gif", ".png", };
+        private string GetDragDataImageFile(IDataObject data) {
+            string[] files = (string[])data.GetData(DataFormats.FileDrop);
+            if (files.Length != 1)
+                return null;
+
+            string file = files[0];
+            FileAttributes attr = File.GetAttributes(file);
+            if (attr.HasFlag(FileAttributes.Directory))
+                return null;
+
+            string ext = Path.GetExtension(file).ToLower();
+            if (extList.Contains(ext) == false)
+                return null;
+
+            return file;
+        }
+
+        private void pbx0_DragEnter(object sender, DragEventArgs e) {
+            string imageFile = GetDragDataImageFile(e.Data);
+            if (imageFile == null) {
+                e.Effect = DragDropEffects.None;
+                return;
+            }
+            e.Effect = DragDropEffects.Copy;
+        }
+
+        private void pbx0_DragDrop(object sender, DragEventArgs e) {
+            string filePath = GetDragDataImageFile(e.Data);
+            if (filePath == null)
+                return;
+
+            if (this.cap != null) {
+                this.StopLive();
+            }
+
+            var oldTime = DateTime.Now;
+
+            if (Glb.matSrc != null)
+                Glb.matSrc.Dispose();
+            Glb.matSrc = new Mat(filePath);
+            Console.WriteLine($"Image From File: {Path.GetFileName(dlgOpen.FileName)} ({Glb.matSrc.Width}x{Glb.matSrc.Height})");
+
+            this.ProcessImage();
+
+            ZoomToImage(this.pbx0);
+            ZoomToImage(this.pbx1);
+            ZoomToImage(this.pbx2);
+        }
     }
 
     class MethodInfoItem {
