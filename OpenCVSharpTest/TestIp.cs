@@ -534,6 +534,36 @@ namespace OpenCVSharpTest {
             matMorpology.Dispose();
         }
 
+        public static void MorpologyChamfer(int kernelSize = 31, int iteration = 1) {
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist0(matGray);
+
+            var element = new Mat(kernelSize, kernelSize, MatType.CV_8UC1);
+            int r = kernelSize / 2;
+            int cx = r;
+            int cy = r;
+            int rsq = r * r;
+
+            for (int y = 0; y < kernelSize; y++) {
+                for (int x = 0; x < kernelSize; x++) {
+                    int dx = x - cx;
+                    int dy = y - cy;
+                    bool inCircle = dx * dx + dy * dy <= rsq;
+                    element.Set(y, x, inCircle);
+                }
+            }
+            
+            var matMorpology1 = matGray.MorphologyEx(MorphTypes.Open, element, iterations: iteration);
+            Glb.DrawMatAndHist1(matMorpology1);
+
+            var matMorpology2 = matMorpology1.MorphologyEx(MorphTypes.Close, element, iterations: iteration);
+            Glb.DrawMatAndHist2(matMorpology2);
+
+            matGray.Dispose();
+            matMorpology1.Dispose();
+            matMorpology2.Dispose();
+        }
+
         public static void MorpologyUserKernal(MorphTypes morphTypes = MorphTypes.Erode, int iteration = 1,
             byte m00 = 1, byte m01 = 1, byte m02 = 1,
             byte m10 = 1, byte m11 = 1, byte m12 = 1,
