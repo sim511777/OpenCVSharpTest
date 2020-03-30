@@ -49,8 +49,14 @@
       <HintPath>..\packages\OpenCvSharp4.4.2.0.20200208\lib\net461\OpenCvSharp.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="ShimLib.Controls">
+      <HintPath>..\libs\ShimLib.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="ShimLib.ImageBox">
       <HintPath>..\libs\ShimLib.ImageBox.dll</HintPath>
+    </Reference>
+    <Reference Include="ShimLib.Util">
+      <HintPath>..\libs\ShimLib.Util.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
