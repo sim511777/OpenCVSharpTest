@@ -977,61 +977,77 @@ namespace OpenCVSharpTest {
             matGray.Dispose();
         }
 
-        public static void MakeImage(int bw = 1000, int bh = 1000, int seed = 0, int holeSize = 22, int gaussainSize = 31, int distortSize = 20, int imgNum = 256) {
-            void DrawCircle(System.Drawing.Graphics g, int x, int y, int r, System.Drawing.Brush br) {
-                g.FillEllipse(br, x - r, y - r, r + r, r + r);
-            }
+        //public static void MakeImage(int bw = 1000, int bh = 1000, int seed = 0, int holeSize = 22, int gaussainSize = 31, int distortSize = 20, int imgNum = 256) {
+        //    void DrawCircle(System.Drawing.Graphics g, int x, int y, int r, System.Drawing.Brush br) {
+        //        g.FillEllipse(br, x - r, y - r, r + r, r + r);
+        //    }
 
-            Random rndg = new Random(seed);
+        //    Random rndg = new Random(seed);
 
-            using (System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(bw, bh)) {
-                Console.WriteLine($"Make Iamge by code: ({bmp.Width}x{bmp.Height})");
+        //    using (System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(bw, bh)) {
+        //        Console.WriteLine($"Make Iamge by code: ({bmp.Width}x{bmp.Height})");
 
-                for (int imgIdx = 0; imgIdx < imgNum; imgIdx++) {
-                    using (var g = System.Drawing.Graphics.FromImage(bmp)) {
-                        System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height);
-                        System.Drawing.Brush br = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(35, 35, 35));
-                        g.FillRectangle(br, rect);
-                        br.Dispose();
-                        g.FillRectangle(System.Drawing.Brushes.White, 100, 100, 50, 150);
-                        g.FillRectangle(System.Drawing.Brushes.White, 100, 100, 150, 50);
+        //        for (int imgIdx = 0; imgIdx < imgNum; imgIdx++) {
+        //            using (var g = System.Drawing.Graphics.FromImage(bmp)) {
+        //                System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height);
+        //                System.Drawing.Brush br = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(35, 35, 35));
+        //                g.FillRectangle(br, rect);
+        //                br.Dispose();
+        //                g.FillRectangle(System.Drawing.Brushes.White, 100, 100, 50, 150);
+        //                g.FillRectangle(System.Drawing.Brushes.White, 100, 100, 150, 50);
 
-                        Random rnd = new Random(seed);
-                        for (int i = 0; i < 7; i++) {
-                            bool xdistort = rndg.Next() % 32 == 0;
-                            bool ydistort = rndg.Next() % 32 == 0;
-                            int x;
-                            int y;
-                            if (xdistort)
-                                x = rnd.Next(1, 10) * 100 + rndg.Next(-distortSize, distortSize);
-                            else
-                                x = rnd.Next(1, 10) * 100;
-                            if (ydistort)
-                                y = rnd.Next(1, 10) * 100 + rndg.Next(-distortSize, distortSize);
-                            else
-                                y = rnd.Next(1, 10) * 100;
+        //                Random rnd = new Random(seed);
+        //                for (int i = 0; i < 7; i++) {
+        //                    bool xdistort = rndg.Next() % 32 == 0;
+        //                    bool ydistort = rndg.Next() % 32 == 0;
+        //                    int x;
+        //                    int y;
+        //                    if (xdistort)
+        //                        x = rnd.Next(1, 10) * 100 + rndg.Next(-distortSize, distortSize);
+        //                    else
+        //                        x = rnd.Next(1, 10) * 100;
+        //                    if (ydistort)
+        //                        y = rnd.Next(1, 10) * 100 + rndg.Next(-distortSize, distortSize);
+        //                    else
+        //                        y = rnd.Next(1, 10) * 100;
 
-                            DrawCircle(g, x, y, holeSize, System.Drawing.Brushes.White);
-                        }
-                    }
+        //                    DrawCircle(g, x, y, holeSize, System.Drawing.Brushes.White);
+        //                }
+        //            }
 
-                    var matGray = bmp.ToMat().CvtColor(ColorConversionCodes.BGR2GRAY);
-                    var matBlur = matGray.GaussianBlur(new Size(gaussainSize, gaussainSize), gaussainSize, gaussainSize, BorderTypes.Replicate);
-                    var matResult = matBlur.Resize(new Size(bw / 10, bh / 10), 0, 0, InterpolationFlags.Linear);
+        //            var matGray = bmp.ToMat().CvtColor(ColorConversionCodes.BGR2GRAY);
+        //            var matBlur = matGray.GaussianBlur(new Size(gaussainSize, gaussainSize), gaussainSize, gaussainSize, BorderTypes.Replicate);
+        //            var matResult = matBlur.Resize(new Size(bw / 10, bh / 10), 0, 0, InterpolationFlags.Linear);
 
-                    string filePath = $"c:\\test\\chole\\img_{imgIdx:00}.bmp";
-                    matResult.SaveImage(filePath);
-                    Console.WriteLine($"SaveImge: ({filePath})");
+        //            string filePath = $"c:\\test\\chole\\img_{imgIdx:00}.bmp";
+        //            matResult.SaveImage(filePath);
+        //            Console.WriteLine($"SaveImge: ({filePath})");
 
-                    //Glb.DrawMatAndHist0(matGray);
-                    //Glb.DrawMatAndHist1(matBlur);
-                    //Glb.DrawMatAndHist2(matResult);
+        //            //Glb.DrawMatAndHist0(matGray);
+        //            //Glb.DrawMatAndHist1(matBlur);
+        //            //Glb.DrawMatAndHist2(matResult);
 
-                    matGray.Dispose();
-                    matBlur.Dispose();
-                    matResult.Dispose(); 
-                }
-            }
+        //            matGray.Dispose();
+        //            matBlur.Dispose();
+        //            matResult.Dispose();
+        //        }
+        //    }
+        //}
+
+        public static void RoateImage(double rotDegree = 90, InterpolationFlags ipf = InterpolationFlags.Linear) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            Size size = matGray.Size();
+            Mat matRot = Cv2.GetRotationMatrix2D(new Point2f(size.Width / 2, size.Height / 2), rotDegree, 1);
+            Mat matDst = matGray.WarpAffine(matRot, size, ipf);
+            
+            Glb.DrawMatAndHist2(matDst);
+
+            matRot.Dispose();
+            matDst.Dispose();
         }
     }
 }
