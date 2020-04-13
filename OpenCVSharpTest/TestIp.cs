@@ -1049,5 +1049,24 @@ namespace OpenCVSharpTest {
             matRot.Dispose();
             matDst.Dispose();
         }
+
+        public static void BatchConvert(string fileDir = @"C:\Users\shshim\Desktop\output") {
+            return;
+            var files = Directory.GetFiles(fileDir);
+            Rect roi = new Rect(4, 2, 6, 8);
+            foreach (var file in files) {
+                Console.WriteLine(file);
+                var ext = Path.GetExtension(file);
+                if (ext != ".bmp") {
+                    Console.WriteLine("  skip");
+                    continue;
+                }
+                Mat mSrc = new Mat(file);
+                Mat mCrop = new Mat(mSrc, roi);
+                Mat mGray = mCrop.CvtColor(ColorConversionCodes.BGR2GRAY);
+                mGray.SaveImage(file);
+                Console.WriteLine($"  Save");
+            }
+        }
     }
 }
