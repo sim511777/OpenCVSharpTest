@@ -1069,12 +1069,26 @@ namespace OpenCVSharpTest {
             }
         }
         
-        public static void DrawLineTest(int x1 = 50, int y1 = 50, int x2 = 200, int y2 = 100, byte red = 255, byte green = 0, byte blue = 0, int thickness = 1, LineTypes lineType = LineTypes.Link8, int shift = 0) {
+        public static void DrawLineTest(int x1 = 50, int y1 = 50, int x2 = 200, int y2 = 100, byte red = 255, byte green = 0, byte blue = 0,
+            int thickness = 1, LineTypes lineType = LineTypes.Link8, int shift = 0) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             Mat mDst = Glb.matSrc.Clone();
             Scalar color = new Scalar(blue, green, red);
             mDst.Line(x1, y1, x2, y2, color, thickness, lineType, shift = 0);
+            Glb.DrawMatAndHist1(mDst);
+
+            Glb.DrawMatAndHist2(null);
+            mDst.Dispose();
+        }
+
+        public static void DrawTextTest(string text = "Hello, world", int x = 100, int y = 100,
+            HersheyFonts fontFace = HersheyFonts.HersheyPlain, double fontScale = 1, byte red = 0, byte green = 0, byte blue = 0, int thickness = 1, LineTypes lineType = LineTypes.Link8, bool bottomLeftOrigin = false) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            Mat mDst = Glb.matSrc.Clone();
+            Scalar color = new Scalar(blue, green, red);
+            mDst.PutText(text, new Point(x, y), fontFace, fontScale, color, thickness, lineType, bottomLeftOrigin);
             Glb.DrawMatAndHist1(mDst);
 
             Glb.DrawMatAndHist2(null);
