@@ -13,7 +13,6 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Text;
 using ShimLib;
-using PointD = System.Windows.Point;
 
 namespace OpenCVSharpTest {
     class TestIp {
