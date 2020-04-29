@@ -1093,5 +1093,18 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist2(null);
             mDst.Dispose();
         }
+
+        public static void ShiftImage(float tx = 5, float ty = 5, InterpolationFlags ipf = InterpolationFlags.Linear) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            Point2f t = new Point2f(tx, ty);
+            Point2f[] vSrc = { new Point2f(0, 0), new Point2f(1, 0), new Point2f(0, 1) };
+            Point2f[] vDst = vSrc.Select(v => v + t).ToArray();
+            Mat mTrans = Cv2.GetAffineTransform(vSrc, vDst);
+            Mat mDst = Glb.matSrc.WarpAffine(mTrans, Glb.matSrc.Size(), ipf);
+
+            Glb.DrawMatAndHist1(mDst);
+            mDst.Dispose();
+        }
     }
 }
