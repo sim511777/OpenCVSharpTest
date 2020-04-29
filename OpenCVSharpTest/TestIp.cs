@@ -16,6 +16,11 @@ using ShimLib;
 
 namespace OpenCVSharpTest {
     class TestIp {
+        public static void GetOpenCVBuildInfo() {
+            var buildInfo = Cv2.GetBuildInformation().Replace("\n", Environment.NewLine);
+            Console.WriteLine(buildInfo);
+        }
+
         public static void CvtColor(ColorConversionCodes code = ColorConversionCodes.BGR2GRAY) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 

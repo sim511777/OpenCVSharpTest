@@ -243,9 +243,6 @@ namespace OpenCVSharpTest {
         // 이미지 처리
         Stopwatch sw = new Stopwatch();
         private void ProcessImage() {
-            if (Glb.matSrc == null)
-                return;
-
             Glb.form.pbx0.Tag = null;
             Glb.form.pbx1.Tag = null;
             Glb.form.pbx2.Tag = null;
