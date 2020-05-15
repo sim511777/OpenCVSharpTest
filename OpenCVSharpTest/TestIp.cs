@@ -608,7 +608,7 @@ namespace OpenCVSharpTest {
             // 5. display blob
             var matDsp = new Mat(matRoi.Rows, matRoi.Cols, MatType.CV_8UC3);
             matDsp.SetTo(Scalar.Black);
-            blobs.RenderBlobs(matDsp, matDsp, RenderBlobsMode.Color);
+            blobs.RenderBlobs(matDsp, matDsp, RenderBlobsModes.Color);
             Glb.DrawMatAndHist2(matDsp);
 
             Console.WriteLine("blobs.cnt = {0}", blobs.Count);
