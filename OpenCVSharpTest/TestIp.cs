@@ -426,6 +426,33 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
+        public static void Blob_Ipp() {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matThr = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Threshold(128, 255, ThresholdTypes.Otsu);
+
+            MyBlobs blobs = new MyBlobs();
+
+            Stopwatch sw = Stopwatch.StartNew();
+            blobs.LabelIpp(matThr.Data, matThr.Width, matThr.Height, (int)matThr.Step());
+            sw.Stop();
+            Console.WriteLine("=> Label Time: {0}ms", sw.ElapsedMilliseconds);
+
+            var matDst = new Mat(Glb.matSrc.Rows, Glb.matSrc.Cols, MatType.CV_8UC3);
+            matDst.SetTo(Scalar.Black);
+            Glb.TimerStart();
+            MyBlobRenderer.RenderBlobs(blobs, matDst);
+            Console.WriteLine("=> Render Time: {0}ms", Glb.TimerStop());
+
+            Console.WriteLine("=> Blob Count: {0}", blobs.Blobs.Count);
+
+            Glb.DrawMatAndHist1(matThr);
+            Glb.DrawMatAndHist2(matDst);
+
+            matThr.Dispose();
+            matDst.Dispose();
+        }
+
         public static void AddSaltAndPepperNoise(int percent = 10, int medianK = 5) {
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist0(matGray);

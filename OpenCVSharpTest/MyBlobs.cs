@@ -198,7 +198,64 @@ namespace OpenCVSharpTest {
 
             return labeledCount;
         }
+
+        public int LabelIpp(IntPtr src, int bw, int bh, int stride) {
+            Glb.TimerStart();
+            // prepare
+            byte *psrc = (byte *)src.ToPointer();
+            
+            // label 버퍼
+            this.Labels = new int[bw*bh];
+            this.bw = bw;
+            this.bh = bh;
+
+            Console.WriteLine($"=> 1. Prepare buffer time: {Glb.TimerStop()}ms");
+            
+            Glb.TimerStart();
+            int numLabels = 0;
+            fixed (int* pLabels = Labels) {
+                numLabels = IpDll.LabelMarker(src, (IntPtr)pLabels, bw, bh);
+            }
+            Console.WriteLine($"=> 2. IpDll.LabelMarker time: {Glb.TimerStop()}ms");
+
+            // 4. 데이터 추출
+            Glb.TimerStart();
+            var blobs = this.Blobs;
+            blobs.Clear();
+            for (int i = 0; i < numLabels; i++) {
+                int label = i + 1;
+                blobs[label]  = new MyBlob(label);
+            }
+
+            // labels 수정
+            for (int y = 0; y < bh; y++) {
+                for (int x = 0; x < bw; x++) {
+                    var label = this.Labels[bw*y+x];
+                    if (label == 0)
+                        continue;
+
+                    var blob = blobs[label];
+                    blob.area++;
+                    blob.centroidX += x;
+                    blob.centroidY += y;
+                    if (x < blob.MinX) blob.MinX = x;
+                    if (y < blob.MinY) blob.MinY = y;
+                    if (x > blob.MaxX) blob.MaxX = x;
+                    if (y > blob.MaxY) blob.MaxY = y;
+                }
+            }
+
+            foreach (var blob in this.Blobs.Values) {
+                blob.centroidX /= blob.area;
+                blob.centroidY /= blob.area;
+            }
+            Console.WriteLine($"=> 3. 데이터 추출 time: {Glb.TimerStop()}ms");
+
+            return numLabels;
+        }
     }
+
+
 
     class MyBlob {
         public MyBlob(int label) {
