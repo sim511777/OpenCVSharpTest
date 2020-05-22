@@ -1122,5 +1122,19 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist1(mDst);
             mDst.Dispose();
         }
+
+        public static void InverseIppRoi(int roiX = 100, int roiY = 100, int roiW = 100, int roiH = 100) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+            
+            var matDst = matGray.Clone();
+            IpDll.InverseIppRoi(matGray.Data, matDst.Data, matGray.Width, matGray.Height,roiX, roiY, roiW, roiH);
+            Glb.DrawMatAndHist2(matDst);
+
+            matGray.Dispose();
+            matDst.Dispose();
+        }
     }
 }

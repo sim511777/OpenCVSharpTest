@@ -21,6 +21,7 @@ namespace OpenCVSharpTest {
         [DllImport(dll)] public static extern void Devernay(ref IntPtr x, ref IntPtr y, ref int N, ref IntPtr curve_limits, ref int M, IntPtr image, int X, int Y, double sigma, double th_h, double th_l);
         [DllImport(dll)] public static extern void FreeBuffer(IntPtr buffer);
         [DllImport(dll)] public static extern int LabelMarker(IntPtr srcPtr, IntPtr dstPtr, int bw, int bh);
+        [DllImport(dll)] public static extern void InverseIppRoi(IntPtr src, IntPtr dst, int bw, int bh, int roiX, int roiY, int roiW, int roiH);
     }
 
     class Crt {
