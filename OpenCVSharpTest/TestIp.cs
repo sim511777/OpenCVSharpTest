@@ -1136,5 +1136,16 @@ namespace OpenCVSharpTest {
             matGray.Dispose();
             matDst.Dispose();
         }
+
+        public static void GammaCorrection(double gamma_value = 1.5) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+            byte[] lut = Enumerable.Range(0, 256)
+                .Select(src => (byte)(Math.Pow(src / 255.0, 1.0 / gamma_value) * 255.0))
+                .ToArray();
+            var matDst = Glb.matSrc.LUT(lut);
+            Glb.DrawMatAndHist1(matDst);
+            Glb.DrawMatAndHist2(null);
+            matDst.Dispose();
+        }
     }
 }
