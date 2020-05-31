@@ -13,6 +13,7 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Text;
 using ShimLib;
+using PointF = System.Drawing.PointF;
 
 namespace OpenCVSharpTest {
     class TestIp {
@@ -960,21 +961,21 @@ namespace OpenCVSharpTest {
             double* yList = (double*)y;
             int* curveLimitList = (int*)curve_limits;
 
-            List<List<PointD>> curveList = new List<List<PointD>>();
+            List<List<PointF>> curveList = new List<List<PointF>>();
             for (int i = 0; i < numCurve; i++) {
-                List<PointD> curve = new List<PointD>();
+                List<PointF> curve = new List<PointF>();
                 curveList.Add(curve);
                 int stIdx = curveLimitList[i];
                 int edIdx = i < numCurve - 1 ? curveLimitList[i + 1] : numXY;
                 for (int j = stIdx; j < edIdx; j++) {
-                    curve.Add(new PointD(xList[j], yList[j]));
+                    curve.Add(new PointF((float)xList[j], (float)yList[j]));
                 }
             }
 
             Action<ImageGraphics> drawing = delegate(ImageGraphics ig) {
                 foreach (var curve in curveList) {
                     var polyline = curve
-                    .Select(ptd => new PointD(ptd.X + 0.5, ptd.Y + 0.5)).ToArray();
+                    .Select(ptd => new PointF(ptd.X + 0.5f, ptd.Y + 0.5f)).ToArray();
                     for (int i = 0; i < polyline.Length - 1; i++) {
                         var pt1 = polyline[i];
                         var pt2 = polyline[i + 1];
