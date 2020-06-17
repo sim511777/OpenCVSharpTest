@@ -111,7 +111,20 @@ namespace OpenCVSharpTest {
             return histo;
         }
 
-        public void DrawMat(Bitmap bmp, ImageBox pbx) {
+        // Load Bitmap to buffer
+        public unsafe static void MatToImageBuffer(Mat mat, ref IntPtr imgBuf, ref int bw, ref int bh, ref int bytepp, ref bool isFloat) {
+            bw = mat.Width;
+            bh = mat.Height;
+            bytepp = (int)(mat.Step() / bw);
+
+            long bufSize = (long)bw * bh * bytepp;
+            imgBuf = Util.AllocBuffer(bufSize);
+            Util.Memcpy(imgBuf, mat.Data, bufSize);
+            var matType = mat.Type();
+            isFloat = (matType == MatType.CV_32FC1 || matType == MatType.CV_64FC1);
+        }
+
+        public void DrawMat(Mat mat, ImageBox pbx) {
             if (pbx.ImgBuf != IntPtr.Zero) {
                 Marshal.FreeHGlobal(pbx.ImgBuf);
             }
@@ -120,9 +133,15 @@ namespace OpenCVSharpTest {
             int bw = 0;
             int bh = 0;
             int bytepp = 1;
-            if (bmp != null)
-                Util.BitmapToImageBuffer(bmp, ref buf, ref bw, ref bh, ref bytepp);
-            pbx.SetImgBuf(buf, bw, bh, bytepp, true);
+            bool isFloat = false;
+            if (mat != null) {
+                bw = mat.Width;
+                bh = mat.Height;
+                bytepp = (int)(mat.Step() / bw);
+                buf = Marshal.AllocHGlobal(bw * bh * bytepp);
+                MatToImageBuffer(mat, ref buf, ref bw, ref bh, ref bytepp, ref isFloat);
+            }
+            pbx.SetImgBuf(buf, bw, bh, bytepp, true, isFloat);
         }
 
         private void InitFunctionList() {

@@ -919,16 +919,34 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void Resize(double magnify = 64, InterpolationFlags interpolation = InterpolationFlags.Linear) {
+        public static void Resize(double magnify = 8, InterpolationFlags interpolation = InterpolationFlags.Linear) {
             Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
 
             var sizeSrc = Glb.matSrc.Size();
             var sizeDst = new Size(sizeSrc.Width * magnify, sizeSrc.Height * magnify);
-            var matResize = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).Resize(sizeDst, interpolation: interpolation);
-            Glb.DrawMatAndHist1(matResize);
+            var matResize = matGray.Resize(sizeDst, interpolation: interpolation);
+            Glb.DrawMatAndHist2(matResize);
             
-            Glb.DrawMatAndHist2(null);
+            matGray.Dispose();
+            matResize.Dispose();
+        }
 
+        public static void ResizeFloat(double magnify = 8, InterpolationFlags interpolation = InterpolationFlags.Linear) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matFloat = new Mat();
+            Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY).ConvertTo(matFloat, MatType.CV_32FC1);
+            Glb.DrawMatAndHist1(matFloat);
+
+            var sizeSrc = Glb.matSrc.Size();
+            var sizeDst = new Size(sizeSrc.Width * magnify, sizeSrc.Height * magnify);
+            var matResize = matFloat.Resize(sizeDst, interpolation: interpolation);
+            Glb.DrawMatAndHist2(matResize);
+            
+            matFloat.Dispose();
             matResize.Dispose();
         }
 
