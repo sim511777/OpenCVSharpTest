@@ -339,64 +339,6 @@ namespace OpenCVSharpTest {
             this.ProcessImage();
         }
 
-        private void copyImageToClipboardToolStripMenuItem_Click(object sender, EventArgs e) {
-            var pbx = this.popupPicture.SourceControl as ImageBox;
-            if (pbx.ImgBuf == IntPtr.Zero)
-                return;
-            using(Bitmap bmp = Util.ImageBufferToBitmap(pbx.ImgBuf, pbx.ImgBW, pbx.ImgBH, pbx.ImgBytepp)) {
-                if (bmp == null)
-                    return;
-
-                Clipboard.SetImage(bmp);
-            }
-        }
-
-        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e) {
-            var pbx = this.popupPicture.SourceControl as ImageBox;
-            if (pbx.ImgBuf == IntPtr.Zero) {
-                Console.WriteLine("No Image");
-                return;
-            }
-
-            if (this.dlgSave.ShowDialog(this) != DialogResult.OK)
-                return;
-
-            using(Bitmap bmp = Util.ImageBufferToBitmap(pbx.ImgBuf, pbx.ImgBW, pbx.ImgBH, pbx.ImgBytepp)) {
-                if (bmp == null)
-                    return;
-
-                ImageFormat fmt = null;
-                try {
-                    string fileName = this.dlgSave.FileName;
-                    string ext = Path.GetExtension(fileName).ToLower();
-                    switch (ext) {
-                        case ".bmp":
-                            fmt = ImageFormat.Bmp;
-                            break;
-                        case ".jpg":
-                        case ".jpeg":
-                            fmt = ImageFormat.Jpeg;
-                            break;
-                        case ".png":
-                            fmt = ImageFormat.Png;
-                            break;
-                        case ".gif":
-                            fmt = ImageFormat.Gif;
-                            break;
-                        default:
-                            break;
-                    }
-                    if (fmt == null) {
-                        Console.WriteLine("Unsupported Format");
-                        return;
-                    }
-                    bmp.Save(this.dlgSave.FileName, fmt);
-                } catch (Exception ex) {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-        }
-
         private void pbx_Paint(object sender, PaintEventArgs e) {
             ImageGraphics ig = new ImageGraphics(sender as ImageBox, e.Graphics);
             if ((sender as ImageBox).Tag is Action<ImageGraphics> drawing) {
