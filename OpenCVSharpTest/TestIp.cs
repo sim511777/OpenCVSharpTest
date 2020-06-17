@@ -139,13 +139,26 @@ namespace OpenCVSharpTest {
             matDst.Dispose();
         }
 
-        public static void GaussianBlur(double ksize = 5, double sigmaX = 5, double sigmaY = 5, BorderTypes borderType = BorderTypes.Replicate) {
+        public static void GaussianBlur(int kw = 7, int kh = 7, double sigma = 0) {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             Glb.DrawMatAndHist1(matGray);
 
-            var matDst = matGray.GaussianBlur(new Size(ksize, ksize), sigmaX, sigmaY, borderType);
+            var matDst = matGray.GaussianBlur(new Size(kw, kh), sigma, sigma, BorderTypes.Replicate);
+            Glb.DrawMatAndHist2(matDst);
+
+            matGray.Dispose();
+            matDst.Dispose();
+        }
+
+        public static void GaussianBlurTwice(int kw = 5, int kh = 5, double sigma = 1, int kw2 = 5, int kh2 = 5, double sigma2 = 0) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+
+            var matDst = matGray.GaussianBlur(new Size(kw, kh), sigma, sigma, BorderTypes.Replicate).GaussianBlur(new Size(kw2, kh2), sigma2, sigma2, BorderTypes.Replicate);
             Glb.DrawMatAndHist2(matDst);
 
             matGray.Dispose();
