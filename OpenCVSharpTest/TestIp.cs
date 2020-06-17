@@ -1148,5 +1148,27 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist2(null);
             matDst.Dispose();
         }
+
+        public static void QrCodeTest() {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Glb.DrawMatAndHist1(matGray);
+            
+            QRCodeDetector detector = new QRCodeDetector();
+            Point2f[] points;
+            string text = detector.DetectAndDecode(matGray, out points);
+            Console.WriteLine("points : " + string.Join(",", points.Select(pt => pt.ToString())));
+            Console.WriteLine(text);
+
+            var matRet = matGray.CvtColor(ColorConversionCodes.GRAY2BGR);
+            var pts = points.Select(pt => new OpenCvSharp.Point(pt.X, pt.Y));
+            var ptss = Enumerable.Repeat(pts, 1);
+            matRet.Polylines(ptss, true, Scalar.Lime);
+            Glb.DrawMatAndHist2(matRet);
+            
+            matGray.Dispose();
+            matRet.Dispose();
+        }
     }
 }
