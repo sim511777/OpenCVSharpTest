@@ -1010,7 +1010,7 @@ namespace OpenCVSharpTest {
                     for (int i = 0; i < polyline.Length - 1; i++) {
                         var pt1 = polyline[i];
                         var pt2 = polyline[i + 1];
-                        ig.DrawLine(pt1, pt2, System.Drawing.Pens.Lime);
+                        ig.DrawLine(System.Drawing.Pens.Lime, pt1, pt2);
                     }
                 }
             };

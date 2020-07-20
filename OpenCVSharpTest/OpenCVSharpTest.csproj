@@ -49,14 +49,9 @@
       <HintPath>..\packages\OpenCvSharp4.4.3.0.20200421\lib\net461\OpenCvSharp.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="ShimLib.Controls">
-      <HintPath>..\libs\ShimLib.Controls.dll</HintPath>
-    </Reference>
-    <Reference Include="ShimLib.ImageBox">
+    <Reference Include="ShimLib.ImageBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libs\ShimLib.ImageBox.dll</HintPath>
-    </Reference>
-    <Reference Include="ShimLib.Util">
-      <HintPath>..\libs\ShimLib.Util.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -95,6 +90,7 @@
     <Compile Include="IpDll.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util.cs" />
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>

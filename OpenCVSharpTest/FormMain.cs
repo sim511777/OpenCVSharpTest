@@ -19,6 +19,7 @@ using ShimLib;
 using System.Diagnostics;
 using System.IO;
 using System.Drawing.Imaging;
+using ShimLib;
 
 namespace OpenCVSharpTest {
     public partial class FormMain : Form {
@@ -33,14 +34,6 @@ namespace OpenCVSharpTest {
             Glb.form = this;
             Console.SetOut(new TextBoxWriter(this.tbxConsole));
             this.InitFunctionList();
-        }
-
-        private static void ZoomToImage(ImageBox pbx) {
-            if (pbx.ImgBW <= 0 || pbx.ImgBH <= 0)
-                pbx.ZoomReset();
-            else
-                pbx.ZoomToRect(0, 0, pbx.ImgBW, pbx.ImgBH);
-            pbx.Invalidate();
         }
 
         private void DrawHistogram(float[] histo, Series series, string name, Color color, AxisType yAxisTYpe = AxisType.Primary) {
@@ -135,13 +128,10 @@ namespace OpenCVSharpTest {
             int bytepp = 1;
             bool isFloat = false;
             if (mat != null) {
-                bw = mat.Width;
-                bh = mat.Height;
-                bytepp = (int)(mat.Step() / bw);
-                buf = Marshal.AllocHGlobal(bw * bh * bytepp);
                 MatToImageBuffer(mat, ref buf, ref bw, ref bh, ref bytepp, ref isFloat);
             }
-            pbx.SetImgBuf(buf, bw, bh, bytepp, true, isFloat);
+            pbx.SetImageBuffer(buf, bw, bh, bytepp, isFloat);
+            pbx.Invalidate();
         }
 
         private void InitFunctionList() {
@@ -168,10 +158,6 @@ namespace OpenCVSharpTest {
             Console.WriteLine($"Image From Resource: {this.cbxExampleImage.Text} ({Glb.matSrc.Width}x{Glb.matSrc.Height})");
 
             this.ProcessImage();
-
-            ZoomToImage(this.pbx0);
-            ZoomToImage(this.pbx1);
-            ZoomToImage(this.pbx2);
         }
 
         private void btnClipboard_Click(object sender, EventArgs e) {
@@ -194,10 +180,6 @@ namespace OpenCVSharpTest {
             bmp.Dispose();
 
             this.ProcessImage();
-
-            ZoomToImage(this.pbx0);
-            ZoomToImage(this.pbx1);
-            ZoomToImage(this.pbx2);
         }
 
         private void btnLoad_Click(object sender, EventArgs e) {
@@ -216,10 +198,6 @@ namespace OpenCVSharpTest {
             Console.WriteLine($"Image From File: {Path.GetFileName(dlgOpen.FileName)} ({Glb.matSrc.Width}x{Glb.matSrc.Height})");
 
             this.ProcessImage();
-
-            ZoomToImage(this.pbx0);
-            ZoomToImage(this.pbx1);
-            ZoomToImage(this.pbx2);
         }
 
         private void timer1_Tick(object sender, EventArgs e) {
@@ -248,7 +226,6 @@ namespace OpenCVSharpTest {
             this.cap = new VideoCapture(0);
             this.timer1.Enabled = true;
             this.btnLive.Text = "Live Stop";
-            this.pbx0.ZoomToRect(0, 0, this.cap.FrameWidth, this.cap.FrameHeight);
             this.pbx0.Invalidate();
         }
 
@@ -297,19 +274,16 @@ namespace OpenCVSharpTest {
         }
 
         private void btnZoomReset_Click(object sender, EventArgs e) {
-            this.pbx0.ZoomReset();
+            this.pbx0.ResetZoom();
             this.pbx0.Invalidate();
-            this.pbx1.ZoomReset();
+            this.pbx1.ResetZoom();
             this.pbx1.Invalidate();
-            this.pbx2.ZoomReset();
+            this.pbx2.ResetZoom();
             this.pbx2.Invalidate();
 
         }
 
         private void btnFitZoom_Click(object sender, EventArgs e) {
-            ZoomToImage(this.pbx0);
-            ZoomToImage(this.pbx1);
-            ZoomToImage(this.pbx2);
         }
 
         private void lbxTest_SelectedIndexChanged(object sender, EventArgs e) {
@@ -390,10 +364,6 @@ namespace OpenCVSharpTest {
             Console.WriteLine($"Image From File: {Path.GetFileName(dlgOpen.FileName)} ({Glb.matSrc.Width}x{Glb.matSrc.Height})");
 
             this.ProcessImage();
-
-            ZoomToImage(this.pbx0);
-            ZoomToImage(this.pbx1);
-            ZoomToImage(this.pbx2);
         }
     }
 
