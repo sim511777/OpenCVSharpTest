@@ -19,7 +19,6 @@ using ShimLib;
 using System.Diagnostics;
 using System.IO;
 using System.Drawing.Imaging;
-using ShimLib;
 
 namespace OpenCVSharpTest {
     public partial class FormMain : Form {
@@ -117,20 +116,21 @@ namespace OpenCVSharpTest {
             isFloat = (matType == MatType.CV_32FC1 || matType == MatType.CV_64FC1);
         }
 
-        public void DrawMat(Mat mat, ImageBox pbx) {
-            if (pbx.ImgBuf != IntPtr.Zero) {
-                Marshal.FreeHGlobal(pbx.ImgBuf);
+        public void DrawMat(Mat mat, ImageBox pbx, ref IntPtr imgBuf) {
+            if (imgBuf != IntPtr.Zero) {
+                Marshal.FreeHGlobal(imgBuf);
+                imgBuf = IntPtr.Zero;
             }
 
-            IntPtr buf = IntPtr.Zero;
+            imgBuf = IntPtr.Zero;
             int bw = 0;
             int bh = 0;
             int bytepp = 1;
             bool isFloat = false;
             if (mat != null) {
-                MatToImageBuffer(mat, ref buf, ref bw, ref bh, ref bytepp, ref isFloat);
+                MatToImageBuffer(mat, ref imgBuf, ref bw, ref bh, ref bytepp, ref isFloat);
             }
-            pbx.SetImageBuffer(buf, bw, bh, bytepp, isFloat);
+            pbx.SetImageBuffer(imgBuf, bw, bh, bytepp, isFloat);
             pbx.Invalidate();
         }
 
@@ -258,15 +258,15 @@ namespace OpenCVSharpTest {
                 sw.Stop();
                 Console.WriteLine($"=>  Total Time: {sw.ElapsedMilliseconds}ms");
             } catch (TargetInvocationException ex) {
-                DrawMat(null, this.pbx1);
+                DrawMat(null, this.pbx1, ref Glb.imgBuf1);
                 DrawHistogram(null, this.cht1);
-                DrawMat(null, this.pbx2);
+                DrawMat(null, this.pbx2, ref Glb.imgBuf2);
                 DrawHistogram(null, this.cht2);
                 Console.WriteLine($"=> Error: {ex.InnerException.Message}");
             } catch (Exception ex) {
-                DrawMat(null, this.pbx1);
+                DrawMat(null, this.pbx1, ref Glb.imgBuf1);
                 DrawHistogram(null, this.cht1);
-                DrawMat(null, this.pbx2);
+                DrawMat(null, this.pbx2, ref Glb.imgBuf2);
                 DrawHistogram(null, this.cht2);
                 Console.WriteLine($"=> Error: {ex.Message}");
             }

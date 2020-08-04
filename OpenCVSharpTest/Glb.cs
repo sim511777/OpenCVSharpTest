@@ -17,32 +17,35 @@ namespace OpenCVSharpTest {
         
 
         public static FormMain form = null;
+        public static IntPtr imgBuf0 = IntPtr.Zero;
+        public static IntPtr imgBuf1 = IntPtr.Zero;
+        public static IntPtr imgBuf2 = IntPtr.Zero;
 
         public static void DrawMatAndHist0(Mat mat) {
-            form.DrawMat(mat, form.pbx0);
+            form.DrawMat(mat, form.pbx0, ref Glb.imgBuf0);
             form.DrawHistogram(mat, form.cht0);
         }
 
         public static void DrawMatAndHist1(Mat mat) {
-            form.DrawMat(mat, form.pbx1);
+            form.DrawMat(mat, form.pbx1, ref Glb.imgBuf1);
             form.DrawHistogram(mat, form.cht1);
         }
 
         public static void DrawMatAndHist2(Mat mat) {
-            form.DrawMat(mat, form.pbx2);
+            form.DrawMat(mat, form.pbx2, ref Glb.imgBuf2);
             form.DrawHistogram(mat, form.cht2);
         }
 
         public static void DrawMat0(Mat mat) {
-            form.DrawMat(mat, form.pbx0);
+            form.DrawMat(mat, form.pbx0, ref Glb.imgBuf0);
         }
 
         public static void DrawMat1(Mat mat) {
-            form.DrawMat(mat, form.pbx1);
+            form.DrawMat(mat, form.pbx1, ref Glb.imgBuf1);
         }
 
         public static void DrawMat2(Mat mat) {
-            form.DrawMat(mat, form.pbx2);
+            form.DrawMat(mat, form.pbx2, ref Glb.imgBuf2);
         }
 
         public static void DrawHist0(Mat mat, bool labelHsv = false) {
