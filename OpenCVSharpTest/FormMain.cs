@@ -314,9 +314,8 @@ namespace OpenCVSharpTest {
         }
 
         private void pbx_Paint(object sender, PaintEventArgs e) {
-            ImageGraphics ig = new ImageGraphics(sender as ImageBox, e.Graphics);
-            if ((sender as ImageBox).Tag is Action<ImageGraphics> drawing) {
-                drawing(ig);
+            if ((sender as ImageBox).Tag is Action<Graphics, ImageBox> drawing) {
+                drawing(e.Graphics, sender as ImageBox);
             }
         }
 

@@ -1003,14 +1003,14 @@ namespace OpenCVSharpTest {
                 }
             }
 
-            Action<ImageGraphics> drawing = delegate(ImageGraphics ig) {
+            Action<System.Drawing.Graphics, ImageBox> drawing = delegate(System.Drawing.Graphics g, ImageBox ibx) {
                 foreach (var curve in curveList) {
                     var polyline = curve
                     .Select(ptd => new PointF(ptd.X + 0.5f, ptd.Y + 0.5f)).ToArray();
                     for (int i = 0; i < polyline.Length - 1; i++) {
                         var pt1 = polyline[i];
                         var pt2 = polyline[i + 1];
-                        ig.DrawLine(System.Drawing.Pens.Lime, pt1, pt2);
+                        ibx.DrawLine(g, System.Drawing.Pens.Lime, pt1, pt2);
                     }
                 }
             };
