@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using OpenCvSharp;
 
 namespace OpenCVSharpTest {
     unsafe class IpUnsafe {
@@ -216,6 +217,28 @@ namespace OpenCVSharpTest {
                     *distPtr = minDist;
                 }
             }
+        }
+
+        public static Tuple<float, float> GetFloatMinMax(Mat matFloat) {
+            float min = 0;
+            float max = 0;
+            bool first = true;
+            for (int y = 0; y < matFloat.Height; y++) {
+                var ptr = (float*)matFloat.Ptr(y);
+                for (int x = 0; x < matFloat.Width; x++, ptr++) {
+                    float val = *ptr;
+                    if (first) {
+                        min = max = val;
+                        first = false;
+                    }
+                    if (val < min)
+                        min = val;
+                    if (val > max)
+                        max = val;
+                }
+            }
+
+            return Tuple.Create(min, max);
         }
     }
 }

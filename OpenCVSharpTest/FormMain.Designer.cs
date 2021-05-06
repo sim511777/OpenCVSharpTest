@@ -613,22 +613,32 @@
             // 
             this.pbx2.BackColor = System.Drawing.Color.Gray;
             this.pbx2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbx2.FloatValueMax = 1D;
             this.pbx2.Location = new System.Drawing.Point(834, 4);
             this.pbx2.Name = "pbx2";
             this.pbx2.Size = new System.Drawing.Size(408, 381);
             this.pbx2.TabIndex = 2;
             this.pbx2.Text = "imageBox1";
+            this.pbx2.UseDrawCenterLine = true;
+            this.pbx2.UseDrawCursorInfo = true;
+            this.pbx2.UseDrawDebugInfo = false;
+            this.pbx2.UseDrawPixelValue = true;
             this.pbx2.Paint += new System.Windows.Forms.PaintEventHandler(this.pbx_Paint);
             // 
             // pbx1
             // 
             this.pbx1.BackColor = System.Drawing.Color.Gray;
             this.pbx1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbx1.FloatValueMax = 1D;
             this.pbx1.Location = new System.Drawing.Point(419, 4);
             this.pbx1.Name = "pbx1";
             this.pbx1.Size = new System.Drawing.Size(408, 381);
             this.pbx1.TabIndex = 1;
             this.pbx1.Text = "imageBox1";
+            this.pbx1.UseDrawCenterLine = true;
+            this.pbx1.UseDrawCursorInfo = true;
+            this.pbx1.UseDrawDebugInfo = false;
+            this.pbx1.UseDrawPixelValue = true;
             this.pbx1.Paint += new System.Windows.Forms.PaintEventHandler(this.pbx_Paint);
             // 
             // pbx0
@@ -636,11 +646,16 @@
             this.pbx0.AllowDrop = true;
             this.pbx0.BackColor = System.Drawing.Color.Gray;
             this.pbx0.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbx0.FloatValueMax = 1D;
             this.pbx0.Location = new System.Drawing.Point(4, 4);
             this.pbx0.Name = "pbx0";
             this.pbx0.Size = new System.Drawing.Size(408, 381);
             this.pbx0.TabIndex = 0;
             this.pbx0.Text = "imageBox1";
+            this.pbx0.UseDrawCenterLine = true;
+            this.pbx0.UseDrawCursorInfo = true;
+            this.pbx0.UseDrawDebugInfo = false;
+            this.pbx0.UseDrawPixelValue = true;
             this.pbx0.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbx0_DragDrop);
             this.pbx0.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbx0_DragEnter);
             this.pbx0.Paint += new System.Windows.Forms.PaintEventHandler(this.pbx_Paint);

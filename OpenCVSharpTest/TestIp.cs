@@ -1004,13 +1004,14 @@ namespace OpenCVSharpTest {
             }
 
             Action<System.Drawing.Graphics, ImageBox> drawing = delegate(System.Drawing.Graphics g, ImageBox ibx) {
+                var ig = ibx.GetImageGraphics(g);
                 foreach (var curve in curveList) {
                     var polyline = curve
                     .Select(ptd => new PointF(ptd.X + 0.5f, ptd.Y + 0.5f)).ToArray();
                     for (int i = 0; i < polyline.Length - 1; i++) {
                         var pt1 = polyline[i];
                         var pt2 = polyline[i + 1];
-                        ibx.DrawLine(g, System.Drawing.Pens.Lime, pt1, pt2);
+                        ig.DrawLine(System.Drawing.Pens.Lime, pt1, pt2);
                     }
                 }
             };
@@ -1200,6 +1201,36 @@ namespace OpenCVSharpTest {
             
             matGray.Dispose();
             matRet.Dispose();
+        }
+
+        public unsafe static void FFT(float alpha = 1, float beta = 0) {
+            Glb.DrawMatAndHist0(Glb.matSrc);
+
+            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+
+            Mat matFloat = new Mat();
+            matGray.ConvertTo(matFloat, MatType.CV_32FC1);
+            matFloat /= 255;
+            Glb.DrawMatAndHist1(matFloat);
+
+            var matDft = matFloat.Dft();
+            
+            var minmax = IpUnsafe.GetFloatMinMax(matDft);
+            var min = minmax.Item1;
+            var max = minmax.Item2;
+            Console.WriteLine($"min={min}, max = {max}");
+            
+            matDft = (Mat)(matDft - min + 1);
+            matDft = matDft.Log();
+            matDft /= Math.Log(max - min + 1);
+            minmax = IpUnsafe.GetFloatMinMax(matDft);
+            min = minmax.Item1;
+            max = minmax.Item2;
+            Console.WriteLine($"min={min}, max = {max}");
+            Glb.DrawMatAndHist2(matDft);
+
+            matGray.Dispose();
+            matDft.Dispose();
         }
     }
 }

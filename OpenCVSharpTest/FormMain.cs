@@ -64,6 +64,15 @@ namespace OpenCVSharpTest {
                 cht.Series[0].Enabled = true;
                 cht.Series[1].Enabled = true;
                 cht.Series[2].Enabled = false;
+            } else if (matType == MatType.CV_32FC1) {
+                var histo = GetHistogram(mat, 0);
+                float acc = 0;
+                var histoAccum = histo.Select(val => acc += val).ToArray();
+                DrawHistogram(histo, cht.Series[0], "Gray", Color.Black);
+                DrawHistogram(histoAccum, cht.Series[1], "Accum", Color.Red, AxisType.Secondary);
+                cht.Series[0].Enabled = true;
+                cht.Series[1].Enabled = true;
+                cht.Series[2].Enabled = false;
             } else if (matType == MatType.CV_8UC3 || matType == MatType.CV_8UC4) {
                 if (labelHsv == false) {
                     var histR = GetHistogram(mat, 2);
