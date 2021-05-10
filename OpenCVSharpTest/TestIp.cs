@@ -14,6 +14,8 @@ using System.Drawing.Imaging;
 using System.Text;
 using ShimLib;
 using PointF = System.Drawing.PointF;
+using System.ComponentModel;
+using System.Globalization;
 
 namespace OpenCVSharpTest {
     class TestIp {
@@ -1203,34 +1205,165 @@ namespace OpenCVSharpTest {
             matRet.Dispose();
         }
 
-        public unsafe static void FFT(float alpha = 1, float beta = 0) {
-            Glb.DrawMatAndHist0(Glb.matSrc);
+        public unsafe static void FftTest(MyPoint[] filterPts = null, int filterRadius = 21) {
+            Mat imgIn = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            if (imgIn.Empty()) //check whether the image is loaded or not
+            {
+                Console.WriteLine("ERROR : Image cannot be loaded..!!");
+                return;
+            }
+            imgIn.ConvertTo(imgIn, MatType.CV_32F);
+            // it needs to process even image only
+            Rect roi = new Rect(0, 0, imgIn.Cols & -2, imgIn.Rows & -2);
+            imgIn = new Mat(imgIn, roi);
+            // PSD calculation (start)
+            Mat imgPSD = new Mat();
+            FftUtil.calcPSD(ref imgIn, ref imgPSD);
+            FftUtil.fftshift(ref imgPSD, ref imgPSD);
+            Cv2.Normalize(imgPSD, imgPSD, 0, 255, NormTypes.MinMax);
+            // PSD calculation (stop)
+            //H calculation (start)
+            Mat H = new Mat(roi.Size, MatType.CV_32F, new Scalar(1));
+            if (filterPts != null) {
+                foreach (var pt in filterPts) {
+                    var pt2 = new Point(pt.X, pt.Y);
+                    FftUtil.synthesizeFilterH(ref H, pt2, filterRadius);
+                }
+            }
+            //FftUtil.synthesizeFilterH(ref H, new Point(155, 235), filterRadius);
+            //FftUtil.synthesizeFilterH(ref H, new Point(238, 173), filterRadius);
+            //FftUtil.synthesizeFilterH(ref H, new Point(320, 113), filterRadius);
 
-            var matGray = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
+            //H calculation (stop)
+            // filtering (start)
+            Mat imgOut = new Mat();
+            FftUtil.fftshift(ref H, ref H);
+            FftUtil.filter2DFreq(ref imgIn, ref imgOut, ref H);
+            // filtering (stop)
+            imgOut.ConvertTo(imgOut, MatType.CV_8U);
+            Cv2.Normalize(imgOut, imgOut, 0, 255, NormTypes.MinMax);
+            //imwrite("result.jpg", imgOut);
+            //imwrite("PSD.jpg", imgPSD);
+            Glb.DrawMatAndHist0(imgOut);
+            Glb.DrawMatAndHist1(imgPSD);
+            FftUtil.fftshift(ref H, ref H);
+            //Cv2.Normalize(H, H, 0, 255, NormTypes.MinMax);
+            //imwrite("filter.jpg", H);
+            Glb.DrawMatAndHist2(H);
 
-            Mat matFloat = new Mat();
-            matGray.ConvertTo(matFloat, MatType.CV_32FC1);
-            matFloat /= 255;
-            Glb.DrawMatAndHist1(matFloat);
+        }
+    }
 
-            var matDft = matFloat.Dft();
-            
-            var minmax = IpUnsafe.GetFloatMinMax(matDft);
-            var min = minmax.Item1;
-            var max = minmax.Item2;
-            Console.WriteLine($"min={min}, max = {max}");
-            
-            matDft = (Mat)(matDft - min + 1);
-            matDft = matDft.Log();
-            matDft /= Math.Log(max - min + 1);
-            minmax = IpUnsafe.GetFloatMinMax(matDft);
-            min = minmax.Item1;
-            max = minmax.Item2;
-            Console.WriteLine($"min={min}, max = {max}");
-            Glb.DrawMatAndHist2(matDft);
+   public class PointConverter : TypeConverter {
+      public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) {
+         if (sourceType == typeof(string)) {
+            return true;
+         }
+         return base.CanConvertFrom(context, sourceType);
+      }
 
-            matGray.Dispose();
-            matDft.Dispose();
+      public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) {
+         if (value is string) {
+            string[] v = ((string)value).Split(new char[] { ',' });
+            return new MyPoint(int.Parse(v[0]), int.Parse(v[1]));
+         }
+         return base.ConvertFrom(context, culture, value);
+      }
+
+      public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
+         if (destinationType == typeof(string)) {
+            return ((MyPoint)value).X + "," + ((MyPoint)value).Y;
+         }
+         return base.ConvertTo(context, culture, value, destinationType);
+      }
+   }
+
+
+    //[TypeConverter(typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(PointConverter))]
+    public class MyPoint {
+        public int X { get; set; } = 0;
+        public int Y { get; set; } = 0;
+        public MyPoint(int x, int y) {
+            X = x;
+            Y = y;
+        }
+        public MyPoint() {
+
+        }
+        public override string ToString() {
+            return $"{X},{Y}";
+        }
+    }
+
+    public class FftUtil {
+        public static void fftshift(ref Mat inputImg, ref Mat outputImg) {
+            outputImg = inputImg.Clone();
+            int cx = outputImg.Cols / 2;
+            int cy = outputImg.Rows / 2;
+            Mat q0 = new Mat(outputImg, new Rect(0, 0, cx, cy));
+            Mat q1 = new Mat(outputImg, new Rect(cx, 0, cx, cy));
+            Mat q2 = new Mat(outputImg, new Rect(0, cy, cx, cy));
+            Mat q3 = new Mat(outputImg, new Rect(cx, cy, cx, cy));
+            Mat tmp = new Mat();
+            q0.CopyTo(tmp);
+            q3.CopyTo(q0);
+            tmp.CopyTo(q3);
+            q1.CopyTo(tmp);
+            q2.CopyTo(q1);
+            tmp.CopyTo(q2);
+        }
+
+        public static void filter2DFreq(ref Mat inputImg, ref Mat outputImg, ref Mat H) {
+            Mat[] planes = { new Mat<float>(inputImg.Clone()), Mat.Zeros(inputImg.Size(), MatType.CV_32F) };
+            Mat complexI = new Mat();
+            Cv2.Merge(planes, complexI);
+            Cv2.Dft(complexI, complexI, DftFlags.Scale);
+            Mat[] planesH = { new Mat<float>(H.Clone()), Mat.Zeros(H.Size(), MatType.CV_32F) };
+            Mat complexH = new Mat();
+            Cv2.Merge(planesH, complexH);
+            Mat complexIH = new Mat();
+            Cv2.MulSpectrums(complexI, complexH, complexIH, 0);
+            Cv2.Idft(complexIH, complexIH);
+            Cv2.Split(complexIH, out planes);
+            outputImg = planes[0];
+        }
+
+        public static void synthesizeFilterH(ref Mat inputOutput_H, Point center, int radius) {
+            Point c2 = center, c3 = center, c4 = center;
+            c2.Y = inputOutput_H.Rows - center.Y;
+            c3.X = inputOutput_H.Cols - center.X;
+            c4 = new Point(c3.X,c2.Y);
+            Cv2.Circle(inputOutput_H, center, radius, new Scalar(0), -1, LineTypes.Link8);
+            Cv2.Circle(inputOutput_H, c2, radius, new Scalar(0), -1, LineTypes.Link8);
+            Cv2.Circle(inputOutput_H, c3, radius, new Scalar(0), -1, LineTypes.Link8);
+            Cv2.Circle(inputOutput_H, c4, radius, new Scalar(0), -1, LineTypes.Link8);
+        }
+
+        // Function calculates PSD(Power spectrum density) by fft with two flags
+        // flag = 0 means to return PSD
+        // flag = 1 means to return log(PSD)
+        public static void calcPSD(ref Mat inputImg, ref Mat outputImg, bool flag = false) {
+            Mat[] planes = { new Mat<float>(inputImg.Clone()), Mat.Zeros(inputImg.Size(), MatType.CV_32F) };
+            Mat complexI = new Mat();
+            Cv2.Merge(planes, complexI);
+            Cv2.Dft(complexI, complexI);
+            Cv2.Split(complexI, out planes);            // planes[0] = Re(DFT(I)), planes[1] = Im(DFT(I))
+            planes[0].At<float>(0) = 0;
+            planes[1].At<float>(0) = 0;
+            // compute the PSD = sqrt(Re(DFT(I))^2 + Im(DFT(I))^2)^2
+            Mat imgPSD = new Mat();
+            Cv2.Magnitude(planes[0], planes[1], imgPSD);        //imgPSD = sqrt(Power spectrum density)
+            Cv2.Pow(imgPSD, 2, imgPSD);                         //it needs ^2 in order to get PSD
+            outputImg = imgPSD;
+            // logPSD = log(1 + PSD)
+            if (flag)
+            {
+                Mat imglogPSD = new Mat();
+                imglogPSD = imgPSD + Scalar.All(1);
+                Cv2.Log(imglogPSD, imglogPSD);
+                outputImg = imglogPSD;
+            }
         }
     }
 }

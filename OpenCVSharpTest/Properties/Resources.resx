@@ -175,4 +175,7 @@
   <data name="_18_QrCode" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\_18_QrCode.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="_19_period_input" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_19_period_input.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
