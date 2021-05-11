@@ -1205,7 +1205,7 @@ namespace OpenCVSharpTest {
             matRet.Dispose();
         }
 
-        public unsafe static void FftTest(MyPoint[] filterPts = null, int filterRadius = 21) {
+        public unsafe static void FftTest(int filterRadius = 21) {
             Mat imgIn = Glb.matSrc.CvtColor(ColorConversionCodes.BGR2GRAY);
             if (imgIn.Empty()) //check whether the image is loaded or not
             {
@@ -1224,11 +1224,9 @@ namespace OpenCVSharpTest {
             // PSD calculation (stop)
             //H calculation (start)
             Mat H = new Mat(roi.Size, MatType.CV_32F, new Scalar(1));
-            if (filterPts != null) {
-                foreach (var pt in filterPts) {
-                    var pt2 = new Point(pt.X, pt.Y);
-                    FftUtil.synthesizeFilterH(ref H, pt2, filterRadius);
-                }
+            foreach (var rect in Glb.form.pbx1.RoiList) {
+                var pt2 = new Point(rect.X + rect.Width / 2, rect.Y + rect.Height / 2);
+                FftUtil.synthesizeFilterH(ref H, pt2, filterRadius);
             }
             //FftUtil.synthesizeFilterH(ref H, new Point(155, 235), filterRadius);
             //FftUtil.synthesizeFilterH(ref H, new Point(238, 173), filterRadius);
