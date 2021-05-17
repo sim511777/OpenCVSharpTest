@@ -194,7 +194,7 @@ namespace OpenCVSharpTest {
             Glb.DrawMatAndHist0(Glb.matSrc);
 
             Rect roi = new Rect(x, y, width, height);
-            Mat matDst = new Mat(Glb.matSrc, roi);
+            Mat matDst = new Mat(Glb.matSrc, roi).Clone();
             Glb.DrawMatAndHist1(matDst);
 
             Glb.DrawMatAndHist2(null);
