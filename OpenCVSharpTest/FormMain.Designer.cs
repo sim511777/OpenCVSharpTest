@@ -60,6 +60,9 @@
             System.Windows.Forms.DataVisualization.Charting.Series series28 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series29 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series30 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            ShimLib.ImageBoxOption imageBoxOption1 = new ShimLib.ImageBoxOption();
+            ShimLib.ImageBoxOption imageBoxOption2 = new ShimLib.ImageBoxOption();
+            ShimLib.ImageBoxOption imageBoxOption3 = new ShimLib.ImageBoxOption();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.lbxFunc = new System.Windows.Forms.ListBox();
@@ -613,32 +616,46 @@
             // 
             this.pbx2.BackColor = System.Drawing.Color.Gray;
             this.pbx2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbx2.FloatValueMax = 1D;
             this.pbx2.Location = new System.Drawing.Point(834, 4);
             this.pbx2.Name = "pbx2";
+            imageBoxOption1.CenterLineColor = System.Drawing.Color.Yellow;
+            imageBoxOption1.FloatValueDigit = 3;
+            imageBoxOption1.FloatValueMax = 1D;
+            imageBoxOption1.InfoFont = ShimLib.EFont.Unicode_16x16_hex;
+            imageBoxOption1.RoiRectangleColor = System.Drawing.Color.Blue;
+            imageBoxOption1.UseDrawCenterLine = true;
+            imageBoxOption1.UseDrawCursorInfo = true;
+            imageBoxOption1.UseDrawDebugInfo = false;
+            imageBoxOption1.UseDrawPixelValue = true;
+            imageBoxOption1.UseDrawRoiRectangles = true;
+            imageBoxOption1.UseParallelToDraw = true;
+            this.pbx2.Option = imageBoxOption1;
             this.pbx2.Size = new System.Drawing.Size(408, 381);
             this.pbx2.TabIndex = 2;
             this.pbx2.Text = "imageBox1";
-            this.pbx2.UseDrawCenterLine = true;
-            this.pbx2.UseDrawCursorInfo = true;
-            this.pbx2.UseDrawDebugInfo = false;
-            this.pbx2.UseDrawPixelValue = true;
             this.pbx2.Paint += new System.Windows.Forms.PaintEventHandler(this.pbx_Paint);
             // 
             // pbx1
             // 
             this.pbx1.BackColor = System.Drawing.Color.Gray;
             this.pbx1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbx1.FloatValueMax = 1D;
             this.pbx1.Location = new System.Drawing.Point(419, 4);
             this.pbx1.Name = "pbx1";
+            imageBoxOption2.CenterLineColor = System.Drawing.Color.Yellow;
+            imageBoxOption2.FloatValueDigit = 3;
+            imageBoxOption2.FloatValueMax = 1D;
+            imageBoxOption2.InfoFont = ShimLib.EFont.Unicode_16x16_hex;
+            imageBoxOption2.RoiRectangleColor = System.Drawing.Color.Blue;
+            imageBoxOption2.UseDrawCenterLine = true;
+            imageBoxOption2.UseDrawCursorInfo = true;
+            imageBoxOption2.UseDrawDebugInfo = false;
+            imageBoxOption2.UseDrawPixelValue = true;
+            imageBoxOption2.UseDrawRoiRectangles = true;
+            imageBoxOption2.UseParallelToDraw = true;
+            this.pbx1.Option = imageBoxOption2;
             this.pbx1.Size = new System.Drawing.Size(408, 381);
             this.pbx1.TabIndex = 1;
             this.pbx1.Text = "imageBox1";
-            this.pbx1.UseDrawCenterLine = true;
-            this.pbx1.UseDrawCursorInfo = true;
-            this.pbx1.UseDrawDebugInfo = false;
-            this.pbx1.UseDrawPixelValue = true;
             this.pbx1.Paint += new System.Windows.Forms.PaintEventHandler(this.pbx_Paint);
             // 
             // pbx0
@@ -646,16 +663,23 @@
             this.pbx0.AllowDrop = true;
             this.pbx0.BackColor = System.Drawing.Color.Gray;
             this.pbx0.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbx0.FloatValueMax = 1D;
             this.pbx0.Location = new System.Drawing.Point(4, 4);
             this.pbx0.Name = "pbx0";
+            imageBoxOption3.CenterLineColor = System.Drawing.Color.Yellow;
+            imageBoxOption3.FloatValueDigit = 3;
+            imageBoxOption3.FloatValueMax = 1D;
+            imageBoxOption3.InfoFont = ShimLib.EFont.Unicode_16x16_hex;
+            imageBoxOption3.RoiRectangleColor = System.Drawing.Color.Blue;
+            imageBoxOption3.UseDrawCenterLine = true;
+            imageBoxOption3.UseDrawCursorInfo = true;
+            imageBoxOption3.UseDrawDebugInfo = false;
+            imageBoxOption3.UseDrawPixelValue = true;
+            imageBoxOption3.UseDrawRoiRectangles = true;
+            imageBoxOption3.UseParallelToDraw = true;
+            this.pbx0.Option = imageBoxOption3;
             this.pbx0.Size = new System.Drawing.Size(408, 381);
             this.pbx0.TabIndex = 0;
             this.pbx0.Text = "imageBox1";
-            this.pbx0.UseDrawCenterLine = true;
-            this.pbx0.UseDrawCursorInfo = true;
-            this.pbx0.UseDrawDebugInfo = false;
-            this.pbx0.UseDrawPixelValue = true;
             this.pbx0.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbx0_DragDrop);
             this.pbx0.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbx0_DragEnter);
             this.pbx0.Paint += new System.Windows.Forms.PaintEventHandler(this.pbx_Paint);
